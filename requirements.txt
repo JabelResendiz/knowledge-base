@@ -1,6 +1,0 @@
-------------Requirements------------------
-
-
-sudo apt python3.0
-sudo apt logisim
-pip install 
