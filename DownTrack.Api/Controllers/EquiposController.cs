@@ -3,6 +3,7 @@
 using EntityFrameworkCore.MySQL.Data;
 using EntityFrameworkCore.MySQL.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,18 +40,21 @@ namespace EntityFrameworkCore.MySQL.Controllers
         //obtener todos los equipos
         [HttpGet]
 
-        public async Task<IActionResult> GetAll(){
-            var equipos=await _appDbContext.Equipos.ToListAsync();
+        public async Task<IActionResult> GetAll()
+        {
+            var equipos = await _appDbContext.Equipos.ToListAsync();
 
             return Ok(equipos);
         }
 
         //eliminar un equipo por su id
-        [HttpDelete ("{id}")]
-        public async Task<IActionResult> DeleteEquipo(int id){
-            var equipo=await _appDbContext.Equipos.FindAsync(id);
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEquipo(int id)
+        {
+            var equipo = await _appDbContext.Equipos.FindAsync(id);
 
-            if (equipo == null){
+            if (equipo == null)
+            {
                 return NotFound("Advertencia: Equipo no encontrado");
             }
 
@@ -60,5 +64,26 @@ namespace EntityFrameworkCore.MySQL.Controllers
 
             return Ok($"Equipo con ID {id} ha sido borrado");
         }
+
+
+
+       [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateEquipo(int id, Equipo updatedEquipo)
+        {
+            var equipo = await _appDbContext.Equipos.FindAsync(id);
+
+            if (equipo == null)
+            {
+                return NotFound("Advertencia: equipo no encontrado");
+            }
+
+            equipo.Estado = updatedEquipo.Estado;
+            equipo.Ubicacion =updatedEquipo.Ubicacion;
+            
+            await _appDbContext.SaveChangesAsync();
+
+            return Ok(equipo);
+        }
+
     }
 }

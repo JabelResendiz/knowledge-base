@@ -20,5 +20,12 @@ namespace EntityFrameworkCore.MySQL.Data
         public DbSet<Tecnico> Tecnicos { get; set; }
 
         public DbSet<Equipo> Equipos {get;set;}
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Equipo>().
+                                        Property(e => e.FechaAdq).HasColumnType("date");
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

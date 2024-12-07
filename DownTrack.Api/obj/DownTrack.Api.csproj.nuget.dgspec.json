@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HP\\Desktop\\New folder\\algo\\DownTrack.Api\\DownTrack.Api.csproj": {}
+    "C:\\Users\\HP\\Documents\\GitHub\\privated\\privated\\DownTrack.Api\\DownTrack.Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HP\\Desktop\\New folder\\algo\\DownTrack.Api\\DownTrack.Api.csproj": {
+    "C:\\Users\\HP\\Documents\\GitHub\\privated\\privated\\DownTrack.Api\\DownTrack.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\New folder\\algo\\DownTrack.Api\\DownTrack.Api.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\Documents\\GitHub\\privated\\privated\\DownTrack.Api\\DownTrack.Api.csproj",
         "projectName": "DownTrack.Api",
-        "projectPath": "C:\\Users\\HP\\Desktop\\New folder\\algo\\DownTrack.Api\\DownTrack.Api.csproj",
+        "projectPath": "C:\\Users\\HP\\Documents\\GitHub\\privated\\privated\\DownTrack.Api\\DownTrack.Api.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\New folder\\algo\\DownTrack.Api\\obj\\",
+        "outputPath": "C:\\Users\\HP\\Documents\\GitHub\\privated\\privated\\DownTrack.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -43,6 +43,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.JsonPatch": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.10, )"
