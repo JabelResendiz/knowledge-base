@@ -22,6 +22,7 @@ namespace EntityFrameworkCore.MySQL.Data
         public DbSet<Equipo> Equipos {get;set;}
 
         public DbSet<Mantenimiento> Mantenimientos {get;set;}
+        public DbSet<Seccion> Secciones {get;set;}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
