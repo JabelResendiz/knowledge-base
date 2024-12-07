@@ -21,6 +21,8 @@ namespace EntityFrameworkCore.MySQL.Data
 
         public DbSet<Equipo> Equipos {get;set;}
 
+        public DbSet<Mantenimiento> Mantenimientos {get;set;}
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Equipo>().
