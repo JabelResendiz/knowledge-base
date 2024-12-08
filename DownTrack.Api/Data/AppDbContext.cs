@@ -26,6 +26,10 @@ namespace EntityFrameworkCore.MySQL.Data
         public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<MantenimientoRealizado> MantenimientosRealizados { get; set; }
         public DbSet<BajaEquipo> BajasEquipos { get; set; }
+
+        //public DbSet<JefeSecc> JefesSecciones{get;set;}
+        public DbSet<Evaluacion> Evaluaciones{get;set;}
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Equipo>()
@@ -85,6 +89,26 @@ namespace EntityFrameworkCore.MySQL.Data
                 .WithMany(e => e.Bajas)
                 .HasForeignKey(b => b.EquipoId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+
+            // entidad Evaluacion
+
+            modelBuilder.Entity<Evaluacion>()
+                .HasOne(e=> e.JefeSecc)
+                .WithMany(j=> j.EvaluacionesOtorgadas)
+                .HasForeignKey(e=> e.JefeSeccId)
+                .OnDelete(DeleteBehavior.SetNull);
+            
+            modelBuilder.Entity<Evaluacion>()
+                .HasOne(e=> e.Tecnico)
+                .WithMany(t=> t.EvaluacionesRecibidas)
+                .HasForeignKey(e=> e.TecnicoId)
+                .OnDelete(DeleteBehavior.SetNull);
+                
+            modelBuilder.Entity<Evaluacion>()
+                .Property(e => e.FechaEvaluacion).HasColumnType("date");
+
+
 
             base.OnModelCreating(modelBuilder);
 

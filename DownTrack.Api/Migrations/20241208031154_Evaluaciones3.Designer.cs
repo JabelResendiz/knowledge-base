@@ -3,6 +3,7 @@ using System;
 using EntityFrameworkCore.MySQL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DownTrack.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241208031154_Evaluaciones3")]
+    partial class Evaluaciones3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,12 +107,12 @@ namespace DownTrack.Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("FechaEvaluacion")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("JefeSeccId")
+                    b.Property<int>("JefeSeccId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TecnicoId")
+                    b.Property<int>("TecnicoId")
                         .HasColumnType("int");
 
                     b.Property<string>("Valoracion")
@@ -242,6 +245,11 @@ namespace DownTrack.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("varchar(8)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -253,6 +261,17 @@ namespace DownTrack.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Usuario");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.JefeSecc", b =>
+                {
+                    b.HasBaseType("EntityFrameworkCore.MySQL.Models.Usuario");
+
+                    b.HasDiscriminator().HasValue("JefeSecc");
                 });
 
             modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.BajaEquipo", b =>
@@ -285,15 +304,17 @@ namespace DownTrack.Api.Migrations
 
             modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.Evaluacion", b =>
                 {
-                    b.HasOne("EntityFrameworkCore.MySQL.Models.Usuario", "JefeSecc")
-                        .WithMany("EvaluacionesOtorgadas")
+                    b.HasOne("EntityFrameworkCore.MySQL.Models.JefeSecc", "JefeSecc")
+                        .WithMany("EvaluacionesRealizadas")
                         .HasForeignKey("JefeSeccId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("EntityFrameworkCore.MySQL.Models.Tecnico", "Tecnico")
                         .WithMany("EvaluacionesRecibidas")
                         .HasForeignKey("TecnicoId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("JefeSecc");
 
@@ -363,9 +384,12 @@ namespace DownTrack.Api.Migrations
 
             modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.Usuario", b =>
                 {
-                    b.Navigation("EvaluacionesOtorgadas");
-
                     b.Navigation("Secciones");
+                });
+
+            modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.JefeSecc", b =>
+                {
+                    b.Navigation("EvaluacionesRealizadas");
                 });
 #pragma warning restore 612, 618
         }

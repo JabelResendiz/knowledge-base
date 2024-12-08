@@ -3,6 +3,7 @@ using System;
 using EntityFrameworkCore.MySQL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DownTrack.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241208051639_CreateEvaluacionAndRelationships2")]
+    partial class CreateEvaluacionAndRelationships2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,7 +107,7 @@ namespace DownTrack.Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("FechaEvaluacion")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int?>("JefeSeccId")
                         .HasColumnType("int");
@@ -288,12 +291,12 @@ namespace DownTrack.Api.Migrations
                     b.HasOne("EntityFrameworkCore.MySQL.Models.Usuario", "JefeSecc")
                         .WithMany("EvaluacionesOtorgadas")
                         .HasForeignKey("JefeSeccId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("EntityFrameworkCore.MySQL.Models.Tecnico", "Tecnico")
                         .WithMany("EvaluacionesRecibidas")
                         .HasForeignKey("TecnicoId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("JefeSecc");
 

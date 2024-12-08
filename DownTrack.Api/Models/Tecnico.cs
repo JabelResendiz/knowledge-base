@@ -28,5 +28,9 @@ namespace EntityFrameworkCore.MySQL.Models
         [JsonIgnore]
         // Relación con BajaEquipo
         public ICollection<BajaEquipo> BajasRealizadas { get; set; } = new List<BajaEquipo>();
-    }
+
+        [JsonIgnore]
+        public ICollection<Evaluacion> EvaluacionesRecibidas{get;set;} = new List<Evaluacion>();
+    
+    }   
 }

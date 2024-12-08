@@ -17,5 +17,8 @@ namespace EntityFrameworkCore.MySQL.Models
         // un usuario (jefe de seccion) puede ser jefe de varias secciones
          [JsonIgnore]
         public ICollection<Seccion>? Secciones {get;set;}
+
+        [JsonIgnore]
+        public ICollection<Evaluacion>? EvaluacionesOtorgadas{get;set;}
     }
 }
