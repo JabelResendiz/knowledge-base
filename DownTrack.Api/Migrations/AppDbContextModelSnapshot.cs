@@ -19,6 +19,55 @@ namespace DownTrack.Api.Migrations
                 .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.BajaEquipo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("CausaBaja")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int?>("EquipoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaBaja")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("TecnicoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EquipoId");
+
+                    b.HasIndex("TecnicoId");
+
+                    b.ToTable("BajasEquipos");
+                });
+
+            modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.Departamento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("SeccionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SeccionId");
+
+                    b.ToTable("Departamentos");
+                });
+
             modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.Equipo", b =>
                 {
                     b.Property<int>("Id")
@@ -63,6 +112,38 @@ namespace DownTrack.Api.Migrations
                     b.ToTable("Mantenimientos");
                 });
 
+            modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.MantenimientoRealizado", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<double>("CostoMant")
+                        .HasColumnType("double");
+
+                    b.Property<int?>("EquipoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaRealizacion")
+                        .HasColumnType("date");
+
+                    b.Property<int?>("MantenimientoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TecnicoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EquipoId");
+
+                    b.HasIndex("MantenimientoId");
+
+                    b.HasIndex("TecnicoId");
+
+                    b.ToTable("MantenimientosRealizados");
+                });
+
             modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -88,11 +169,16 @@ namespace DownTrack.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("JefeSeccId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("JefeSeccId");
 
                     b.ToTable("Secciones");
                 });
@@ -111,10 +197,6 @@ namespace DownTrack.Api.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Rol")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -143,6 +225,98 @@ namespace DownTrack.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.BajaEquipo", b =>
+                {
+                    b.HasOne("EntityFrameworkCore.MySQL.Models.Equipo", "Equipo")
+                        .WithMany("Bajas")
+                        .HasForeignKey("EquipoId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("EntityFrameworkCore.MySQL.Models.Tecnico", "Tecnico")
+                        .WithMany("BajasRealizadas")
+                        .HasForeignKey("TecnicoId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Equipo");
+
+                    b.Navigation("Tecnico");
+                });
+
+            modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.Departamento", b =>
+                {
+                    b.HasOne("EntityFrameworkCore.MySQL.Models.Seccion", "Seccion")
+                        .WithMany("Departamentos")
+                        .HasForeignKey("SeccionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Seccion");
+                });
+
+            modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.MantenimientoRealizado", b =>
+                {
+                    b.HasOne("EntityFrameworkCore.MySQL.Models.Equipo", "Equipo")
+                        .WithMany("MantenimientosRealizados")
+                        .HasForeignKey("EquipoId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("EntityFrameworkCore.MySQL.Models.Mantenimiento", "Mantenimiento")
+                        .WithMany("MantenimientosRealizados")
+                        .HasForeignKey("MantenimientoId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("EntityFrameworkCore.MySQL.Models.Tecnico", "Tecnico")
+                        .WithMany("MantenimientosRealizados")
+                        .HasForeignKey("TecnicoId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Equipo");
+
+                    b.Navigation("Mantenimiento");
+
+                    b.Navigation("Tecnico");
+                });
+
+            modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.Seccion", b =>
+                {
+                    b.HasOne("EntityFrameworkCore.MySQL.Models.Usuario", "JefeSecc")
+                        .WithMany("Secciones")
+                        .HasForeignKey("JefeSeccId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("JefeSecc");
+                });
+
+            modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.Equipo", b =>
+                {
+                    b.Navigation("Bajas");
+
+                    b.Navigation("MantenimientosRealizados");
+                });
+
+            modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.Mantenimiento", b =>
+                {
+                    b.Navigation("MantenimientosRealizados");
+                });
+
+            modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.Seccion", b =>
+                {
+                    b.Navigation("Departamentos");
+                });
+
+            modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.Tecnico", b =>
+                {
+                    b.Navigation("BajasRealizadas");
+
+                    b.Navigation("MantenimientosRealizados");
+                });
+
+            modelBuilder.Entity("EntityFrameworkCore.MySQL.Models.Usuario", b =>
+                {
+                    b.Navigation("Secciones");
                 });
 #pragma warning restore 612, 618
         }

@@ -30,6 +30,10 @@ namespace EntityFrameworkCore.MySQL.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEquipo(Equipo equipo)
         {
+            if(equipo == null)
+            {
+                return BadRequest("Equipo no proporcionado.");
+            }
             _appDbContext.Equipos.Add(equipo);
             await _appDbContext.SaveChangesAsync();// guarda el equipoo en la base de datos
 

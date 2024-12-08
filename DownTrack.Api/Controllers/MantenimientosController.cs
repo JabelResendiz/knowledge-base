@@ -33,6 +33,10 @@ namespace EntityFrameworkCore.MySQL.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMantenimiento(Mantenimiento mantenimiento)
         {
+            if(mantenimiento == null)
+            {
+                return BadRequest("Departamento no proporcionado.");
+            }
             _appDbContext.Mantenimientos.Add(mantenimiento);
             await _appDbContext.SaveChangesAsync();// guarda el Mantenimientoo en la base de datos
 
