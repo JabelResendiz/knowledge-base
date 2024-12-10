@@ -1,3 +1,4 @@
+
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -21,16 +22,28 @@ namespace EntityFrameworkCore.MySQL.Models
         public DateTime FechaAdq { get; set; }
 
         [Required]
-        public int Ubicacion { get; set; }
+        public int DepartamentoId { get; set; }
+        [JsonIgnore]
+        public Departamento? Departamento { get; set; }
+        [Required]
+        public int SeccionId { get; set; }
+        [JsonIgnore]
+        public Seccion? Seccion { get; set; }
 
         [JsonIgnore]
         // Relación muchos-a-muchos
         public ICollection<MantenimientoRealizado> MantenimientosRealizados { get; set; } = new List<MantenimientoRealizado>();
 
+        // [JsonIgnore]
+        // // Relación con BajaEquipo
+        // public ICollection<BajaEquipo> Bajas { get; set; } = new List<BajaEquipo>();
+
         [JsonIgnore]
-        // Relación con BajaEquipo
-        public ICollection<BajaEquipo> Bajas { get; set; } = new List<BajaEquipo>();
 
+        public BajaEquipo? Baja { get; set; }
 
+        [JsonIgnore]
+
+        public ICollection<Solicitud>? SolicitudesEquipo { get; set; }
     }
 }

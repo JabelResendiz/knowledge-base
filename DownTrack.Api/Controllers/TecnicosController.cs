@@ -1,6 +1,5 @@
 using EntityFrameworkCore.MySQL.Data;
 using EntityFrameworkCore.MySQL.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,38 +15,33 @@ namespace EntityFrameworkCore.MySQL.Controllers
             _appDbContext = appDbContext;
         }
 
+        #region POST
+        // agregar un tecnico
         [HttpPost]
-        public async Task<IActionResult> AddTecnico(Tecnico tecnico)
+        public async Task<IActionResult> CreateTecnico([FromBody] Tecnico tecnico)
         {
-
-            if (tecnico == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Técnico no proporcionado.");
+                return BadRequest(ModelState);
             }
 
-            if (tecnico.Salario < 0 || tecnico.AñosExp < 0)
+            try
             {
-                return BadRequest("Salario y años de experiencia no pueden ser nulos o cero.");
+                // Agregar el técnico al DbSet
+                _appDbContext.Tecnicos.Add(tecnico);
+                await _appDbContext.SaveChangesAsync();
+
+                // Retornar el técnico creado
+                return CreatedAtAction(nameof(GetTecnico), new { id = tecnico.Id }, tecnico);
             }
-
-            Usuario user = new Usuario
+            catch (Exception ex)
             {
-                Id = tecnico.Id,
-                Nombre = tecnico.Nombre,
-                Rol = "Tecnico"
-            };
-
-
-            _appDbContext.Usuarios.Add(user);
-            await _appDbContext.SaveChangesAsync();
-
-            _appDbContext.Tecnicos.Add(tecnico);
-            await _appDbContext.SaveChangesAsync();
-
-
-            return Ok(tecnico);
+                return StatusCode(500, $"Error al guardar en la base de datos: {ex.Message}");
+            }
         }
-
+        #endregion
+        #region GET
+        // leer todos los tecnicos
         [HttpGet]
 
         public async Task<IActionResult> GetAll()
@@ -57,6 +51,24 @@ namespace EntityFrameworkCore.MySQL.Controllers
             return Ok(tecnicos);
         }
 
+        //leer un tecnico por su id
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTecnico(int id)
+        {
+            var tecnico = await _appDbContext.Tecnicos
+                                    .Include(t=> t.MantenimientosRealizados)
+                                    .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (tecnico == null)
+            {
+                return NotFound("Tecnico no encontrado");
+            }
+
+            return Ok(tecnico);
+        }
+        #endregion
+        #region DELETE
+        // borrar un tecnico por su ID
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTecnico(int id)
         {
@@ -67,37 +79,43 @@ namespace EntityFrameworkCore.MySQL.Controllers
                 return NotFound("Advertencia: Tecnico no encontrado");
             }
 
-            _appDbContext.Tecnicos.Remove(tecnico);
+            try
+            {
+                _appDbContext.Tecnicos.Remove(tecnico);
+                await _appDbContext.SaveChangesAsync();
 
-            await _appDbContext.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al eliminar el técnico: {ex.InnerException?.Message ?? ex.Message}");
+            }
+        }
+        #endregion
 
-            // borramos en la tabla 
+        #region PUT
+        //actualizar los campos dado el ID
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTecnico(int id, [FromBody] Tecnico updatedTecnico)
+        {
+            if (id != updatedTecnico.Id)
+            {
+                return BadRequest("El ID del técnico no coincide.");
+            }
 
-            var usuario = await _appDbContext.Usuarios.FindAsync(id);
+            try
+            {
+                _appDbContext.Tecnicos.Update(updatedTecnico);
+                await _appDbContext.SaveChangesAsync();
 
-            _appDbContext.Usuarios.Remove(usuario);
-
-            await _appDbContext.SaveChangesAsync();
-
-            return Ok($"Tecnico con ID {id} ha sido borrado");
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al actualizar el técnico: {ex.InnerException?.Message ?? ex.Message}");
+            }
         }
 
-        //  [HttpPut("{id}")]
-        // public async Task<IActionResult> UpdateTecnico(int id,Tecnico updatedTecnico)
-        // {
-        //     var tecnico = await _appDbContext.Tecnicos.FindAsync(id);
-
-        //     if (tecnico == null)
-        //     {
-        //         return NotFound("Advertencia: Usuario no encontrado");
-        //     }
-
-        //     tecnico.Nombre = updatedTecnico.Nombre;
-        //     usuario.Rol = updatedUsuario.Rol;
-
-        //     await _appDbContext.SaveChangesAsync();
-
-        //     return Ok(usuario);
-        // }
+        #endregion
     }
 }

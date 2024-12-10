@@ -1,3 +1,4 @@
+
 using System.ComponentModel.DataAnnotations;
 
 using System.Text.Json.Serialization;
@@ -5,13 +6,10 @@ using System.Text.Json.Serialization;
 
 namespace EntityFrameworkCore.MySQL.Models
 {
-    public class Tecnico
+    public class Tecnico  : Usuario
     {
 
-        public int Id { get; set; }
-        [Required]
-        public string Nombre { get; set; }
-
+    
         [Required]
         public int AñosExp { get; set; }
 

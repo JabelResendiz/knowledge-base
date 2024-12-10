@@ -1,14 +1,6 @@
 
-
-
-
-
-
-
 using EntityFrameworkCore.MySQL.Data;
 using EntityFrameworkCore.MySQL.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +23,7 @@ namespace EntityFrameworkCore.MySQL.Controllers
             _appDbContext = appDbContext;
         }
 
+        #region POST
         //agregar un nuevo Mantenimiento
         [HttpPost]
         public async Task<IActionResult> AddMantenimientoRealizado(MantenimientoRealizado mantenimiento)
@@ -69,6 +62,8 @@ namespace EntityFrameworkCore.MySQL.Controllers
             return Ok(mantenimiento);// return de que salio bien la operacion
         }
 
+        #endregion
+        #region GET
 
         //obtener todos los Mantenimientos
         [HttpGet]
@@ -77,12 +72,24 @@ namespace EntityFrameworkCore.MySQL.Controllers
         {
             var mantenimientos = await _appDbContext.MantenimientosRealizados.ToListAsync();
 
-            if (!mantenimientos.Any())
-            {
-                return NotFound("No hay mantenimientos realizados registrados.");
-            }
             return Ok(mantenimientos);
         }
+
+        [HttpGet("{id}")]
+
+        public async Task<IActionResult> GetMantenimientoRealizado(int id)
+        {
+            var mantenimientos = await _appDbContext.MantenimientosRealizados.FindAsync(id);
+
+            if (mantenimientos == null)
+            {
+                return NotFound("Advertencia: Mantenimiento no encontrado");
+            }
+
+            return Ok(mantenimientos);
+        }
+        #endregion
+        #region DELETE
 
         //eliminar un Mantenimiento por su id
         [HttpDelete("{id}")]
@@ -101,7 +108,8 @@ namespace EntityFrameworkCore.MySQL.Controllers
 
             return Ok($"Mantenimiento realizado con ID {id} ha sido borrado");
         }
-
+        #endregion
+        #region PUT
 
 
         [HttpPut("{id}")]
@@ -156,6 +164,8 @@ namespace EntityFrameworkCore.MySQL.Controllers
 
             return Ok("Mantenimiento realizado actualizado correctamente.");
         }
+
+        #endregion
 
     }
 }

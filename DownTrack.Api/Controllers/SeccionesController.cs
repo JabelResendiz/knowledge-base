@@ -1,13 +1,6 @@
 
-
-
-
-
-
 using EntityFrameworkCore.MySQL.Data;
 using EntityFrameworkCore.MySQL.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,22 +21,8 @@ namespace EntityFrameworkCore.MySQL.Controllers
             _appDbContext = appDbContext;
         }
 
-        //agregar una nueva Seccion
-        // [HttpPost]
-        // public async Task<IActionResult> AddSeccion(Seccion seccion)
-        // {
-
-        //var jefe = await _appDbContext.Usuarios.FindAsync(seccion.JefeSeccId);
-        // if (jefe == null)
-        // {
-        //     return NotFound("El JefeSecc asignado no existe.");
-        // }
-
-        //     _appDbContext.Secciones.Add(seccion);
-        //     await _appDbContext.SaveChangesAsync();// guarda la Seccion en la base de datos
-
-        //    return CreatedAtAction(nameof(GetAll), new { id = seccion.Id }, seccion); // return de que salio bien la operacion
-        // }
+        #region POST
+        //agregar una seccion nueva
 
         [HttpPost]
         public async Task<ActionResult<Seccion>> CreateSeccion(Seccion seccion)
@@ -67,7 +46,7 @@ namespace EntityFrameworkCore.MySQL.Controllers
                 return BadRequest("El usuario no tiene el rol adecuado para ser jefe de una sección.");
             }
 
-            
+
             // Agregar la nueva sección
             _appDbContext.Secciones.Add(seccion);
             await _appDbContext.SaveChangesAsync();
@@ -76,6 +55,8 @@ namespace EntityFrameworkCore.MySQL.Controllers
 
         }
 
+        #endregion
+        #region GET
 
         //obtener todos los Secciones junto con los datos del JefeSecc asociado
         [HttpGet]
@@ -94,11 +75,27 @@ namespace EntityFrameworkCore.MySQL.Controllers
             return Ok(secciones);
         }
 
+        //obtener la seccion por su ID
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSecc(int id)
+        {
+            var secciones = await _appDbContext.Secciones
+                                               .FindAsync(id);
+
+            if (secciones == null)
+            {
+                return NotFound($"No hay secciones con el ID : {id}");
+            }
+
+            return Ok(secciones);
+        }
+
         // public async Task<ActionResult<IEnumerable<Seccion>>> GetSecciones()
         // {
         //     return await _appDbContext.Secciones.Include(s => s.JefeSecc).ToListAsync();
         // }
-
+        #endregion
+        #region DELETE
         //eliminar un Seccion por su id
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSeccion(int id)
@@ -109,13 +106,6 @@ namespace EntityFrameworkCore.MySQL.Controllers
             {
                 return NotFound("Advertencia: Seccion no encontrado");
             }
-
-            // Validar si la sección tiene dependencias en otra tabla (no es necesario)
-            // var tieneDependencias = await _appDbContext.Departamento.AnyAsync(o => o.SeccionId == id);
-            // if (tieneDependencias)
-            // {
-            //     return BadRequest(new { Message = "No se puede eliminar la sección porque tiene dependencias asociadas." });
-            // }
 
             //usar bloque try and catch por si hay restricciones en la base de dato (integridad referencial)
             try
@@ -134,8 +124,8 @@ namespace EntityFrameworkCore.MySQL.Controllers
             }
 
         }
-
-
+        #endregion
+        #region PUT
         // actualizar una seccion dada
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSeccion(int id, Seccion updatedSeccion)
@@ -179,6 +169,6 @@ namespace EntityFrameworkCore.MySQL.Controllers
 
             return Ok(new { Message = "Sección actualizada correctamente.", Seccion = seccion });
         }
-
+        #endregion
     }
 }

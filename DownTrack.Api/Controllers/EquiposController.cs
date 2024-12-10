@@ -2,8 +2,6 @@
 
 using EntityFrameworkCore.MySQL.Data;
 using EntityFrameworkCore.MySQL.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +24,7 @@ namespace EntityFrameworkCore.MySQL.Controllers
             _appDbContext = appDbContext;
         }
 
+        #region POST
         //agregar un nuevo equipo
         [HttpPost]
         public async Task<IActionResult> AddEquipo(Equipo equipo)
@@ -34,12 +33,23 @@ namespace EntityFrameworkCore.MySQL.Controllers
             {
                 return BadRequest("Equipo no proporcionado.");
             }
+
+            var departamento =await _appDbContext.Departamentos
+                                    .Where(d => d.Id == equipo.DepartamentoId && d.SeccionId == equipo.SeccionId )  // Filtra por ambos ids
+                                    .FirstOrDefaultAsync();
+
+            if(departamento == null)
+            {
+                return BadRequest("No existe ese departamento, asegura que los Ids proporcionados estén bien escritos");
+            }
+            
             _appDbContext.Equipos.Add(equipo);
             await _appDbContext.SaveChangesAsync();// guarda el equipoo en la base de datos
 
             return Ok(equipo);// return de que salio bien la operacion
         }
-
+        #endregion
+        #region GET
 
         //obtener todos los equipos
         [HttpGet]
@@ -51,6 +61,20 @@ namespace EntityFrameworkCore.MySQL.Controllers
             return Ok(equipos);
         }
 
+         [HttpGet("{id}")]
+
+        public async Task<IActionResult> GetEquipo(int id)
+        {
+            var equipo = await _appDbContext.Equipos.FindAsync(id);
+            if(equipo == null)
+            {
+                return NotFound("EL id  proporcionado no le corresponde a ningún equipo");
+            }
+            return Ok(equipo);
+        }
+
+        #endregion
+        #region DELETE
         //eliminar un equipo por su id
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEquipo(int id)
@@ -69,7 +93,8 @@ namespace EntityFrameworkCore.MySQL.Controllers
             return Ok($"Equipo con ID {id} ha sido borrado");
         }
 
-
+        #endregion
+        #region PUT
 
        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEquipo(int id, Equipo updatedEquipo)
@@ -82,12 +107,14 @@ namespace EntityFrameworkCore.MySQL.Controllers
             }
 
             equipo.Estado = updatedEquipo.Estado;
-            equipo.Ubicacion =updatedEquipo.Ubicacion;
+            equipo.Nombre=updatedEquipo.Nombre;
+            equipo.Tipo= updatedEquipo.Tipo;
+
             
             await _appDbContext.SaveChangesAsync();
 
             return Ok(equipo);
         }
-
+        #endregion
     }
 }

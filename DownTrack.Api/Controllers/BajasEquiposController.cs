@@ -1,16 +1,12 @@
 
 using EntityFrameworkCore.MySQL.Data;
 using EntityFrameworkCore.MySQL.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 // controladores de API que se utiliza para interactuar con la base de datos
 // cada controlador maneja operaciones CRUD  para una entidad especifica
 // todos deben heredar de ControllerBase que es la base para los controladores
-
-
 
 
 namespace EntityFrameworkCore.MySQL.Controllers
@@ -25,6 +21,7 @@ namespace EntityFrameworkCore.MySQL.Controllers
             _appDbContext = appDbContext;
         }
 
+        #region  POST
         //agregar una nueva baja
         [HttpPost]
         public async Task<IActionResult> AddBaja(BajaEquipo baja)
@@ -33,10 +30,10 @@ namespace EntityFrameworkCore.MySQL.Controllers
             {
                 return BadRequest("Datos no proporcionados.");
             }
-            
+
             // Validar que las llaves foráneas existen en la base de datos
             var tecnico = await _appDbContext.Tecnicos.FindAsync(baja.TecnicoId);
-            if (tecnico ==null)
+            if (tecnico == null)
             {
                 return NotFound("El Técnico no existe.");
             }
@@ -50,7 +47,7 @@ namespace EntityFrameworkCore.MySQL.Controllers
             }
             //validar que el equipo no haya estado de baja
 
-            if(equipo.Estado == "baja")
+            if (equipo.Estado == "baja")
             {
                 return BadRequest("El equipo ya está en estado de baja.");
             }
@@ -64,7 +61,8 @@ namespace EntityFrameworkCore.MySQL.Controllers
 
             return Ok(baja);// return de que salio bien la operacion
         }
-
+        #endregion
+        #region GET
 
         //obtener todos los bajas
         [HttpGet]
@@ -83,6 +81,24 @@ namespace EntityFrameworkCore.MySQL.Controllers
             return Ok(bajas);
         }
 
+        [HttpGet("{id}")]
+
+        public async Task<IActionResult> GetBaja(int id)
+        {
+            var baja = await _appDbContext.BajasEquipos.FindAsync(id);
+            if (baja == null)
+            {
+                return NotFound("No hay baja con ese ID");
+            }
+
+            return Ok(baja);
+        }
+
+
+        #endregion
+
+        #region DELETE
+        //eliminar una baja dado su ID
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBaja(int id)
         {
@@ -97,10 +113,10 @@ namespace EntityFrameworkCore.MySQL.Controllers
 
             return Ok("Baja eliminada correctamente.");
         }
+        #endregion
 
-
-
-
+        #region PUT
+        //actualizar una Baja dado su ID
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBaja(int id, BajaEquipo updatedBaja)
         {
@@ -126,7 +142,7 @@ namespace EntityFrameworkCore.MySQL.Controllers
                 existingBaja.TecnicoId = updatedBaja.TecnicoId;
             }
 
-
+            //validar la presencia del equipo
             if (existingBaja.EquipoId != updatedBaja.EquipoId)
             {
                 var equipoExists = await _appDbContext.Equipos.AnyAsync(e => e.Id == updatedBaja.EquipoId);
@@ -140,11 +156,13 @@ namespace EntityFrameworkCore.MySQL.Controllers
             existingBaja.FechaBaja = updatedBaja.FechaBaja;
             existingBaja.CausaBaja = updatedBaja.CausaBaja;
             // Guardar cambios
-            _appDbContext.BajasEquipos.Update(existingBaja);
+            
             await _appDbContext.SaveChangesAsync();
 
             return Ok("baja  actualizado correctamente.");
         }
+
+        #endregion
 
     }
 }

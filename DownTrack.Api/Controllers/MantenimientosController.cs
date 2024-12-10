@@ -1,19 +1,13 @@
 
-
-
-
-
 using EntityFrameworkCore.MySQL.Data;
 using EntityFrameworkCore.MySQL.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Prueba.Migrations;
 
 // controladores de API que se utiliza para interactuar con la base de datos
 // cada controlador maneja operaciones CRUD  para una entidad especifica
 // todos deben heredar de ControllerBase que es la base para los controladores
-
 
 
 
@@ -29,11 +23,12 @@ namespace EntityFrameworkCore.MySQL.Controllers
             _appDbContext = appDbContext;
         }
 
+        #region POST
         //agregar un nuevo Mantenimiento
         [HttpPost]
         public async Task<IActionResult> AddMantenimiento(Mantenimiento mantenimiento)
         {
-            if(mantenimiento == null)
+            if (mantenimiento == null)
             {
                 return BadRequest("Departamento no proporcionado.");
             }
@@ -43,7 +38,8 @@ namespace EntityFrameworkCore.MySQL.Controllers
             return Ok(mantenimiento);// return de que salio bien la operacion
         }
 
-
+        #endregion
+        #region GET
         //obtener todos los Mantenimientos
         [HttpGet]
 
@@ -53,6 +49,25 @@ namespace EntityFrameworkCore.MySQL.Controllers
 
             return Ok(mantenimientos);
         }
+
+
+        // leer un mantenimiento por su ID
+        [HttpGet("{id}")]
+
+        public async Task<IActionResult> GetMantenimiento(int id)
+        {
+            var mantenimiento = await _appDbContext.Mantenimientos
+                                     .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (mantenimiento == null)
+            {
+                return NotFound("Mantenimiento no encontrado");
+            }
+
+            return Ok(mantenimiento);
+        }
+        #endregion
+        #region DELETE
 
         //eliminar un Mantenimiento por su id
         [HttpDelete("{id}")]
@@ -72,11 +87,17 @@ namespace EntityFrameworkCore.MySQL.Controllers
             return Ok($"Mantenimiento con ID {id} ha sido borrado");
         }
 
+        #endregion
+        #region PUT
+        // actualizar un mantenimiento por su ID
 
-
-       [HttpPut("{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateMantenimiento(int id, Mantenimiento updatedMantenimiento)
         {
+            if(updatedMantenimiento.Id!= id)
+            {
+                return BadRequest("No se puede cambiar el valor del ID del mantenimiento");
+            }
             var mantenimiento = await _appDbContext.Mantenimientos.FindAsync(id);
 
             if (mantenimiento == null)
@@ -85,12 +106,13 @@ namespace EntityFrameworkCore.MySQL.Controllers
             }
 
             mantenimiento.Tipo = updatedMantenimiento.Tipo;
-            
-            
+
+
             await _appDbContext.SaveChangesAsync();
 
             return Ok(mantenimiento);
         }
+        #endregion
 
     }
 }

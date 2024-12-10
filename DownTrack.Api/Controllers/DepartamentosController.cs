@@ -1,14 +1,6 @@
 
-
-
-
-
-
-
 using EntityFrameworkCore.MySQL.Data;
 using EntityFrameworkCore.MySQL.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,7 +21,7 @@ namespace EntityFrameworkCore.MySQL.Controllers
             _appDbContext = appDbContext;
         }
 
-
+        #region POST
 
         [HttpPost]
         public async Task<ActionResult<Departamento>> AddDepartamento(Departamento departamento)
@@ -57,6 +49,8 @@ namespace EntityFrameworkCore.MySQL.Controllers
 
         }
 
+        #endregion
+        #region GET
 
         //obtener todos los Departamentoes junto con los datos del JefeSecc asociado
         [HttpGet]
@@ -76,64 +70,91 @@ namespace EntityFrameworkCore.MySQL.Controllers
             return Ok(departamentos);
         }
 
-        
+        [HttpGet("{DepartamentoId}")]
 
-        //eliminar un Departamento por su id
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDepartamento(int id)
+        public async Task<IActionResult> GetDepartamento(int DepartamentoId, int SeccionId)
         {
-            var Departamento = await _appDbContext.Departamentos.FindAsync(id);
+            // Obtener el departamento 
+            var departamento = await _appDbContext.Departamentos
+                                        .Where(d => d.Id == DepartamentoId && d.SeccionId == SeccionId)  // Filtra por ambos ids
+                                        .Include(d => d.Seccion)  // Incluir la Sección asociada
+                                        .FirstOrDefaultAsync();
+            if (departamento == null)
+            {
+                return NotFound("No hay departamentos registrado con ese ID.");
+            }
 
-            if (Departamento == null)
+            return Ok(departamento);
+        }
+
+
+        #endregion
+        #region DELETE
+        //eliminar un Departamento por su id
+        [HttpDelete("{DepartamentoId}")]
+        public async Task<IActionResult> DeleteDepartamento(int DepartamentoId, int SeccionId)
+        {
+            // Obtener el departamento 
+            var departamento = await _appDbContext.Departamentos
+                                        .Where(d => d.Id == DepartamentoId && d.SeccionId == SeccionId)  // Filtra por ambos ids
+                                        .Include(d => d.Seccion)  // Incluir la Sección asociada
+                                        .FirstOrDefaultAsync();
+            if (departamento == null)
             {
                 return NotFound("Advertencia: Departamento no encontrado");
             }
-
 
             //usar bloque try and catch por si hay restricciones en la base de dato (integridad referencial)
             try
             {
 
-                _appDbContext.Departamentos.Remove(Departamento);// Eliminar la sección
+                _appDbContext.Departamentos.Remove(departamento);// Eliminar la sección
                 await _appDbContext.SaveChangesAsync();
 
-
-                return Ok(new { Message = $"La sección con ID {id} fue eliminada correctamente." }); // Retornar confirmación de eliminación
+                return Ok(new { Message = $"El departamento con ID {DepartamentoId} y {SeccionId} fue eliminado correctamente." }); // Retornar confirmación de eliminación
             }
             catch (Exception ex)
             {
                 // Manejo de errores en caso de restricciones de base de datos
-                return BadRequest(new { Message = $"No se pudo eliminar la sección con ID {id}.", Error = ex.Message });
+                return BadRequest(new { Message = $"No se pudo eliminar el departamento con ID {DepartamentoId}.", Error = ex.Message });
             }
 
         }
 
-
+        #endregion
+        #region PUT
         // actualizar una Departamento dada
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDepartamento(int id, Departamento updatedDepartamento)
+        [HttpPut("{DepartamentoId}")]
+        public async Task<IActionResult> UpdateDepartamento(int DepartamentoId, int SeccionId, Departamento updatedDepartamento)
         {
-            if (id != updatedDepartamento.Id)
+            if (DepartamentoId != updatedDepartamento.Id)
+            {
+                return BadRequest("El ID del departamento no coincide.");
+            }
+            if(SeccionId != updatedDepartamento.SeccionId)
             {
                 return BadRequest("El ID de la sección no coincide.");
             }
 
-
-            var Departamento = await _appDbContext.Departamentos.FindAsync(id);
-
-            if (Departamento == null)
+            var departamento = await _appDbContext.Departamentos
+                                        .Where(d => d.Id == DepartamentoId && d.SeccionId == SeccionId)  // Filtra por ambos ids
+                                        .Include(d => d.Seccion)  // Incluir la Sección asociada
+                                        .FirstOrDefaultAsync();
+            
+            if (departamento == null)
             {
                 return NotFound("Advertencia: Departamento no encontrado");
             }
 
-            
+
             //actualizar el campo del nombre de la Departamento
-            Departamento.Nombre = updatedDepartamento.Nombre;
-            
+            departamento.Nombre = updatedDepartamento.Nombre;
+
             await _appDbContext.SaveChangesAsync();
 
-            return Ok(new { Message = "Sección actualizada correctamente.", Departamento = Departamento });
+            return Ok(new { Message = "Departamento actualizado correctamente.", Departamento = departamento });
         }
 
+        #endregion
     }
 }
