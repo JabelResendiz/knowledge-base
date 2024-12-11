@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DownTrack.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4191d7cb7ea9550cae3c4208bb8138ed358aa9f4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c7a712fd5c282c2dd8b4eae9b3197cfaf9bf0660")]
 [assembly: System.Reflection.AssemblyProductAttribute("DownTrack.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DownTrack.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
