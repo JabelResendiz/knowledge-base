@@ -2,7 +2,8 @@
 name: ActionDay
 
 on:
- workflow_dispatch:
+  schedule:
+     - cron: "30 3 * * *"  
 
 jobs:
   build:
