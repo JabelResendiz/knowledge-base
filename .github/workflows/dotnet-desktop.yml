@@ -3,7 +3,7 @@ name: ActionDay
 
 on:
   schedule:
-    - cron: '00 3 * * *'
+    - cron: '15 3 * * *'
 
 jobs:
   build:
@@ -39,5 +39,5 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/AidenPearces/IronMan
+        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/JabelResendiz/Rest_Client_API
         git push origin main
