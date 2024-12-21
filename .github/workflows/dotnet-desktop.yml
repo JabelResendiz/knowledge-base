@@ -3,7 +3,7 @@ name: ActionDay
 
 on:
   schedule:
-     - cron: "30 3 * * *"  
+     - cron: "46 3 * * *"  
 
 jobs:
   build:
