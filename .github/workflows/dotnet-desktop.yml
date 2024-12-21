@@ -2,8 +2,7 @@
 name: ActionDay
 
 on:
-  schedule:
-    - cron: '15 3 * * *'
+ workflow_dispatch:
 
 jobs:
   build:
@@ -21,7 +20,7 @@ jobs:
 
     - name: Configure Git
       run: |
-        git config --global user.name 'JabelResendiz'
+        git config --global user.name 'Jabel Resendiz'
         git config --global user.email 'jabelresendiz18@gmail.com'
     - name: Pull latest changes
       run: git pull origin main
