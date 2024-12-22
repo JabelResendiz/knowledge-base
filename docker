@@ -5,3 +5,7 @@ docker rm -f $(docker ps -aq)
 # Borrar todas las imageens
 
 docker rmi -f $(docker images -q)
+
+docker logs -f 
+
+docker compose logs -f
