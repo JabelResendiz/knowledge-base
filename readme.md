@@ -28,7 +28,8 @@ Por ejemplo, si tu aplicación se está ejecutando en `https://tudominio.com`, u
 es una interfaz en ASP.NET Core que representa el resultado de una accion en un controlador . Permite devolver diferentes tipos de respuestas HTTP desde los metodos de los controladores.
 
 
-es una forma de decirle a tu appp web que tipo de respuesta debe enviar de vuelta.es como una caja de herramientas que tiene diferentes tipos de respuestas que puede usar. por ejemplo:
+es una forma de decirle a tu app
+p web que tipo de respuesta debe enviar de vuelta.es como una caja de herramientas que tiene diferentes tipos de respuestas que puede usar. por ejemplo:
 
 1. OK(): Es como decir “¡Todo está bien!” y enviar los datos que el usuario pidió.
 2. NotFound(): Es como decir “No encontré lo que buscabas” y enviar un mensaje de error.
