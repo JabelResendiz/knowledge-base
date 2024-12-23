@@ -1,13 +1,15 @@
 # Clean Architecture Template
+
+```c#
 dotnet new webapi -n DownTrack.Api
 
 dotnet add package Microsoft.EntityFrameworkCore.Tools --version 8.0.0
 
 dotnet add package Microsoft.EntityFrameworkCore --version 8.0.0
 
- dotnet add package Pomelo.EntityFrameworkCore.MySql --version 8.0.0
+dotnet add package Pomelo.EntityFrameworkCore.MySql --version 8.0.0
 
-
+```
 
 ## que son los endpoints?
 
