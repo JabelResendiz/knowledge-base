@@ -1,4 +1,4 @@
-name: Enviar mensaje en push
+name: Enviar mensaje en pull_request
 on: [pull_request]
 
 jobs:
@@ -7,4 +7,4 @@ jobs:
     steps:
     - name: Enviar mensaje
       run: |
-        echo "Se ha hecho un pull a la rama ${{ github.ref }}"
+        echo "Se ha hecho un pull a la rama ${{ github.ref }} por el usuario ${{ github.actor }} "
