@@ -1,0 +1,10 @@
+name: Enviar mensaje en push
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Enviar mensaje
+      run: |
+        echo "Se ha hecho un pull a la rama ${{ github.ref }}"
