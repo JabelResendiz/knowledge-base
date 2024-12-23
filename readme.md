@@ -1,3 +1,4 @@
+# Clean Architecture Template
 dotnet new webapi -n DownTrack.Api
 
 dotnet add package Microsoft.EntityFrameworkCore.Tools --version 8.0.0
