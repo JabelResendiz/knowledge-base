@@ -1,0 +1,5 @@
+
+# ignore bin and obj folders
+
+**/DownTrack.Api/obj/
+**/DownTrack.Api/bin/
