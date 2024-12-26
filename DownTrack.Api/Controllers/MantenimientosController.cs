@@ -3,8 +3,6 @@ using EntityFrameworkCore.MySQL.Data;
 using EntityFrameworkCore.MySQL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Prueba.Migrations;
-
 // controladores de API que se utiliza para interactuar con la base de datos
 // cada controlador maneja operaciones CRUD  para una entidad especifica
 // todos deben heredar de ControllerBase que es la base para los controladores
