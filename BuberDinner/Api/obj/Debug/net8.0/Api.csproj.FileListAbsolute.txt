@@ -38,3 +38,11 @@ C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\bin\Debug\
 C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\bin\Debug\net8.0\Infrastrcuture.pdb
 C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\bin\Debug\net8.0\Domain.pdb
 C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
