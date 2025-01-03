@@ -13,11 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-<<<<<<<< HEAD:BuberDinner/Application/obj/Debug/net8.0/Application.AssemblyInfo.cs
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0727fb9115d26187a2b8b3e447a083729bb5c9bd")]
-========
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e8ad2b807f43b994a20ea61138bf69b388f5ef3d")]
->>>>>>>> api_clean:src/Application/obj/Debug/net8.0/Application.AssemblyInfo.cs
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+828c02ceff17316a05df61041615d14ed399d249")]
 [assembly: System.Reflection.AssemblyProductAttribute("Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
