@@ -15,13 +15,13 @@ jobs:
 
     - name: Count commits per contributor
       run: |
-        git shortlog -s -n > commits.txt
+        git shortlog -s -n --all> commits.txt
 
     - name: Commit and push changes
       run: |
         git config --global user.name 'JabelResendiz'
         git config --global user.email 'jabelresendiz18@gmail.com'
-        git add commits.txt
+        git add .
         git commit -m 'Update commits count'
         git push
 
