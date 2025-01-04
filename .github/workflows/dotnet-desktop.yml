@@ -1,0 +1,28 @@
+name: Daily Action
+
+on:
+  schedule:
+    - cron: '8 16 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Generate date.txt
+      run: |
+        echo "Tokyo: $(TZ=Asia/Tokyo date)" > date.txt
+        echo "New York: $(TZ=America/New_York date)" >> date.txt
+        echo "London: $(TZ=Europe/London date)" >> date.txt
+        echo "Sydney: $(TZ=Australia/Sydney date)" >> date.txt
+
+    - name: Commit changes
+      run: |
+        git config --global user.name 'JabelResendiz'
+        git config --global user.email 'jabelresendiz18@gmail.com'
+        git add date.txt
+        git commit -m "Update date.txt with current times"
+        git push
