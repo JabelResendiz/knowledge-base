@@ -38,3 +38,11 @@ es una forma de decirle a tu appp web que tipo de respuesta debe enviar de vuelt
 3. BadRequest(): Es como decir “La solicitud que hiciste está mal” y enviar un mensaje de error.
 4. NoContent(): es como decir "no tengo nada que enviar de vuelta"
 5. Redirect("{url de la pagina }"): redirige al user a otra pagina
+
+## Estructura de una Arquitectura Clean
+
+1. Domain
+2. Application
+3. Infrastructure
+4. Presentation
+5. Contracts (optional)
