@@ -1,2 +1,4 @@
 
 
+  service.AddScoped<IUnitOfWork, UnitOfWork>();
+

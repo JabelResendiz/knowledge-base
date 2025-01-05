@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\HP\\Documents\\GitHub\\REST_API_CLIENT\\privated\\BuberDinner\\Domain\\Domain.csproj": {}
+    "C:\\Users\\HP\\Documents\\GitHub\\REST_API_CLIENT\\privated\\BuberDinner\\Domain\\Domain.csproj": {}
   },
   "projects": {
-    "c:\\Users\\HP\\Documents\\GitHub\\REST_API_CLIENT\\privated\\BuberDinner\\Domain\\Domain.csproj": {
+    "C:\\Users\\HP\\Documents\\GitHub\\REST_API_CLIENT\\privated\\BuberDinner\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\HP\\Documents\\GitHub\\REST_API_CLIENT\\privated\\BuberDinner\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\Documents\\GitHub\\REST_API_CLIENT\\privated\\BuberDinner\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "c:\\Users\\HP\\Documents\\GitHub\\REST_API_CLIENT\\privated\\BuberDinner\\Domain\\Domain.csproj",
+        "projectPath": "C:\\Users\\HP\\Documents\\GitHub\\REST_API_CLIENT\\privated\\BuberDinner\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\HP\\Documents\\GitHub\\REST_API_CLIENT\\privated\\BuberDinner\\Domain\\obj\\",
+        "outputPath": "C:\\Users\\HP\\Documents\\GitHub\\REST_API_CLIENT\\privated\\BuberDinner\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"

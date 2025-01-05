@@ -49,3 +49,6 @@ C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\obj\Debug\
 C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\obj\Debug\net8.0\Api.pdb
 C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\obj\Debug\net8.0\Api.genruntimeconfig.cache
 C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\obj\Debug\net8.0\ref\Api.dll
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\BuberDinner\Api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll

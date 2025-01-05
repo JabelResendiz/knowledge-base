@@ -126,7 +126,6 @@ implementar sus definiciones de servicios. Pueden cambiar sus protocolos a volun
 no cambien el servicio visible para sus usuarios. De esta manera, el servicio y el protocolo no dependen
 uno del otro. Éste es un concepto clave que cualquier diseñador de red debe comprender bien.
 
-
 ## Capa fisica
 
 ### Serie de Fourier
@@ -147,11 +146,10 @@ $$
 \int_{0}^{T} \sin(2\pi kft) \sin(2\pi nft) dt = \begin{cases} 0 & \text{para } k ≠ n \\ T/2 & \text{para } k = n \end{cases}
 $$
 
-
 (propiedad de la ortogonalidad de las funciones seno y coseno)
 
 $$
-a_{n} = \frac{2}{T} \int_{0}^{T} g(t)\sin(2\pi nft)dt 
+a_{n} = \frac{2}{T} \int_{0}^{T} g(t)\sin(2\pi nft)dt
 $$
 
 $$
@@ -167,7 +165,7 @@ $$
 - ancho de banda: se refire a la capacidad maxima de transmision de datos a traves de una conexion en un period de tiempo determinada. (bps, Mbps, Gbps)
 
 * [ **Ancho de Banda vs. Velocidad** : El ancho de banda es la cantidad de datos que se pueden transmitir por segundo, mientras que la velocidad es cuán rápido se transmiten esos datos](https://espanol.verizon.com/articles/internet-essentials/bandwidth-definition/).
-* [ **Ancho de Banda vs. Latencia** : La latencia es el tiempo que tarda un paquete de datos en viajar desde el origen hasta el destino, mientras que el ancho de banda es la cantidad de datos que se pueden enviar en ese tiempo](https://espanol.verizon.com/articles/internet-essentials/bandwidth-definition/). 
+* [ **Ancho de Banda vs. Latencia** : La latencia es el tiempo que tarda un paquete de datos en viajar desde el origen hasta el destino, mientras que el ancho de banda es la cantidad de datos que se pueden enviar en ese tiempo](https://espanol.verizon.com/articles/internet-essentials/bandwidth-definition/).
 
 ### Medios de transmision
 
@@ -201,3 +199,88 @@ $$
 ### Atenuacion
 
 Se refiere a la perdidad de potecnia de una sennal a medida que se propaga a traves de un medio de transmisicion como un cable , el aire o el agua. Este fenomeno puede afectar a sennales acusticas, electricas u opticas.
+
+
+## Satelites de comunicacion
+
+Podemos considerar un satélite de comunicaciones como
+un enorme repetidor de microondas en el cielo que contiene varios transpondedores, cada uno de los
+cuales escucha en cierta porción del espectro, amplifica la señal entrante y después la retransmite en otra
+frecuencia para evitar interferencia con la señal entrante. Este modo de operación se llama tubo doblado.
+Se puede agregar un procesamiento digital para manipular o redirigir por separado los flujos de datos en
+toda la banda, o el satélite puede recibir información digital y retransmitirla. Esta forma de regeneración
+de señales mejora el desempeño si se le compara con un tubo doblado, ya que el satélite no amplifica el
+ruido en la señal que va hacia arriba. Los haces que descienden pueden ser amplios y cubrir una fracción
+considerable de la superficie de la Tierra, o pueden ser estrechos y cubrir un área de unos cuantos cientos
+de kilómetros de diámetro.
+
+
+**Amplificacion: significa aumentar la intensidad o la potencia de una señal, ya sea una señal eléctrica, de radiofrecuencia, de audio, o cualquier otra forma de transmisión. En el contexto de comunicaciones y satélites, amplificar una señal se refiere a hacerla más fuerte o clara para que pueda ser transmitida con mayor eficacia a largas distancias o después de haber perdido fuerza debido a la atenuación**
+
+**Satelites de Orbita Media (MEO) :** 
+
+* entre los dos cinturones de Van Allen
+* menor altura que los satélites GEO, producen una huella más
+  pequeña en la Tierra y requieren transmisores menos poderosos para comunicarse
+* En la actualidad se utilizan para sistemas de navegación en vez de las telecomunicaciones
+* La constelación de alrededor de 30 satélites GPS (Sistema de Posicionamiento Global, del
+  inglés Global Positioning System) que giran a una distancia aproximada de 20 200 km son ejemplos de
+  satélites MEO
+
+**Satelite de Orbita Terrestre Baja (LEO)**
+
+* se encuentran a una altitud
+  todavía más baja
+* Debido a su rápido movimiento, se necesita un gran número de ellos para un sistema completo
+* las estaciones terrestres no
+  necesitan mucha potencia y el retardo de viaje redondo es de sólo unos cuantos milisegundos
+* El costo
+  de lanzamiento es más económico
+
+
+**COnmutacion: es decidir que camino tomara la informacion para ir de un lugar a otro. Es como organizar el tráfico en una ciudad para que los mensajes, llamadas o datos lleguen a su destino.**
+
+La conmutación decide la mejor manera de mover información según el tipo de comunicación:
+
+* **Circuitos** : Rápido y directo, pero costoso si no se usa todo el tiempo.
+* **Paquetes** : Más flexible y eficiente, ideal para redes modernas como internet.
+
+En resumen, la conmutación es cómo las redes organizan y manejan el tráfico para que la información llegue rápida y correctamente.
+
+
+### Transmision en Banda Base
+
+es un método para enviar señales directamente en su forma original, sin modificar la frecuencia. En este tipo de transmisión, toda la energía de la señal ocupa el rango completo del canal de comunicación disponible, sin necesidad de ser modulada a otra frecuencia.
+
+
+### Características principales:
+
+1. **Sin modulación de frecuencia** :
+
+* Las señales se transmiten tal como son, en su rango de frecuencia original.
+* No se superponen con otras señales porque ocupan todo el canal de transmisión.
+
+1. **Uso típico en redes locales (LAN)** :
+
+* Por ejemplo, Ethernet utiliza transmisión en banda base para enviar datos directamente a través de cables de red.
+
+1. **Limitada en alcance** :
+
+* Debido a la falta de modulación, las señales en banda base tienden a degradarse rápidamente con la distancia.
+* Son más adecuadas para distancias cortas, como dentro de un edificio o campus.
+
+### Ventajas:
+
+* **Simplicidad** : Es más fácil implementar y no requiere un equipo complicado para modular la señal.
+* **Eficiencia** : Toda la capacidad del canal se usa para una sola señal.
+
+### Desventajas:
+
+* **Distancia limitada** : La señal puede sufrir atenuación y distorsión si viaja largas distancias.
+* **Un solo usuario por canal** : Solo se puede transmitir una señal por canal en un momento dado, lo que limita su uso en sistemas compartidos.
+
+### Ejemplo cotidiano:
+
+Piensa en un cable Ethernet que conecta tu computadora al router. La información viaja directamente desde la computadora al router usando la transmisión en banda base, sin modificar la frecuencia.
+
+En resumen, la transmisión en banda base es un método sencillo y eficiente para enviar señales sin cambios en su frecuencia, ideal para redes locales y comunicaciones de corto alcance.
