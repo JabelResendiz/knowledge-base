@@ -1,7 +1,7 @@
 ## Modelos:
 
 * modelo cliente-servidor: servidor y clientes
-* modelo peer-to-peer : no hay division de quien es cliente y quien es servidor (redes sociales)
+* modelo peer-to-peer : no hay division de quien es cliente y quien es servidor (redes sociales)-
 
 existen dos tipos de tecnología de transmisión que se emplean mucho en la actualidad:
 
