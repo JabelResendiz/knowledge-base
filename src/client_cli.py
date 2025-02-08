@@ -1,81 +1,56 @@
 import argparse
 import json
 import sys
-#from http_client import request, HTTPResponse
 from http_client import request
 from http_response import HTTPResponse
 
-# def fix_curious_design_choices(args):
-#     final_args = []
-#     merged_headers = []
-#     merged_data = []
-#     header_index = False
-#     data_index = False
-#     for i in args:
-#         if i == "-h":
-#             if data_index:
-#                 final_args.append(" ".join(merged_data))
-#                 merged_data = []
-#             data_index = False
-#             header_index = True
-#             final_args.append(i)
-#             continue
-#         elif i == "-d":
-#             if header_index:
-#                 final_args.append(" ".join(merged_headers))
-#                 merged_data = []
-#             data_index = True
-#             header_index = False
-#             final_args.append(i)
-#             continue
-
-
-#         if header_index:
-#             merged_headers.append(i)
-#         elif data_index:
-#             merged_data.append(i)
-#         if not header_index and not data_index:
-#             final_args.append(i)
-
-#     if header_index:
-#         final_args.append(" ".join(merged_headers))
-#     elif data_index:
-#         final_args.append(" ".join(merged_data))
-
-#     return final_args
-
-def reorganize_args(args):
-    """Reorganiza los argumentos de la línea de comandos utilizando un diccionario."""
-    args_dict = {"headers": [], "data": []}
-    current_key = None
-
-    # Iterar sobre los argumentos para separarlos en encabezados y datos
-    for arg in args:
-        if arg == "-h":  # Detectar encabezados
-            current_key = "headers"
-        elif arg == "-d":  # Detectar datos
-            current_key = "data"
-        else:
-            if current_key:
-                args_dict[current_key].append(arg)
-            else:
-                # Si no hay una clave activa, agregamos el argumento normalmente (se puede modificar si es necesario)
-                args_dict.setdefault("other", []).append(arg)
-
-    # Al final, devolver los argumentos reorganizados en un solo conjunto de argumentos
+def fix_curious_design_choices(args):
     final_args = []
-    for key, values in args_dict.items():
-        for value in values:
-            final_args.append(f"-{key[0]}")  # Insertar el prefijo del tipo (por ejemplo, -h o -d)
-            final_args.append(" ".join(values))  # Insertar todos los valores acumulados
-    return final_args
+    merged_headers = []
+    merged_data = []
+    header_index = False
+    data_index = False
+    for i in args:
+        if i == "-h":
+            if data_index:
+                final_args.append(" ".join(merged_data))
+                merged_data = []
+            data_index = False
+            header_index = True
+            final_args.append(i)
+            continue
+        elif i == "-d":
+            if header_index:
+                final_args.append(" ".join(merged_headers))
+                merged_data = []
+            data_index = True
+            header_index = False
+            final_args.append(i)
+            continue
 
+
+        if header_index:
+            merged_headers.append(i)
+        elif data_index:
+            merged_data.append(i)
+        else:
+            final_args.append(i)
+
+    if header_index:
+        final_args.append(" ".join(merged_headers))
+    elif data_index:
+        final_args.append(" ".join(merged_data))
+        
+    return final_args
 
 
 def main(sys_args):
     # Set up argument parser
-    sys_args = reorganize_args(sys_args)
+    # print(sys_args)
+    # sys_args = fix_curious_design_choices(sys_args)
 
+    # print(sys_args)
+    
     parser = argparse.ArgumentParser(description="HTTP Client CLI", add_help=False)
     parser.add_argument("-m", "--method", required=True, help="HTTP method (e.g., GET, POST)")
     parser.add_argument("-u", "--url", required=True, help="Request URL")
