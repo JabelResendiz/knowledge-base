@@ -16,11 +16,6 @@ class CaseInsensitiveDict(defaultdict):
         super().__delitem__(key.lower())
 
 
-class Http_Response:
-    
-    def __init__(self):
-        self.url = url
-
 def parse_http_url(url):
     # Expresión regular para parsear la URL
     regex = r'^(http://)?([^:/\s]+)(?::(\d+))?(/[^?\s]*)?(\?[^#\s]*)?$'
@@ -43,17 +38,20 @@ def parse_http_url(url):
 
 
 
-def _readline(connection,index=0):
-    """Lee una línea de datos del socket sin usar un índice."""
-    buffer = bytearray()
+def _readline(connection, index=0):
+    # inicializar un buffer vacio
+    buffer = b''
+    
     while True:
-        char = connection.recv(1)
-        if char == b"\n":
+        c = connection.recv(1) # recibe un byte
+        
+        if c == b'\n': # si es un slato de linea
             break
-        buffer.extend(char)
+        
+        buffer +=c
         index +=1
-    return bytes(buffer).strip(),index
-
+        
+    return buffer, index
 
 
 def parse_http_response(method, conn):
@@ -61,28 +59,36 @@ def parse_http_response(method, conn):
     # Leer las primeras lineas
     buffer, index = _readline(conn)
     version, code, reason = map(str.strip, buffer.decode().split(" ", 2))
-    # ignore \n
+    
     index += 1
     
     # Leer encabezados
     buffer, index = _readline(conn, index)
-    headers = CaseInsensitiveDict()
+    headers = {}
     
     while buffer != b'\r':
+        # Decodificar y dividir el encabezado y su valor
         header, value = map(str.strip, buffer.decode().split(":", 1))
+        
+         # Convertir tanto la clave (header) como el valor (value) a minúsculas
+        header= header.lower()
+        value = value.lower()
         headers[header] = value
+        
+        # Leer la siguiente línea del socket
         index += 1
         buffer, index = _readline(conn, index)
-    # ignore \r
     index += 1
     
     # leer el cuerpo de la respuesta
     body = b''
-    if "Content-Length" in headers:
-        cl = int(headers.get("Content-Length", 0))
-        while len(body) < cl and method != "HEAD":
-            body += conn.recv(cl - len(body))
-    elif headers.get("Transfer-Encoding") == "chunked":
+    
+    if "content-length" in headers:
+        lg = int(headers.get("content-length", 0))
+        while len(body) < lg and method != "HEAD":
+            body += conn.recv(lg - len(body))
+            
+    elif headers.get("transfer-encoding") == "chunked":
         size, index = _readline(conn, index)
         size = int(size, base=16) + 2 # size in hex + carrier return + \n
         body += conn.recv(size)
@@ -94,7 +100,7 @@ def parse_http_response(method, conn):
             index += size
 
     # descompresion si es necesario
-    if headers.get("Content-Encoding") == "gzip":
+    if headers.get("content-encoding") == "gzip":
         body = gzip.decompress(body)
 
     

@@ -71,10 +71,10 @@
 #         return str(dict(self.items()))
 
 
-def readline(connection, index=0):
-    buffer = b''
-    while (c := connection.recv(1)) != b'\n':
-        buffer += c
-        index += 1
+# def readline(connection, index=0):
+#     buffer = b''
+#     while (c := connection.recv(1)) != b'\n':
+#         buffer += c
+#         index += 1
 
-    return buffer, index
+#     return buffer, index
