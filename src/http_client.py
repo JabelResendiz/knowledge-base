@@ -1,10 +1,7 @@
 import socket
-import re
-import gzip
 import logging
-from collections import defaultdict
-from response import HTTPResponse
-from parser2 import parse_http_url,parse_response
+from parsing import parse_http_url,parse_http_response
+from exceptions import NotConnection
 
 # GLOBAL VARIABLES
 _versionHttp = 'HTTP/1.1'
@@ -23,17 +20,17 @@ class HttpClient:
         self.host = host
         self.port = port
         self.timeout = timeout
-        
         self.mySocket = None
         self.blocksize = blocksize
     
     # se hace uso del protocolo TCP/IP
     def connect (self):
+        # se establece una conexion TCP con el servidor
        self.mySocket = socket.create_connection((self.host,self.port),self.timeout)
-       #logger.info("INFO - conexión a %s:%s ha sido exitosa" , self.host, self.port) 
-    
+       
+       
     def request(self,method,url,body="", headers= None):
-        
+        # construye y envia una solicitud HTTP
         headers = headers or {}
         headers["Host"]= headers.get("Host",self.host)
         headers["Content-Length"] = str(len(body))
@@ -59,11 +56,12 @@ class HttpClient:
         
     
     def send(self,data):
+        # verfica que la conexion este abierta 
         if not self.mySocket:
-            raise Exception()
+            raise NotConnection("La conexión no está abierta")
 
         logging.info("INFO - sending\n%s", data)
-        
+        #enviar los datos al servidor 
         self.mySocket.sendall(data)
     
     def close(self):
@@ -74,26 +72,35 @@ class HttpClient:
     def receive(self,count= 1024):
         # recibir hasta count bytes del servidor
         return self.mySocket.recv(count)
-  
+
+class HttpClientManager:
+    def __init__(self):
+        self.client = None
   
 def request (method="GET",url="/",headers = None,body =""):
+    # extraer la informacion de la URL
     host,port,path,query = parse_http_url(url)
     
+    # crear una instancia de HttpClient para establecer una conexion
     conn = HttpClient(host,port)
-    
-    res= None
+
     data = None
     
     try:
+        # conectar al servidor y enviar la solicitud
         conn.connect()
         conn.request(method,path+query, headers=headers,body=body)
-        data= parse_response (method,conn.mySocket)
+        
+        #parsear la respuesta del servidor pendiente en el socket
+        data= parse_http_response (method,conn.mySocket)
     
     finally:
+        # cierra la conexion
         conn.close()
     
     logging.debug("%s %s %s", data, data.body, data.headers)
     
+    # devuelve la respuesta parseada
     return data
     
 
