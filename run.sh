@@ -5,4 +5,4 @@
 
 echo $@
 
-python src/cli.py $@
+python3 src/cli.py $@
