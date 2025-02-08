@@ -42,7 +42,6 @@ def fix_curious_design_choices(args):
 
     return final_args
 
-
 def main(sys_args):
     # Set up argument parser
     sys_args = fix_curious_design_choices(sys_args)
@@ -72,6 +71,8 @@ def main(sys_args):
         "body": response.get_body_raw().decode('utf-8')  # Assuming body is in bytes and needs to be decoded
     }
 
+     # Print output as JSON
+    print(json.dumps(output, indent=2))
 
 if __name__ == "__main__":
     main(sys.argv[1:])
