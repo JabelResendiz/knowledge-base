@@ -82,7 +82,7 @@ import argparse
 import json
 import sys
 from http_client import request
-from response import HTTPResponse
+from http_response import HTTPResponse
 
 def clean_args(args):
     """
