@@ -5,4 +5,4 @@
 
 echo $@
 
-python src/client_cli.py $@
+python src/cli.py $@
