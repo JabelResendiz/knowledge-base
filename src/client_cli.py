@@ -70,7 +70,7 @@ def main(sys_args):
     # Prepare output JSON format
     output = {
         "status": response.code,
-        "body": response.get_body_raw().decode('utf-8')  # Assuming body is in bytes and needs to be decoded
+        "body": response.get_body_bytes().decode('utf-8')  # Assuming body is in bytes and needs to be decoded
     }
 
      # Print output as JSON
