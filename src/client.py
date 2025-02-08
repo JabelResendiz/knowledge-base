@@ -182,17 +182,17 @@ if __name__ == "__main__":
     # r
     res = request("GET", URL, headers={"Accept-Encoding": "gzip"})
     print(res)
-    res.visualise()
+    #res.visualise()
 
     URL = "http://anglesharp.azurewebsites.net/Chunked" # chunk
     res = request("GET", URL)
     print(res)
-    res.visualise()
+    #res.visualise()
 
     URL = "http://httpbin.org/"
     res = request("GET", URL, headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"})
     print(res)
-    res.visualise()
+    #res.visualise()
 
     res = request("HEAD", URL)
     print(res, res.headers)

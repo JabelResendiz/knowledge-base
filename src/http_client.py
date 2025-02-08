@@ -1,7 +1,7 @@
 import socket
 import re
 import gzip
-from logging_config import setup_logging
+import logging
 from collections import defaultdict
 from response import HTTPResponse
 from parser2 import parse_http_url,parse_response
@@ -9,7 +9,11 @@ from parser2 import parse_http_url,parse_response
 # GLOBAL VARIABLES
 _versionHttp = 'HTTP/1.1'
 default_port = 80
-logger = setup_logging()
+
+logging.basicConfig(
+    level=logging.WARNING,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 
 class HttpClient:
@@ -26,7 +30,7 @@ class HttpClient:
     # se hace uso del protocolo TCP/IP
     def connect (self):
        self.mySocket = socket.create_connection((self.host,self.port),self.timeout)
-       logger.info("INFO - conexión a %s:%s ha sido exitosa" , self.host, self.port) 
+       #logger.info("INFO - conexión a %s:%s ha sido exitosa" , self.host, self.port) 
     
     def request(self,method,url,body="", headers= None):
         
@@ -45,7 +49,7 @@ class HttpClient:
         for header, value in headers.items():
             request += f"{header}: {value}\r\n"
         
-        if len(body)!=0:
+        if body:
             request+= f"\r\n{body}\r\n"
         
         request += "\r\n"
@@ -58,7 +62,7 @@ class HttpClient:
         if not self.mySocket:
             raise Exception()
 
-        logger.info("INFO - sending\n%s", data)
+        logging.info("INFO - sending\n%s", data)
         
         self.mySocket.sendall(data)
     
@@ -88,7 +92,7 @@ def request (method="GET",url="/",headers = None,body =""):
     finally:
         conn.close()
     
-    logger.debug("%s %s %s", data, data.body, data.headers)
+    logging.debug("%s %s %s", data, data.body, data.headers)
     
     return data
     

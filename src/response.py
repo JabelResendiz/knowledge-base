@@ -14,4 +14,4 @@ class HTTPResponse:
         return self.headers
 
     def __str__(self):
-        return f"<{self.__class__.__name__} [{self.code} {self.reason}]>"
+        return f"<{self.__class__.__name__} [{self.code}]>"
