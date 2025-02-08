@@ -1,0 +1,15 @@
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\csharp\obj\Debug\net8.0\csharp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\csharp\obj\Debug\net8.0\csharp.AssemblyInfoInputs.cache
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\csharp\obj\Debug\net8.0\csharp.AssemblyInfo.cs
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\csharp\obj\Debug\net8.0\csharp.csproj.CoreCompileInputs.cache
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\csharp\obj\Debug\net8.0\csharp.sourcelink.json
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\csharp\bin\Debug\net8.0\csharp.exe
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\csharp\bin\Debug\net8.0\csharp.deps.json
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\csharp\bin\Debug\net8.0\csharp.runtimeconfig.json
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\csharp\bin\Debug\net8.0\csharp.dll
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\csharp\bin\Debug\net8.0\csharp.pdb
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\csharp\obj\Debug\net8.0\csharp.dll
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\csharp\obj\Debug\net8.0\refint\csharp.dll
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\csharp\obj\Debug\net8.0\csharp.pdb
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\csharp\obj\Debug\net8.0\csharp.genruntimeconfig.cache
+C:\Users\HP\Documents\GitHub\REST_API_CLIENT\privated\csharp\obj\Debug\net8.0\ref\csharp.dll

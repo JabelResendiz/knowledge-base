@@ -1,10 +1,10 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Daily Commit 2
 
 on:
   schedule:
-    - cron: "18 16 * * *"
+    - cron: "18 20 * * * "
 
 jobs:
   build:
