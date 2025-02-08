@@ -47,7 +47,7 @@ def fix_curious_design_choices(args):
 def main(sys_args):
     # Set up argument parser
     # print(sys_args)
-    # sys_args = fix_curious_design_choices(sys_args)
+    sys_args = fix_curious_design_choices(sys_args)
 
     # print(sys_args)
     
