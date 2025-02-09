@@ -1,26 +1,35 @@
 import socket
+import ssl
 from http_parser import parse_http_url,parse_http_response
 from exceptions import NotConnection
 
 # GLOBAL VARIABLES
 _versionHttp = 'HTTP/1.1'
-default_port = 80
+default_http_port = 80
+default_https_port = 443
 
 class HttpClient:
     
-    def __init__(self,host, port :int, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, blocksize = 8192):
+    def __init__(self,host, port :int,use_https=False, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, blocksize = 8192):
         
         self.host = host
         self.port = port
         self.timeout = timeout
+        self.use_https = use_https
         self.mySocket = None
         self.blocksize = blocksize
     
     # se hace uso del protocolo TCP/IP
     def connect (self):
         # se establece una conexion TCP con el servidor
-       self.mySocket = socket.create_connection((self.host,self.port),self.timeout)
+       raw_mySocket = socket.create_connection((self.host,self.port),self.timeout)
        
+       if self.use_https:
+           context = ssl.create_default_context()
+           self.mySocket = context.wrap_socket(raw_mySocket,server_hostname=self.host)
+           
+       else:
+           self.mySocket = raw_mySocket
        
     def request(self,method,url,body="", headers= None):
         # construye y envia una solicitud HTTP
@@ -70,8 +79,9 @@ def final_request (method="GET",url="/",headers = None,body =""):
     # extraer la informacion de la URL
     host,port,path,query = parse_http_url(url)
     
+    use_https = (port == default_https_port) or url.startswith("https://")
     # crear una instancia de HttpClient para establecer una conexion
-    conn = HttpClient(host,port)
+    conn = HttpClient(host,port,use_https)
 
     data = None
     
