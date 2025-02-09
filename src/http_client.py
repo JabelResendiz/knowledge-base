@@ -12,10 +12,9 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
-
 class HttpClient:
     
-    def __init__(self,host: "IP", port :int, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, blocksize = 8192):
+    def __init__(self,host, port :int, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, blocksize = 8192):
         
         self.host = host
         self.port = port
@@ -73,11 +72,8 @@ class HttpClient:
         # recibir hasta count bytes del servidor
         return self.mySocket.recv(count)
 
-class HttpClientManager:
-    def __init__(self):
-        self.client = None
   
-def request (method="GET",url="/",headers = None,body =""):
+def final_request (method="GET",url="/",headers = None,body =""):
     # extraer la informacion de la URL
     host,port,path,query = parse_http_url(url)
     
@@ -104,44 +100,44 @@ def request (method="GET",url="/",headers = None,body =""):
     return data
     
 
-if __name__ == "__main__":
-    #URL = "http://httpbin.org/"
-    URL = "http://www.cubadebate.cu/"
-    #URL = "http://127.0.0.1:8000"
-    #URL = "http://anglesharp.azurewebsites.net/Chunked" # chunk
-    #URL = "http://www.whatsmyip.org/
+# if __name__ == "__main__":
+#     #URL = "http://httpbin.org/"
+#     URL = "http://www.cubadebate.cu/"
+#     #URL = "http://127.0.0.1:8000"
+#     #URL = "http://anglesharp.azurewebsites.net/Chunked" # chunk
+#     #URL = "http://www.whatsmyip.org/
 
-    # r
-    res = request("GET", URL, headers={"Accept-Encoding": "gzip"})
-    print(res)
-    #res.visualise()
+#     # r
+#     res = request("GET", URL, headers={"Accept-Encoding": "gzip"})
+#     print(res)
+#     #res.visualise()
 
-    URL = "http://anglesharp.azurewebsites.net/Chunked" # chunk
-    res = request("GET", URL)
-    print(res)
-    #res.visualise()
+#     URL = "http://anglesharp.azurewebsites.net/Chunked" # chunk
+#     res = request("GET", URL)
+#     print(res)
+#     #res.visualise()
 
-    URL = "http://httpbin.org/"
-    res = request("GET", URL, headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"})
-    print(res)
-    #res.visualise()
+#     URL = "http://httpbin.org/"
+#     res = request("GET", URL, headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"})
+#     print(res)
+#     #res.visualise()
 
-    res = request("HEAD", URL)
-    print(res, res.headers)
-    res = request("OPTIONS", URL)
-    print(res, res.headers)
+#     res = request("HEAD", URL)
+#     print(res, res.headers)
+#     res = request("OPTIONS", URL)
+#     print(res, res.headers)
 
-    URL = "http://httpbin.org/status/100"
-    res = request("DELETE", URL)
-    print(res, res.headers, res.reason, res.body)
+#     URL = "http://httpbin.org/status/100"
+#     res = request("DELETE", URL)
+#     print(res, res.headers, res.reason, res.body)
 
-    URL = "http://httpbin.org/anything"
-    res = request("POST", URL, body="blob doko")
-    print(res, res.headers, res.reason, res.body)
-    res = request("PATCH", URL, body="skipped all the text")
-    print(res, res.headers, res.reason, res.body)
-    res = request("PUT", URL, body="dodo")
-    print(res, res.headers, res.reason, res.body)
-    URL = "http://47.251.122.81:8888"
-    res = request("CONNECT", URL, body="dodo")
-    print(res, res.headers, res.reason, res.body)
+#     URL = "http://httpbin.org/anything"
+#     res = request("POST", URL, body="blob doko")
+#     print(res, res.headers, res.reason, res.body)
+#     res = request("PATCH", URL, body="skipped all the text")
+#     print(res, res.headers, res.reason, res.body)
+#     res = request("PUT", URL, body="dodo")
+#     print(res, res.headers, res.reason, res.body)
+#     URL = "http://47.251.122.81:8888"
+#     res = request("CONNECT", URL, body="dodo")
+#     print(res, res.headers, res.reason, res.body)

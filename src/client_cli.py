@@ -3,53 +3,10 @@ import json
 import sys
 from http_client import request
 from http_response import HTTPResponse
-
-def fix_curious_design_choices(args):
-    final_args = []
-    merged_headers = []
-    merged_data = []
-    header_index = False
-    data_index = False
-    for i in args:
-        if i == "-h":
-            if data_index:
-                final_args.append(" ".join(merged_data))
-                merged_data = []
-            data_index = False
-            header_index = True
-            final_args.append(i)
-            continue
-        elif i == "-d":
-            if header_index:
-                final_args.append(" ".join(merged_headers))
-                merged_data = []
-            data_index = True
-            header_index = False
-            final_args.append(i)
-            continue
-
-
-        if header_index:
-            merged_headers.append(i)
-        elif data_index:
-            merged_data.append(i)
-        else:
-            final_args.append(i)
-
-    if header_index:
-        final_args.append(" ".join(merged_headers))
-    elif data_index:
-        final_args.append(" ".join(merged_data))
-        
-    return final_args
+from parsing import categorize_args
 
 
 def main(sys_args):
-    # Set up argument parser
-    # print(sys_args)
-    sys_args = fix_curious_design_choices(sys_args)
-
-    # print(sys_args)
     
     parser = argparse.ArgumentParser(description="HTTP Client CLI", add_help=False)
     parser.add_argument("-m", "--method", required=True, help="HTTP method (e.g., GET, POST)")
@@ -58,7 +15,7 @@ def main(sys_args):
     parser.add_argument("-d", "--data", type=str, default="", help="Request body data")
 
     # Parse arguments
-    args = parser.parse_args(sys_args)
+    args = parser.parse_args(categorize_args(sys_args))
 
     # Prepare headers from JSON string
     try:

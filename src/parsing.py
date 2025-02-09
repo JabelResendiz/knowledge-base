@@ -2,19 +2,6 @@ import gzip
 import re
 from http_response import HTTPResponse
 from exceptions import UrlIncorrect
-from collections import defaultdict
-
-
-class CaseInsensitiveDict(defaultdict):
-    def __setitem__(self, key, value):
-        super().__setitem__(key.lower(), value)
-
-    def __getitem__(self, key):
-        return super().__getitem__(key.lower())
-
-    def __delitem__(self, key):
-        super().__delitem__(key.lower())
-
 
 def parse_http_url(url):
     # Expresión regular para parsear la URL
@@ -53,6 +40,45 @@ def _readline(connection, index=0):
         
     return buffer, index
 
+
+def categorize_args(args):
+    final_args = []
+    merged_headers = []
+    merged_data = []
+    header_index = False
+    data_index = False
+    for i in args:
+        if i == "-h":
+            if data_index:
+                final_args.append(" ".join(merged_data))
+                merged_data = []
+            data_index = False
+            header_index = True
+            final_args.append(i)
+            continue
+        elif i == "-d":
+            if header_index:
+                final_args.append(" ".join(merged_headers))
+                merged_data = []
+            data_index = True
+            header_index = False
+            final_args.append(i)
+            continue
+
+
+        if header_index:
+            merged_headers.append(i)
+        elif data_index:
+            merged_data.append(i)
+        else:
+            final_args.append(i)
+
+    if header_index:
+        final_args.append(" ".join(merged_headers))
+    elif data_index:
+        final_args.append(" ".join(merged_data))
+        
+    return final_args
 
 def parse_http_response(method, conn):
     
