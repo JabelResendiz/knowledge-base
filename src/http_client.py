@@ -100,3 +100,50 @@ def final_request (method="GET",url="/",headers = None,body =""):
     # devuelve la respuesta parseada
     return data
     
+
+
+# if __name__ == "__main__":
+    
+    ## Case 1 : My API - DownTrack
+    # host = "http://localhost:5217"
+    # endpoint = "/api/Authentication/register"
+    
+    # body = json.dumps({
+    #     "id":335,
+    #     "name": "User_335",
+    #     "userName": "username_335",
+    #     "email": "example3@gmail.com",
+    #     "password": "Password_333!",
+    #     "userRole": "Technician",
+    #     "specialty": "mechanic",
+    #     "salary": 19090,
+    #     "expYears": 10,
+    #     "departamentId": 1,
+    #     "sectionId": 1
+    # })
+    
+    # headers = {
+    #     "Content-Type": "application/json"
+    # }
+    
+    # response = final_request("POST", f"{host}{endpoint}", headers=headers, body=body)
+
+    # print("Código de estado:", response.code)
+    # print("Encabezados:", response.headers)
+    # print("Cuerpo:", response.body[:500])
+
+    # # Case 2: HTTPS 
+    
+    # response = final_request("GET","https://reqres.in/api/users?page=2", headers={}, body="")
+    
+    # print("Código de estado:", response.code)
+    # print("Encabezados:", response.headers)
+    # print("Cuerpo:", response.body[:500])
+
+    ## Case 3: HTTPS
+    # response = final_request("GET","https://jsonplaceholder.typicode.com", headers={}, body="")
+    
+    # print("Código de estado:", response.code)
+    # print("Encabezados:", response.headers)
+    # print("Cuerpo:", response.body[:500])
+
