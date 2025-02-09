@@ -43,41 +43,24 @@ def _readline(connection, index=0):
 
 def categorize_args(args):
     final_args = []
-    merged_headers = []
-    merged_data = []
-    header_index = False
-    data_index = False
-    for i in args:
-        if i == "-h":
-            if data_index:
-                final_args.append(" ".join(merged_data))
-                merged_data = []
-            data_index = False
-            header_index = True
-            final_args.append(i)
-            continue
-        elif i == "-d":
-            if header_index:
-                final_args.append(" ".join(merged_headers))
-                merged_data = []
-            data_index = True
-            header_index = False
-            final_args.append(i)
-            continue
+    current_group = []
+    current_flag = None
 
-
-        if header_index:
-            merged_headers.append(i)
-        elif data_index:
-            merged_data.append(i)
+    for arg in args:
+        if arg in ("-h", "-d"):
+            if current_group:
+                final_args.append(" ".join(current_group))
+                current_group = []
+            final_args.append(arg)
+            current_flag = arg
+        elif current_flag:
+            current_group.append(arg)
         else:
-            final_args.append(i)
+            final_args.append(arg)
 
-    if header_index:
-        final_args.append(" ".join(merged_headers))
-    elif data_index:
-        final_args.append(" ".join(merged_data))
-        
+    if current_group:
+        final_args.append(" ".join(current_group))
+
     return final_args
 
 def parse_http_response(method, conn):
