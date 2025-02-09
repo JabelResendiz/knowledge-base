@@ -1,32 +1,35 @@
 import socket
-import logging
+import ssl
 from parsing import parse_http_url,parse_http_response
 from exceptions import NotConnection
 
 # GLOBAL VARIABLES
 _versionHttp = 'HTTP/1.1'
-default_port = 80
-
-logging.basicConfig(
-    level=logging.WARNING,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+default_http_port = 80
+default_https_port = 443
 
 class HttpClient:
     
-    def __init__(self,host, port :int, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, blocksize = 8192):
+    def __init__(self,host, port :int, use_https=False,timeout=socket._GLOBAL_DEFAULT_TIMEOUT, blocksize = 8192):
         
         self.host = host
         self.port = port
         self.timeout = timeout
+        self.use_https = use_https
         self.mySocket = None
         self.blocksize = blocksize
     
     # se hace uso del protocolo TCP/IP
     def connect (self):
         # se establece una conexion TCP con el servidor
-       self.mySocket = socket.create_connection((self.host,self.port),self.timeout)
+       raw_mySocket = socket.create_connection((self.host,self.port),self.timeout)
        
+       if self.use_https:
+           context = ssl.create_default_context()
+           self.mySocket = context.wrap_socket(raw_mySocket,server_hostname=self.host)
+        
+       else:
+           self.mySocket = raw_mySocket
        
     def request(self,method,url,body="", headers= None):
         # construye y envia una solicitud HTTP
@@ -59,7 +62,6 @@ class HttpClient:
         if not self.mySocket:
             raise NotConnection("La conexión no está abierta")
 
-        logging.info("INFO - sending\n%s", data)
         #enviar los datos al servidor 
         self.mySocket.sendall(data)
     
@@ -72,13 +74,15 @@ class HttpClient:
         # recibir hasta count bytes del servidor
         return self.mySocket.recv(count)
 
+
   
 def final_request (method="GET",url="/",headers = None,body =""):
     # extraer la informacion de la URL
     host,port,path,query = parse_http_url(url)
-    
+
+    use_https = (port == default_https_port) or url.startswith("https://")
     # crear una instancia de HttpClient para establecer una conexion
-    conn = HttpClient(host,port)
+    conn = HttpClient(host,port,use_https)
 
     data = None
     
@@ -94,50 +98,52 @@ def final_request (method="GET",url="/",headers = None,body =""):
         # cierra la conexion
         conn.close()
     
-    logging.debug("%s %s %s", data, data.body, data.headers)
-    
     # devuelve la respuesta parseada
     return data
     
 
 # if __name__ == "__main__":
-#     #URL = "http://httpbin.org/"
-#     URL = "http://www.cubadebate.cu/"
-#     #URL = "http://127.0.0.1:8000"
-#     #URL = "http://anglesharp.azurewebsites.net/Chunked" # chunk
-#     #URL = "http://www.whatsmyip.org/
+    
+    ## Case 1 : My API - DownTrack
+    # host = "http://localhost:5217"
+    # endpoint = "/api/Authentication/register"
+    
+    # body = json.dumps({
+    #     "id":335,
+    #     "name": "User_335",
+    #     "userName": "username_335",
+    #     "email": "example3@gmail.com",
+    #     "password": "Password_333!",
+    #     "userRole": "Technician",
+    #     "specialty": "mechanic",
+    #     "salary": 19090,
+    #     "expYears": 10,
+    #     "departamentId": 1,
+    #     "sectionId": 1
+    # })
+    
+    # headers = {
+    #     "Content-Type": "application/json"
+    # }
+    
+    # response = final_request("POST", f"{host}{endpoint}", headers=headers, body=body)
 
-#     # r
-#     res = request("GET", URL, headers={"Accept-Encoding": "gzip"})
-#     print(res)
-#     #res.visualise()
+    # print("Código de estado:", response.code)
+    # print("Encabezados:", response.headers)
+    # print("Cuerpo:", response.body[:500])
 
-#     URL = "http://anglesharp.azurewebsites.net/Chunked" # chunk
-#     res = request("GET", URL)
-#     print(res)
-#     #res.visualise()
+    # # Case 2: HTTPS 
+    
+    # response = final_request("GET","https://reqres.in/api/users?page=2", headers={}, body="")
+    
+    # print("Código de estado:", response.code)
+    # print("Encabezados:", response.headers)
+    # print("Cuerpo:", response.body[:500])
 
-#     URL = "http://httpbin.org/"
-#     res = request("GET", URL, headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"})
-#     print(res)
-#     #res.visualise()
+    ## Case 3: HTTPS
+    # response = final_request("GET","https://jsonplaceholder.typicode.com", headers={}, body="")
+    
+    # print("Código de estado:", response.code)
+    # print("Encabezados:", response.headers)
+    # print("Cuerpo:", response.body[:500])
 
-#     res = request("HEAD", URL)
-#     print(res, res.headers)
-#     res = request("OPTIONS", URL)
-#     print(res, res.headers)
-
-#     URL = "http://httpbin.org/status/100"
-#     res = request("DELETE", URL)
-#     print(res, res.headers, res.reason, res.body)
-
-#     URL = "http://httpbin.org/anything"
-#     res = request("POST", URL, body="blob doko")
-#     print(res, res.headers, res.reason, res.body)
-#     res = request("PATCH", URL, body="skipped all the text")
-#     print(res, res.headers, res.reason, res.body)
-#     res = request("PUT", URL, body="dodo")
-#     print(res, res.headers, res.reason, res.body)
-#     URL = "http://47.251.122.81:8888"
-#     res = request("CONNECT", URL, body="dodo")
-#     print(res, res.headers, res.reason, res.body)
