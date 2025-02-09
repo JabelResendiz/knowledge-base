@@ -3,7 +3,7 @@ import json
 import sys
 from http_client import  final_request
 from http_response import HTTPResponse
-from parsing import categorize_args
+from http_parser import categorize_args
 
 def main(sys_args):
     
