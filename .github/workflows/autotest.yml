@@ -4,7 +4,10 @@ on:
   pull_request_target:
   workflow_call:
   workflow_dispatch:
-
+  push:
+    branches:
+      - main
+      
 jobs:
   test-protocol-with-repo-variables:
     if: ${{ vars.USE_CUSTOM_VARIABLES == 'true' }}
