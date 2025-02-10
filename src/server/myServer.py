@@ -78,6 +78,8 @@ class HTTPServer:
 
     def build_response(self, method, path, headers, body):
         """Genera respuestas HTTP según el método y la ruta solicitada."""
+
+        logger.info(f"Method : {method}")
         if method == "GET":
             return self.http_response(200, "OK", "Hello, GET!")
 
