@@ -2,12 +2,14 @@ import socket
 from threading import Thread
 import gzip
 import datetime
-from termcolor import colored
+import zlib
+from logger import logger
 
 # Configuración del servidor
 HOST = '0.0.0.0'  # Escucha en todas las interfaces
 PORT = 8000        # Puerto del servidor
 VERSION = 'HTTP/1.1'  #Version
+
 
 class HTTPServer:
     def __init__(self, host, port):
@@ -21,11 +23,11 @@ class HTTPServer:
         server_socket.bind((self.host, self.port))
         server_socket.listen(5)
 
-        print(colored(f"Servidor HTTP en {self.host}:{self.port}"))
+        logger.info(f"Servidor HTTP en {self.host}:{self.port}")
 
         while True:
             client_socket, client_address = server_socket.accept()
-            print(colored(f"Conexión entrante desde {client_address}"))
+            logger.info(f"Conexión entrante desde {client_address}")
             thread = Thread(target=self.handle_client, args=(client_socket,))
             thread.start()
 
@@ -41,7 +43,7 @@ class HTTPServer:
             client_socket.sendall(response.encode())
 
         except Exception as e:
-            print(colored(f"Error al procesar la solicitud: {e}"))
+            logger.error(f"Error al procesar la solicitud: {e}")
 
         finally:
             client_socket.close()
@@ -107,8 +109,10 @@ class HTTPServer:
         headers["Date"] = datetime.datetime.now(datetime.timezone.utc).strftime("%a, %d %b %Y %H:%M:%S GMT")
 
         # Verificar si el cliente acepta gzip
-        accepts_gzip = "accept-encoding" in headers and "gzip" in headers["accept-encoding"]
-
+        acceptes_encoding = headers.get("accept-encoding","")
+        accepts_gzip = "gzip" in acceptes_encoding
+        accepts_deflate = "deflate" in acceptes_encoding
+        
         if include_body:
             body_bytes = body.encode()
             
@@ -116,6 +120,10 @@ class HTTPServer:
                 body_bytes = gzip.compress(body_bytes)
                 headers["Content-Encoding"] = "gzip"  # Informar que está comprimido
 
+            elif accepts_deflate:
+                body_bytes = zlib.compress(body_bytes)
+                headers["Content-Encoding"] = "deflate"
+                
             headers["Content-Length"] = str(len(body_bytes))
         else:
             body_bytes = b""
@@ -125,11 +133,19 @@ class HTTPServer:
             response += f"{key}: {value}\r\n"
         response += "\r\n"
 
-        print(colored(response + body_bytes.decode()))
+        logger.debug(f"Respuesta generada: {status_code} {reason}")
         return response + body_bytes.decode()
+
+    
+    def stop(self):
+        """Cerrar el servidor de manera ordenada."""
+        if self.server_socket:
+            self.server_socket.close()
+            logger.info("Servidor detenido.")
 
 # Ejecutar el servidor
 if __name__ == "__main__":
+    
     server = HTTPServer(HOST, PORT)
     server.start()
 

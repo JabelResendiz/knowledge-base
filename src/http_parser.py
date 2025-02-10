@@ -1,5 +1,6 @@
 import gzip
 import re
+import zlib
 from http_response import HTTPResponse
 from exceptions import UrlIncorrect
 
@@ -108,10 +109,15 @@ def parse_http_response(method, conn):
             body += conn.recv(size)
             index += size
 
-    # descompresion si es necesario
-    if headers.get("content-encoding") == "gzip":
-        body = gzip.decompress(body)
-
+    content_encoding = headers.get("content-encoding","")
+    
+    encodings = [encoding.strip() for encoding in content_encoding.split(",")]
+    
+    for encoding in encodings:
+        if encoding == "gzip":
+            body = gzip.decompress(body)
+        elif encoding == "deflate":
+            body = zlib.decompress(body)
     
     # devolver la respuesta HTTP
     return HTTPResponse(version,code,reason,headers,body)
