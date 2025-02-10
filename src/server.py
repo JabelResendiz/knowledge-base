@@ -62,8 +62,8 @@ def method_not_allowed(e):
 
 if __name__ == "__main__":
     
-    context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-    context.load_cert_chain(certfile='cert.pem', keyfile='key.pem')  # Archivos del certificado SSL
+    # context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+    # context.load_cert_chain(certfile='cert.pem', keyfile='key.pem')  # Archivos del certificado SSL
 
     app.run(host="0.0.0.0", port=8080, debug=True)
 
