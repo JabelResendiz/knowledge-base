@@ -5,6 +5,29 @@ from http_client import  final_request
 from http_response import HTTPResponse
 from http_parser import categorize_args
 
+def run_client(method, url, headers=None, body=""):
+    """
+    Función que ejecuta una solicitud HTTP y devuelve la respuesta.
+
+    :param method: Método HTTP (GET, POST, etc.)
+    :param url: URL de la solicitud
+    :param headers: Diccionario de encabezados HTTP
+    :param body: Cuerpo de la solicitud (opcional)
+    :return: Diccionario con el código de estado y el cuerpo de la respuesta
+    """
+    headers = headers or {}
+
+    try:
+        response: HTTPResponse = final_request(method=method, url=url, headers=headers, body=body)
+        return {
+            "status": response.code,
+            "body": response.get_body_bytes().decode("utf-8")  # Decodificar el cuerpo de la respuesta
+        }
+    except Exception as e:
+        return {"status": "error", "body": str(e)}
+
+
+
 def main(sys_args):
     
     parser = argparse.ArgumentParser(description="HTTP Client CLI", add_help=False)

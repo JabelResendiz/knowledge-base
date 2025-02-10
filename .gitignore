@@ -15,3 +15,6 @@
 
 **/BuberDinner/Domain/obj/
 **/BuberDinner/Domain/bin/
+
+
+**/src/__pycache__
