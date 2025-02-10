@@ -32,12 +32,12 @@ def _readline(connection, index=0):
     while True:
         c = connection.recv(1) # recibe un byte
         
-        if c == b'\n': # si es un slato de linea
+        if c == b'\n' or c == b'': # si es un slato de linea
             break
         
         buffer +=c
         index +=1
-        
+    
     return buffer, index
 
 
