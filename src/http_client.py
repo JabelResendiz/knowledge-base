@@ -37,8 +37,11 @@ class HttpClient:
         headers = headers or {}
         headers["Host"]= headers.get("Host",self.host)
         headers["Content-Length"] = str(len(body))
-        headers["Accept-Encodding"] =headers.get("Accept-Encoding", "identity") # sin compresion
+        headers["Accept-Encoding"] =headers.get("Accept-Encoding", "identity") # sin compresion
         headers["Connection"] = "close" # se cierra la conexion despues de recibir la respuesta
+
+        if method in ["POST", "PUT"] and "Content-Type" not in headers:
+            headers["Content-Type"] = "application/x-www-form-urlencoded"
 
         # construir la solicitud HTTP
         
@@ -63,8 +66,11 @@ class HttpClient:
         if not self.mySocket:
             raise NotConnection("La conexión no está abierta")
 
-        #enviar los datos al servidor 
-        self.mySocket.sendall(data)
+        try :
+            #enviar los datos al servidor 
+            self.mySocket.sendall(data)
+        except socket.error as e:
+            raise ConnectionError(f"Error al enviar datos: {e}")
     
     def close(self):
         if self.mySocket: # si el socket esta abierto
