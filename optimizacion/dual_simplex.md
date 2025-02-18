@@ -1,4 +1,4 @@
-## Metodo de las dos fases 
+## Metodo de dual simplex
 
 1. Se usa cuando  las componentes del vector b no son todas no negativas
 
