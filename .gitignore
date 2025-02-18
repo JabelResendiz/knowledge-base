@@ -1,20 +1,3 @@
 
-
-
-**/BuberDinner/Api/obj/
-**/BuberDinner/Api/bin/
-
-**/BuberDinner/Infrastrcuture/obj/
-**/BuberDinner/Infrastrcuture/bin/
-
-**/BuberDinner/Application/obj/
-**/BuberDinner/Application/bin/
-
-**/BuberDinner/Contracts/obj/
-**/BuberDinner/Contracts/bin/
-
-**/BuberDinner/Domain/obj/
-**/BuberDinner/Domain/bin/
-
-
-**/src/__pycache__
+**/bin/
+**/obj/
