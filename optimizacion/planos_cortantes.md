@@ -6,7 +6,7 @@
 
 3. Corte fundamental:
 
-$$ \sum_{j \in R} ([hy_{ij}]- [h]y_{ij})x_j \leq [~~hy~~_{i0}]- [h]y_{i0} $$
+$ \sum_{j \in R} ([hy_{ij}]- [h]y_{ij})x_j \leq [~~hy~~_{i0}]- [h]y_{i0} $
 
 Particularmente para h=1 se obtiene, `corte de Gomory`
 
