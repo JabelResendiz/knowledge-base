@@ -103,3 +103,105 @@ Sin embargo, al implementar protocolos simétricos, existe un problema conocido 
 Liberar una conexión correctamente y sin pérdida de datos es más complejo de lo que parece. Aunque protocolos como TCP implementan un cierre simétrico, en ocasiones (como en servidores web) se utiliza una **desconexión asimétrica** para hacerla más rápida, confiando en que el cliente detectará la desconexión y liberará su estado de conexión cuando sea necesario.
 
 En resumen, la **liberación simétrica** es más segura y confiable para evitar la pérdida de datos, pero requiere una coordinación cuidadosa entre las partes para asegurar que ambas estén de acuerdo en cuándo liberar la conexión.
+
+#### Control de errores y almacenamiento en bufer
+
+El control de errores y el control de flujo en los protocolos de transporte: 
+
+##### **1. Control de errores**
+
+* **Objetivo:** Garantizar que los datos se entreguen correctamente, sin errores.
+* **Método:** Se utiliza un **código de detección de errores** (por ejemplo, CRC o suma de verificación) en las tramas para verificar que los datos se hayan recibido correctamente.
+
+##### **2. Control de flujo**
+
+* **Objetivo:** Evitar que un transmisor rápido sobrecargue a un receptor lento.
+* **Método:**
+  * El **emisor** no puede enviar más datos de los que el **receptor** puede manejar en un momento dado.
+  * En los protocolos de transporte, el control de flujo se maneja mediante  **ventanas deslizantes** , donde el tamaño de la ventana limita la cantidad de datos que pueden estar pendientes de confirmación.
+
+##### **Mecanismos de control de flujo y errores en el transporte:**
+
+1. **Detección de errores:** Cada trama tiene un código de verificación (CRC o suma de verificación) para comprobar la integridad de los datos durante la transmisión.
+2. **Retransmisión (ARQ):** Si el receptor no recibe correctamente una trama, el emisor retransmite la trama hasta recibir una confirmación de recepción exitosa.
+3. **Ventanas deslizantes:**
+   * Hay un límite en el número de tramas (o segmentos) pendientes de confirmación que el emisor puede enviar.
+   * Protocolos como **parada y espera** (donde solo se permite un paquete pendiente a la vez) o **ventanas deslizantes** más grandes (que permiten transmitir varios segmentos a la vez) se usan dependiendo de la velocidad y características del enlace.
+   * Un **tamaño de ventana mayor** mejora el rendimiento en enlaces rápidos y de mayor latencia.
+
+##### **Diferencia entre las capas de enlace y transporte:**
+
+* **Capa de enlace:** Las sumas de verificación funcionan solo dentro de un enlace, pero no protegen los datos a través de múltiples enlaces (como dentro de un enrutador).
+* **Capa de transporte:** La suma de verificación de la capa de transporte asegura la integridad de los datos a través de toda la red (punto a punto).
+
+##### **Manejo de los búferes:**
+
+* **Búferes en el emisor:** Se utilizan para almacenar los segmentos transmitidos que aún no han recibido confirmación de recepción. Estos segmentos pueden perderse y necesitan retransmitirse.
+* **Búferes en el receptor:** El receptor puede usar un único conjunto de búferes compartido o asignar búferes por cada conexión. Si no hay espacio suficiente en los búferes, el receptor puede desechar segmentos.
+* **Asignación dinámica de búferes:**
+  * La asignación de búferes puede variar dependiendo de las necesidades del tráfico y la capacidad de almacenamiento en el receptor.
+  * El **emisor** puede solicitar más búferes si es necesario, y el **receptor** puede asignar estos búferes según su disponibilidad.
+  * TCP utiliza una técnica de ventana dinámica para ajustar la cantidad de búferes que puede usar un emisor en función de la capacidad de recepción y el tráfico.
+
+##### Resumen final
+
+* Los protocolos de transporte como **TCP** utilizan **ventanas deslizantes** para controlar el flujo de datos y evitar la congestión.
+* El control de **errores** y **flujo** se asegura mediante técnicas como la detección de errores, la retransmisión automática (ARQ), y el ajuste dinámico de la ventana deslizante.
+* El uso de **búferes** tanto en el emisor como en el receptor es fundamental para manejar los datos de manera eficiente y evitar la pérdida de información.
+* En redes de alta latencia o baja capacidad, el tamaño de la ventana debe ajustarse para maximizar el rendimiento sin sobrecargar la red o los dispositivos de almacenamiento en los hosts.
+
+
+#### Multiplexion
+
+La **multiplexión** es un proceso mediante el cual se permite que múltiples flujos de datos o conversaciones compartan un mismo canal de comunicación, como un enlace físico o una dirección de red, para mejorar la eficiencia y aprovechar mejor los recursos disponibles. En el contexto de las redes, la multiplexión se puede aplicar de diferentes formas dependiendo de la capa del modelo OSI que esté involucrada.
+
+La multiplexión es la solución que permite que **múltiples aplicaciones** que corren en un mismo host **compartan una sola dirección IP** sin interferir entre ellas. Para esto, la multiplexión se apoya en un concepto clave:  **puertos de red** .
+
+
+##### Ejemplo:
+
+* Supón que tienes las siguientes aplicaciones en tu host (servidor):
+  * **Aplicación A** (por ejemplo, un servidor web)
+  * **Aplicación B** (por ejemplo, un servidor FTP)
+  * **Aplicación C** (por ejemplo, un servidor de correo)
+
+Todas estas aplicaciones se ejecutan en el mismo host con la dirección IP  **192.168.1.1** , pero necesitan usar puertos diferentes para que sus datos no se mezclen. Los **puertos** funcionan como "canales" para separar las conexiones de las distintas aplicaciones.
+
+* **Aplicación A (servidor web)** usa el puerto **80** (HTTP).
+* **Aplicación B (servidor FTP)** usa el puerto **21** (FTP).
+* **Aplicación C (servidor de correo)** usa el puerto **25** (SMTP).
+
+##### Cómo se logra la multiplexión:
+
+Cuando un paquete llega al host  **192.168.1.1** , el sistema operativo del host revisa la **dirección IP** (que es la misma para todas las aplicaciones) y el **número de puerto** que lleva el paquete. El número de puerto permite que el sistema operativo sepa a qué aplicación entregar el paquete.
+
+* Si el paquete tiene como destino el  **puerto 80** , se enviará al proceso que gestiona la  **Aplicación A (servidor web)** .
+* Si el paquete tiene como destino el  **puerto 21** , se enviará al proceso que gestiona la  **Aplicación B (servidor FTP)** .
+* Si el paquete tiene como destino el  **puerto 25** , se enviará al proceso que gestiona la  **Aplicación C (servidor de correo)** .
+
+### Control de Congestion
+
+### UDP
+
+Internet tiene dos protocolos principales en la capa de transporte: uno sin conexion (`UDP`) y otro orientado a conexion(`TCP`).
+
+`UDP` (*Use Datagrama Protocol*) no hace mas que enviar paquetes entre aplicaciones y deja que las aplicaciones construyan sus propios protocolos en la parte superior segun sea necesario.
+
+- El protocolo se describe en el RFC 768
+- no establece una conexión antes de enviar datos y no realiza mecanismos de control de flujo, control de congestión ni retransmisiones
+
+#### Encabezado de UDP
+
+El segmento de UDP consta de un encabezado de 8 bytes seguido de la carga util de datos. El encabezado incluye:
+
+* **Puerto de origen y destino** : Identifican los procesos en los extremos de la comunicación (similar a apartados postales para las aplicaciones).
+* **Longitud** : Especifica la longitud total del datagrama UDP, incluido el encabezado y los datos. La longitud mínima es de 8 bytes y la máxima es de 65,535 bytes.
+* **Suma de verificación** : Proporciona una verificación opcional de la integridad de los datos, asegurando que no haya errores durante la transmisión. Este cálculo involucra el encabezado UDP, los datos y un **pseudoencabezado IP** que incluye las direcciones IP de origen y destino.
+
+
+![1740349309297](image/transporte/1740349309297.png)
+
+
+### TCP
+
+Hace casi todo . Realiza las conexiones y agrega confiabilidad mediante las retransmisiones, junto con el control de flujo y el control de congestión, todo en beneficio de las aplicaciones que lo utilizan.
