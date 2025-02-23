@@ -72,9 +72,34 @@ El desafio es como un proceso de app en un host (por ejemplo,un cliente) sabe la
 - Para servicios desconocidos se utiliza un asignador de puertos. El asignador de puertos actúa como un **"directorio"** que devuelve la dirección correcta del TSAP asociado a un servicio solicitado.
 - En lugar de tener cada servicio escuchando en su propio TSAP durante todo el día, se utiliza un servidor especial como **inetd** (en sistemas UNIX).
 
-### Resumen del funcionamiento:
+##### Resumen del funcionamiento:
 
 1. El **cliente** envía una solicitud al asignador de puertos (portmapper) para obtener la dirección TSAP del servicio que busca.
 2. El asignador de puertos devuelve la dirección TSAP del servicio solicitado.
 3. El cliente establece una conexión con el servidor especificado a través del TSAP proporcionado.
 4. El servidor gestiona la conexión para procesar la solicitud del cliente.
+
+#### Liberacion de una conexion
+
+el proceso de liberación de una conexión en redes de comunicaciones, específicamente en protocolos de transporte, como TCP, y plantea dos formas principales de liberación: **asimétrica** y  **simétrica** .
+
+##### Liberación Asimétrica
+
+* En este enfoque, una de las partes (el host 2, por ejemplo) puede interrumpir la conexión en cualquier momento, lo que podría llevar a una desconexión abrupta.
+
+##### Liberación Simétrica
+
+* La liberación simétrica trata la conexión como dos canales unidireccionales, donde cada parte debe liberar su conexión de forma independiente. Esto significa que ambos hosts deben estar de acuerdo en que la conexión se ha completado antes de liberarse completamente.
+
+Sin embargo, al implementar protocolos simétricos, existe un problema conocido como el  **"Problema de los Dos Ejércitos"** : En la liberación de una conexión, ambos lados deben estar de acuerdo en que la conexión debe terminarse. Si una parte no está segura de si la otra ha recibido la solicitud de desconexión (por ejemplo, un mensaje `DISCONNECT`), nunca se desconectará, creando un "deadlock" o impidiendo que se libere la conexión.
+
+##### Solución Propuesta: Acuerdo de Tres Vías
+
+* **Host 1** envía una solicitud de desconexión (`DISCONNECT REQUEST`).
+* **Host 2** responde con su propio mensaje de solicitud de desconexión, y ambos inician un temporizador por si alguno de los mensajes se pierde.
+* Cuando **Host 1** recibe el mensaje de  **Host 2** , envía un mensaje de confirmación (`ACK`), y la conexión se libera.
+* Finalmente, **Host 2** recibe el `ACK` y también libera la conexión.
+
+Liberar una conexión correctamente y sin pérdida de datos es más complejo de lo que parece. Aunque protocolos como TCP implementan un cierre simétrico, en ocasiones (como en servidores web) se utiliza una **desconexión asimétrica** para hacerla más rápida, confiando en que el cliente detectará la desconexión y liberará su estado de conexión cuando sea necesario.
+
+En resumen, la **liberación simétrica** es más segura y confiable para evitar la pérdida de datos, pero requiere una coordinación cuidadosa entre las partes para asegurar que ambas estén de acuerdo en cuándo liberar la conexión.
