@@ -106,7 +106,7 @@ En resumen, la **liberación simétrica** es más segura y confiable para evitar
 
 #### Control de errores y almacenamiento en bufer
 
-El control de errores y el control de flujo en los protocolos de transporte: 
+El control de errores y el control de flujo en los protocolos de transporte:
 
 ##### **1. Control de errores**
 
@@ -150,13 +150,11 @@ El control de errores y el control de flujo en los protocolos de transporte:
 * El uso de **búferes** tanto en el emisor como en el receptor es fundamental para manejar los datos de manera eficiente y evitar la pérdida de información.
 * En redes de alta latencia o baja capacidad, el tamaño de la ventana debe ajustarse para maximizar el rendimiento sin sobrecargar la red o los dispositivos de almacenamiento en los hosts.
 
-
 #### Multiplexion
 
 La **multiplexión** es un proceso mediante el cual se permite que múltiples flujos de datos o conversaciones compartan un mismo canal de comunicación, como un enlace físico o una dirección de red, para mejorar la eficiencia y aprovechar mejor los recursos disponibles. En el contexto de las redes, la multiplexión se puede aplicar de diferentes formas dependiendo de la capa del modelo OSI que esté involucrada.
 
 La multiplexión es la solución que permite que **múltiples aplicaciones** que corren en un mismo host **compartan una sola dirección IP** sin interferir entre ellas. Para esto, la multiplexión se apoya en un concepto clave:  **puertos de red** .
-
 
 ##### Ejemplo:
 
@@ -188,20 +186,58 @@ Internet tiene dos protocolos principales en la capa de transporte: uno sin cone
 `UDP` (*Use Datagrama Protocol*) no hace mas que enviar paquetes entre aplicaciones y deja que las aplicaciones construyan sus propios protocolos en la parte superior segun sea necesario.
 
 - El protocolo se describe en el RFC 768
-- no establece una conexión antes de enviar datos y no realiza mecanismos de control de flujo, control de congestión ni retransmisiones
+- no establece una conexión antes de enviar datos y no realiza mecanismos de control de flujo, control de congestión ni retransmisiones, todo esto le corresponde  a los procesos de usuario.
+- Lo que sí realiza es proporcionar una interfaz para el
+  protocolo IP con la característica agregada de demultiplexar varios procesos mediante el uso de los puertos y la detección de errores extremo a extremo opcional.
+- Un área en la que UDP es especialmente útil es en
+  las situaciones cliente-servidor. Con frecuencia, el cliente envía una solicitud corta al servidor y espera una respuesta corta. Si se pierde la solicitud o la respuesta, el cliente simplemente puede esperar a que
+  expire su temporizador e intentar de nuevo. El código no sólo es simple, sino que se requieren menos mensajes (uno en cada dirección) en comparación con un protocolo que requiere una configuración inicial, como TCP.
+- Una aplicación que utiliza de esta manera a UDP es DNS (el Sistema de Nombres de Dominio): En resumen, un programa que necesita buscar la dirección IP de algún host, por ejemplo, www.cs.berkeley.edu, puede enviar al servidor DNS un paquete UDP que contenga el nombre de dicho host. El servidor responde con un paquete UDP que contiene la dirección IP del host.
+  No se necesita configuración por adelantado ni tampoco una liberación posterior. Sólo dos mensajes que
+  viajan a través de la red.
 
 #### Encabezado de UDP
 
 El segmento de UDP consta de un encabezado de 8 bytes seguido de la carga util de datos. El encabezado incluye:
 
 * **Puerto de origen y destino** : Identifican los procesos en los extremos de la comunicación (similar a apartados postales para las aplicaciones).
-* **Longitud** : Especifica la longitud total del datagrama UDP, incluido el encabezado y los datos. La longitud mínima es de 8 bytes y la máxima es de 65,535 bytes.
-* **Suma de verificación** : Proporciona una verificación opcional de la integridad de los datos, asegurando que no haya errores durante la transmisión. Este cálculo involucra el encabezado UDP, los datos y un **pseudoencabezado IP** que incluye las direcciones IP de origen y destino.
-
+* **Longitud** : Especifica la longitud total del datagrama UDP, incluido el encabezado y los datos. La longitud mínima es de 8 bytes y la máxima es de 65,515 bytes.
+* **Suma de verificación** : Proporciona una verificación opcional de la integridad de los datos, asegurando que no haya errores durante la transmisión. Este cálculo involucra el encabezado UDP, los datos y un **pseudoencabezado IP** que incluye las direcciones IP de origen y destino.El algoritmo de suma de verificacion consiste simplemente en sumar todas las palabras de 16 bits en complemento a uno y sacar el complemente a uno de la suma. Como consecuencia , cuando el receptor realiza el calculo de todo el segmento (incluyendo del campo de al suma) , el resultado debe ser 0.
 
 ![1740349309297](image/transporte/1740349309297.png)
 
+#### Llamada a Procedimiento Remoto (RPC)
+
+Las **Llamadas a Procedimiento Remoto (RPC)** permiten que un programa en una máquina (cliente) invoque un procedimiento en otra máquina (servidor), ocultando la complejidad de la comunicación de red. Conceptualmente, esto es similar a llamar a una función local, pero el procedimiento se ejecuta en una máquina remota.
+
+#### RTP (Protocolo de Transporte en Tiempo Real)
+
+- Se describe en el RFC 3550
+- Protocolo de capa de `Aplicacion` que usa el protocolo UDP como protocolo de transporte
+- Se utiliza para aplicaciones multimedias
+- La funcion basica es multiplexar varios flujos de datos de timepo real en un flujo de paquetes UDP
+- No hay garantías especiales acerca de la entrega, así que los paquetes se pueden perder, retrasar, corromper,
+  etcétera
+- **Numeración de paquetes:** Cada paquete lleva un número de secuencia, lo que permite detectar pérdidas y tomar medidas, como interpolar audio o descartar una imagen de video.
+
+> 💡 **Ejemplo de uso:**
+>
+> * Un video en vivo se transmite con RTP sobre UDP.
+> * RTP numera los paquetes y agrega marcas de tiempo.
+> * UDP los envía sin garantía de entrega, pero RTP permite que el receptor reproduzca el video sin interrupciones perceptibles.
+
+#### RTCP ( Protocolo de Control de Transporte en Tiempo Real)
+
+Complementa a RTP proporcionando retroalimentación sobre la calidad de la transmisión.
+
+* **Monitorea la calidad de la red** , midiendo el retardo, la variación del retardo ( **jitter** ) y la congestión.
+* **Ajusta la tasa de transmisión** , permitiendo que el emisor cambie el formato de codificación según el ancho de banda disponible.
+* **Sincroniza múltiples flujos** , por ejemplo, en una transmisión de video con audio en varios idiomas.
+
+RTP es el estándar clave para la transmisión de medios en tiempo real, permitiendo la entrega eficiente de audio y video sin garantizar la entrega de los paquetes. RTCP ayuda a controlar la calidad de la transmisión y ajustar los parámetros según las condiciones de la red. Para evitar problemas como el jitter, se utiliza almacenamiento en búfer para garantizar una reproducción fluida.
 
 ### TCP
+
+UDP es un protocolo simple y tiene algunos usos muy importantes, como las interacciones cliente-servidor y multimedia, pero para la mayoría de las aplicaciones de Internet se necesita una entrega en secuencia confiable. UDP no puede proporcionar esto, por lo que se requiere otro protocolo. Se llama TCP y es el más utilizado en Internet.
 
 Hace casi todo . Realiza las conexiones y agrega confiabilidad mediante las retransmisiones, junto con el control de flujo y el control de congestión, todo en beneficio de las aplicaciones que lo utilizan.
