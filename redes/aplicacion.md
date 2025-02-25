@@ -39,7 +39,6 @@ Nombre_dominio Tiempo_de_vida Clase Tipo Valor
 example.com. 86400 IN A 93.184.216.34
 ```
 
-
 #### Resumen
 
 Cuando se escribe una URL como `github.com` en tu navegador , el sistema DNS se encarga de traducir este nombre de dominio a una dirección IP que el navegador necesita para establecer una conexión con el servidor de GitHub. Lo primero que hace el navegador es verificar si ya tiene la dirección IP correspondiente a `github.com` almacenada en su  **caché local** . Si no está en la caché del navegador, entonces necesita realizar una consulta DNS para obtenerla.
@@ -78,6 +77,84 @@ Los servidores DNS suelen guardar la dirección IP en su caché durante un tiemp
 6. Los servidores autoritativos de GitHub devuelven la dirección IP de `github.com`.
 7. El navegador se conecta a GitHub usando la dirección IP y carga el contenido.
 
+### SMTP
 
+El  **protocolo SMTP (Simple Mail Transfer Protocol)** , el cual opera sobre  **TCP en el puerto 25** . Este protocolo es responsable de enviar mensajes entre agentes de usuario y servidores de correo, así como de transferirlos entre servidores de correo. En el RFC 4409.
 
-### Servidores de Correo
+#### **Funcionamiento de SMTP**
+
+1. **Conexión:** La computadora emisora establece una conexión TCP con la receptora, que escucha en el puerto 25.
+2. **Intercambio de mensajes:** Se identifican los participantes (comando `HELO` o `EHLO` en ESMTP) y se envían los detalles del correo.
+3. **Transferencia del mensaje:** Se envía el mensaje utilizando comandos como `MAIL FROM`, `RCPT TO`, `DATA`, y se confirma la recepción.
+4. **Cierre de conexión:** Una vez entregado el mensaje, la conexión se cierra
+
+#### **Limitaciones de SMTP**
+
+* **Falta de autenticación:** Permite falsificar remitentes, lo que facilita el envío de spam.
+* **Soporte solo para ASCII:** Requiere codificación base64 para archivos adjuntos, lo que es ineficiente en uso de ancho de banda. (transfiere mensajes ASCII , no datos binarios)
+* **Falta de cifrado:** No protege la privacidad del contenido del correo.
+
+#### **Extensiones de SMTP (ESMTP - RFC 5321)**
+
+Para mejorar sus funcionalidades, se introdujeron extensiones como:
+
+* **AUTH:** Autenticación de usuarios.
+* **BINARYMIME:** Soporte para mensajes binarios.
+* **STARTTLS:** Cifrado de la comunicación con TLS.
+* **SIZE:** Verificación del tamaño del mensaje antes de enviarlo.
+
+#### **Envío y Transferencia de Mensajes**
+
+* **Envío de correos:** Ahora se realiza a través del puerto  **587** , usando autenticación (`AUTH`).
+* **Transferencia entre servidores:** Se utiliza DNS para determinar el servidor de destino y entregar el correo al agente de transferencia de mensajes receptor.
+
+SMTP sigue siendo el protocolo estándar para la transferencia de correos, pero con mejoras en seguridad y autenticación mediante extensiones como **ESMTP y STARTTLS**
+
+#### Resumen
+
+El protocolo SMTP (Simple Mail Transfer Protocol) se utiliza para enviar y transferir correos electrónicos entre servidores y desde un cliente de correo a un servidor. Aquí tienes un resumen de cómo funciona el proceso completo de movimiento del correo electrónico utilizando SMTP:
+
+##### 1. **Composición del Correo**
+
+* Un usuario redacta un mensaje de correo electrónico en un cliente de correo (como Outlook, Thunderbird o una aplicación web).
+* El mensaje incluye campos como el destinatario, el asunto y el cuerpo del mensaje.
+
+##### 2. **Envío del Correo**
+
+* Cuando el usuario hace clic en "Enviar", el cliente de correo se conecta al servidor SMTP configurado.
+* El cliente inicia una sesión SMTP y envía comandos al servidor para transferir el mensaje. Estos comandos incluyen:
+  * `HELO` o `EHLO`: Identifica al cliente SMTP ante el servidor.
+  * `MAIL FROM`: Indica la dirección del remitente.
+  * `RCPT TO`: Indica la dirección del destinatario.
+  * `DATA`: Comienza el envío del cuerpo del mensaje.
+
+##### 3. **Transferencia del Correo al Servidor SMTP**
+
+* El servidor SMTP recibe el mensaje y verifica la dirección del remitente y del destinatario.
+* Si el destinatario está en el mismo dominio que el remitente, el servidor SMTP lo entrega directamente al servidor de correo del destinatario.
+* Si el destinatario está en otro dominio, el servidor SMTP busca el servidor de correo del destinatario utilizando el DNS (Domain Name System) para resolver el nombre de dominio del destinatario a una dirección IP.
+
+##### 4. **Enrutamiento del Correo**
+
+* El servidor SMTP del remitente se conecta al servidor SMTP del destinatario utilizando el puerto 25 (o 587 para conexiones seguras).
+* El proceso de enrutamiento puede implicar varios servidores SMTP intermediarios, dependiendo de la red y la ruta del correo.
+
+##### 5. **Recepción del Correo**
+
+* Una vez que el servidor SMTP del destinatario recibe el mensaje, lo almacena en el buzón de correo del destinatario.
+* Aquí es donde los protocolos IMAP o POP3 entran en juego para que el destinatario pueda acceder a su correo.
+
+##### 6. **Acceso del Destinatario**
+
+* El destinatario utiliza un cliente de correo (como un cliente de escritorio o una aplicación web) para conectarse a su servidor de correo.
+* Dependiendo del protocolo utilizado (IMAP o POP3), el cliente puede descargar el mensaje o simplemente mostrarlo desde el servidor.
+
+### Resumen del Flujo
+
+1. El usuario compone el mensaje en un cliente de correo.
+2. El cliente se conecta al servidor SMTP y envía el mensaje.
+3. El servidor SMTP verifica y enrutará el mensaje hacia el servidor del destinatario.
+4. El servidor del destinatario almacena el mensaje en el buzón.
+5. El destinatario accede a su correo mediante IMAP o POP3.
+
+Este flujo completo asegura que los correos electrónicos se transmitan de manera efectiva y segura a través de la red
