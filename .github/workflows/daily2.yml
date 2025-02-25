@@ -4,7 +4,7 @@ name: Daily Commit 2
 
 on:
   schedule:
-    - cron: "18 20 * * * "
+    - cron: "18 20 * * *"
 
 jobs:
   build:
