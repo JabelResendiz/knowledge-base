@@ -1,4 +1,4 @@
-name: Daily Commit 2
+name: Daily Pull Request 
 
 on:
   workflow_dispatch:  # Ejecución manual desde GitHub
