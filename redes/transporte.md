@@ -241,3 +241,122 @@ RTP es el estándar clave para la transmisión de medios en tiempo real, permiti
 UDP es un protocolo simple y tiene algunos usos muy importantes, como las interacciones cliente-servidor y multimedia, pero para la mayoría de las aplicaciones de Internet se necesita una entrega en secuencia confiable. UDP no puede proporcionar esto, por lo que se requiere otro protocolo. Se llama TCP y es el más utilizado en Internet.
 
 Hace casi todo . Realiza las conexiones y agrega confiabilidad mediante las retransmisiones, junto con el control de flujo y el control de congestión, todo en beneficio de las aplicaciones que lo utilizan.
+
+> #### **🔹 Características Claves de TCP:**
+>
+> ✅ **Fiabilidad:** TCP divide los datos en segmentos y garantiza que lleguen completos y en orden.
+> ✅ **Control de congestión:** Ajusta dinámicamente la velocidad de envío para evitar saturar la red.
+> ✅ **Reensamblado de datos:** Si los paquetes llegan desordenados, TCP los reorganiza antes de entregarlos a la aplicación.
+> ✅ **Detección de errores:** Usa mecanismos como el **checksum** para verificar que los datos no estén corruptos.
+> ✅ **Conexión orientada:** TCP requiere establecer una conexión antes de enviar datos, mediante un proceso llamado  **Three-Way Handshake** .
+>
+> ### **📌 Modelo de Servicio TCP**
+>
+> Para que dos dispositivos intercambien datos con TCP, deben  **crear sockets** . Un **socket** es una combinación de una **dirección IP** y un  **número de puerto** .
+>
+> #### **🔹 Sockets y Puertos**
+>
+> * Cada aplicación en un dispositivo usa un puerto específico para comunicarse.
+> * Existen **puertos bien conocidos (1-1023)** para servicios estándar:
+>   * **HTTP (80), HTTPS (443), FTP (21), SSH (22), SMTP (25)** , etc.
+> * Otros puertos (1024-49151) pueden ser registrados para aplicaciones específicas.
+
+TCP asigna a **cada byte** de una conexión un número de secuencia único de  **32 bits** . Esto permite un control preciso del flujo de datos y garantiza que los paquetes lleguen en el orden correcto.. UDP en cambios , solo se almacena en datagramas justamente por carecer de control de
+
+Un **segmento TCP** es la unidad de datos que TCP intercambia entre el emisor y el receptor.
+
+* **Encabezado de 20 bytes** (puede incluir opciones adicionales).
+* **Datos** : Cero o más bytes, según el tamaño del segmento.
+* TCP **decide** cuántos datos incluir en cada segmento, basándose en la eficiencia y los límites de la red.
+
+##### ** Límites del Tamaño del Segmento**
+
+* **Máximo teórico** : 65,515 bytes (limitado por IP).
+* **MTU (Maximum Transfer Unit)** : La **MTU** es el tamaño máximo de datos que un paquete puede transportar en una única transmisión sin fragmentarse, medido en  **bytes** . Generalmente **1500 bytes** en redes Ethernet. En Wi-Fi (802.11) son 2304 bytes y en IPv6 son 1280 bytes.
+* **Descubrimiento de MTU** : TCP ajusta dinámicamente el tamaño de los segmentos para evitar  **fragmentación** , usando mensajes ICMP (RFC 1191).
+
+##### **4. Control de Flujo con Ventana Deslizante**
+
+TCP usa un **protocolo de ventana deslizante** con  **tamaño dinámico** , lo que significa que:
+
+1. **El emisor envía un segmento y activa un temporizador** .
+2. **El receptor envía una confirmación de recepción (ACK)** , indicando qué datos ha recibido y cuánta capacidad queda en la ventana.
+3. **Si no llega la confirmación a tiempo, TCP retransmite el segmento** .
+
+##### **5. Problemas y Optimización en TCP**
+
+* **Retransmisiones y Orden de Segmentos** :
+* Los segmentos pueden **llegar fuera de orden** (Ej.: el receptor recibe bytes 3,072-4,095 antes de 2,048-3,071).
+* TCP debe  **manejar estas situaciones sin perder datos** .
+* **Temporización y Retransmisiones** :
+* Si un segmento se  **retrasa demasiado** , el emisor lo retransmite.
+* Las retransmisiones pueden incluir **rangos de bytes diferentes** a los originales, lo que requiere una gestión cuidadosa.
+* **Optimización del Rendimiento** :
+* TCP ha sido mejorado con varios algoritmos para manejar problemas de red, minimizar retransmisiones y mejorar la eficiencia del tráfico.
+
+#### Encabezado TCP
+
+![1740431912979](image/transporte/1740431912979.png)
+
+- EL encabezado tiene un tamaño fijo de **20 bytes** y puede incluir opciones adicionales.
+- Después de las opciones, si las hay, pueden continuar hasta 65 535 − 20 − 20 = 65 495 bytes de datos, donde los primeros 20 se refieren al encabezado IP y los segundos al encabezado TCP.
+- **Puertos de origen y destino** : Identifican los extremos de la conexión en cada host.Un puerto TCP más la dirección IP de su host forman un punto terminal único de 48 bits. Los puntos terminales de origen y de destino enconjunto identifican la conexión. Este identificador de conexión se denomina 5-tupla, ya que consiste en cinco piezas de información: el protocolo (TCP), IP de origen y puerto de origen, IP de destino y
+  puerto de destino. EJ ((TCP, 192.168.1.100, 54321, 203.0.113.10, 80)) 16 bits y 16 biits
+- **Número de secuencia** : Indica el orden de los bytes transmitidos. (32 bits)
+- **Número de confirmación (ACK)** : Indica el siguiente byte que el receptor espera recibir. (32 bits)
+- **Longitud del encabezado** : Especifica el tamaño del encabezado TCP (4 bits)
+- **Banderas de control** : Bits individuales con funciones específicas, como:*
+  - **URG** : Indica datos urgentes.
+  - **ACK** : Valida el número de confirmación.
+  - **PSH** : Solicita entrega inmediata de los datos
+  - **RST** : Restablece la conexión.
+  - **SYN** : Inicia la conexión.
+  - **FIN** : Finaliza la conexión
+- **Tamaño de ventana** : Controla el flujo de datos permitidos en un momento dado.
+- **Suma de verificación** : Garantiza la integridad del segmento.
+- **Opciones** : Extienden la funcionalidad de TCP, por ejemplo:
+  - **MSS (Maximum Segment Size)** : Establece el tamaño máximo del segmento
+  - **Escalado de ventana** : Permite ventanas más grandes en redes rápidas.
+  - **SACK (Selective Acknowledgment)** : Mejora la eficiencia de retransmisiones.
+  - **Estampas de tiempo** : Ayudan a calcular el tiempo de ida y vuelta.
+
+#### Establecimiento de una Conexión TCP
+
+El establecimiento de una conexión TCP se realiza mediante un proceso llamado  **"acuerdo de tres vías" (three-way handshake)** , el cual garantiza una conexión confiable entre dos dispositivos antes de transferir datos.
+
+> #### **Pasos del Proceso de Conexión**
+>
+> 1. **El servidor espera conexiones**
+>    * Se ejecutan las primitivas `LISTEN` y `ACCEPT`, indicando que el servidor está a la espera de una conexión en un puerto específico.
+> 2. **El cliente inicia la conexión**
+>    * Ejecuta la primitiva `CONNECT`, enviando un **segmento TCP con el bit SYN activado** para solicitar la conexión.
+> 3. **El servidor responde**
+>    * Si el servidor está escuchando en el puerto solicitado, responde con un  **segmento SYN-ACK** , confirmando la recepción de la solicitud.
+>    * Si el servidor no está escuchando en el puerto, envía un segmento con el  **bit RST activado** , rechazando la conexión.
+> 4. **El cliente confirma la conexión**
+>    * Responde con un  **segmento ACK** , finalizando el proceso de establecimiento de conexión.
+>
+> 📌 **Ejemplo de secuencia normal:**
+>
+> * Cliente → Servidor: `SYN (SEQ = x)`
+> * Servidor → Cliente: `SYN-ACK (SEQ = y, ACK = x+1)`
+> * Cliente → Servidor: `ACK (SEQ = x+1, ACK = y+1)`
+>   ✅ **Conexión establecida, lista para la transferencia de datos.**
+>
+> #### **Caso Especial: Conexión Simultánea**
+>
+> Si  **dos hosts intentan conectarse entre sí al mismo tiempo** , se genera un cruce de SYN y se evita la duplicación de conexiones al reconocer que ambas pertenecen a la misma **5-tupla** (protocolo, IPs y puertos).
+>
+> 📌 **Ejemplo de conexión simultánea:**
+>
+> * Host 1 → Host 2: `SYN (SEQ = x)`
+> * Host 2 → Host 1: `SYN (SEQ = y, ACK = x+1)`
+> * Host 1 → Host 2: `ACK (SEQ = x+1, ACK = y+1)`
+>   ✅ **Se establece una única conexión.**
+
+##### **Seguridad: Ataque de Inundación SYN y Defensa con SYN Cookies**
+
+* Un atacante puede saturar un servidor enviando  **múltiples paquetes SYN sin completar la conexión** , lo que consume recursos y puede dejar al servidor inoperativo.
+* **Defensa: SYN Cookies**
+  * En lugar de almacenar los números de secuencia, el servidor los genera con una función criptográfica y los verifica al recibir la respuesta.
+  * Así, el servidor no necesita recordar conexiones incompletas, mitigando el ataque.
