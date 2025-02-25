@@ -1,6 +1,7 @@
 name: Daily Commit 2
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "18 20 * * * "
 
