@@ -1,0 +1,47 @@
+name: Daily Commit 2
+
+on:
+  schedule:
+    - cron: "18 20 * * * "
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Run a script
+      run: echo "Hello, world! This action runs manually."
+
+    - name: Create a file with current date
+      run: echo $(date) > date.txt
+
+    - name: Configure Git
+      run: |
+        git config --global user.name 'JabelResendiz'
+        git config --global user.email 'jabelresendiz18@gmail.com'
+
+    - name: Create and push a new branch
+      run: |
+        # Crear una nueva rama para los cambios
+        git checkout -b daily-commit-branch
+        git add date.txt
+        git commit -m "Commit diario automático"
+        git push origin daily-commit-branch
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        title: "Automated Daily Commit"
+        body: "This is an automated pull request created by GitHub Actions"
+        head: daily-commit-branch  # La rama de trabajo
+        base: main  # La rama a la que se hará el pull request (generalmente 'main')
+
+    - name: Debug push
+      run: |
+        echo "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
+        git remote -v
+        git status
