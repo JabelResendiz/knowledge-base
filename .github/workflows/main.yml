@@ -1,9 +1,9 @@
-name: Daily Pull Request 
+name: Daily Pull Request
 
 on:
-  workflow_dispatch:  # Ejecución manual desde GitHub
+  workflow_dispatch:  
   schedule:
-    - cron: "40 19 * * *"  # Ejecutar todos los días a las 20:18 UTC
+    - cron: "40 19 * * *"  
 
 jobs:
   build:
@@ -32,15 +32,18 @@ jobs:
         git add date.txt
         git commit -m "Commit diario automático"
 
-    - name: Debug push
-      run: |
-        echo "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
-        git remote -v
-        git status
-
     - name: Push changes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/JabelResendiz/Rest_Client_API
         git push origin main
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        base: main  # Rama principal donde se hará el merge
+        head: new-branch-name  # Rama desde la que estás haciendo el PR (asegúrate de que esta rama esté creada)
+        title: "Automated Pull Request"
+        body: "Este es un PR generado automáticamente."

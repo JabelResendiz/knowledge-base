@@ -77,3 +77,7 @@ Los servidores DNS suelen guardar la dirección IP en su caché durante un tiemp
 5. Los servidores del TLD `.com` remiten la consulta a los servidores autoritativos de GitHub.
 6. Los servidores autoritativos de GitHub devuelven la dirección IP de `github.com`.
 7. El navegador se conecta a GitHub usando la dirección IP y carga el contenido.
+
+
+
+### Servidores de Correo
