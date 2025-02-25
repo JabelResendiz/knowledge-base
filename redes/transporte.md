@@ -360,3 +360,119 @@ El establecimiento de una conexión TCP se realiza mediante un proceso llamado  
 * **Defensa: SYN Cookies**
   * En lugar de almacenar los números de secuencia, el servidor los genera con una función criptográfica y los verifica al recibir la respuesta.
   * Así, el servidor no necesita recordar conexiones incompletas, mitigando el ataque.
+
+#### Liberación de una conexión TCP
+
+En TCP, la liberación de una conexión se realiza de manera independiente en cada dirección, ya que TCP es **full-dúplex** (permite comunicación en ambos sentidos simultáneamente). Para cerrar la conexión, cualquiera de los extremos envía un  **segmento TCP con el bit FIN activado** , indicando que no tiene más datos por transmitir.
+
+Una vez que el otro extremo  **confirma el FIN con un ACK** , la comunicación en esa dirección se  **cierra** , pero el otro sentido puede seguir transmitiendo datos hasta que también envíe su propio  **FIN** . Cuando ambos sentidos se cierran, la conexión se libera completamente.
+
+> #### **Pasos en la liberación de una conexión TCP**
+>
+> Por lo general, se requieren **cuatro segmentos** para completar la liberación:
+>
+> 1. **Host A → Host B** : Envío de `FIN` (no tiene más datos que enviar).
+> 2. **Host B → Host A** : Confirmación con `ACK`.
+> 3. **Host B → Host A** : Envío de `FIN` (también termina su comunicación).
+> 4. **Host A → Host B** : Confirmación con `ACK`.
+>
+> Para evitar que una conexión quede colgada si un `FIN` o `ACK` se pierde, TCP usa  **temporizadores** . Si no recibe respuesta en un tiempo máximo (normalmente dos veces el tiempo de vida del paquete), el emisor del `FIN` asume que la conexión se cerró y la libera.
+>
+> 🔹  **Ejemplo cotidiano** : Es como una llamada telefónica en la que ambas personas dicen "adiós" y cuelgan el teléfono.
+
+#### **Explicación del Proceso**
+
+* **El cliente inicia la conexión** con `CONNECT`, enviando un `SYN`.
+* **El servidor responde** con `SYN + ACK` y espera la confirmación del cliente.
+* **La conexión se establece** cuando el cliente envía `ACK`, permitiendo el intercambio de datos.
+* **Para cerrar la conexión** , uno de los extremos envía un `FIN`, que es reconocido con un `ACK`.
+* **Si el otro extremo también cierra** , envía su propio `FIN`, y el cierre se confirma con otro `ACK`.
+* **El estado `TIME WAIT`** asegura que todos los paquetes retrasados desaparezcan antes de cerrar completamente.
+
+> 📌 **Conclusión:** TCP gestiona las conexiones mediante un conjunto de reglas bien definidas, asegurando una comunicación confiable y un cierre seguro de las conexiones.
+
+#### Ventana Deslizante de TCP
+
+La ventana deslizante en **TCP** es un mecanismo de control de flujo que permite que el receptor administre la cantidad de datos que el emisor puede enviar antes de recibir una confirmación. Separa dos aspectos clave:
+
+1. **Confirmación de recepción:** TCP confirma la correcta recepción de los segmentos enviados.
+2. **Asignación del búfer en el receptor:** Determina cuánto espacio tiene el receptor para recibir nuevos datos.
+
+##### **Funcionamiento de la Ventana Deslizante**
+
+* El receptor tiene un **búfer** de un tamaño determinado, por ejemplo,  **4 KB** .
+* El emisor envía un segmento de  **2 KB** , que el receptor confirma y anuncia una **ventana de 2 KB** (porque aún tiene espacio disponible).
+* Si el emisor envía otros  **2 KB** , el búfer del receptor se llena y anuncia una  **ventana de 0** , lo que detiene el envío de más datos hasta que la aplicación en el receptor procese y libere espacio.
+* **Ventana deslizante:**
+
+  * TCP permite que el emisor envíe varios segmentos sin esperar una confirmación por cada uno.
+  * La ventana indica cuánto espacio hay disponible en el búfer del receptor.
+* **Problemas que pueden afectar el rendimiento:**
+
+  * **Síndrome de ventana tonta:** Cuando el receptor lee de a 1 byte y actualiza la ventana por solo 1 byte, el emisor envía segmentos demasiado pequeños, desperdiciando recursos. **Solución:** El receptor espera hasta tener suficiente espacio antes de actualizar la ventana.
+  * **Retrasos en confirmaciones:** TCP puede retrasar las confirmaciones hasta 500 ms para agrupar varias en un solo mensaje, reduciendo el tráfico innecesario.
+  * **Algoritmo de Nagle:** Si la aplicación envía datos en pedazos pequeños, TCP espera a agruparlos en un segmento más grande antes de enviarlos. Esto reduce el uso del ancho de banda pero puede causar retrasos en aplicaciones interactivas.
+* **Estrategias de TCP para mitigar estos problemas:**
+
+  * Usar **confirmaciones acumulativas** para reducir la cantidad de ACKs enviados.
+  * Permitir deshabilitar el algoritmo de Nagle con **TCP_NODELAY** en casos donde la latencia sea prioritaria (por ejemplo, en juegos en línea).
+  * Usar **sondas de ventana** cuando la ventana es 0 para evitar bloqueos en la conexión.
+
+#### Control de congestion en TCP
+
+La congestión ocurre cuando la cantidad de datos que se envía a través de la red es mayor que la capacidad que los enrutadores pueden manejar. Cuando esto sucede, los enrutadores comienzan a descartar paquetes, lo que afecta la eficiencia de la comunicación.
+
+TCP usa una ventana de congestión (en paralelo a la ventana de control de flujo) para limitar la cantidad de datos que pueden estar en tránsito en la red. La cantidad efectiva de datos que se pueden enviar en un momento dado es el valor mínimo entre estas dos ventanas.
+
+#### Que agregar ?
+
+##### Limitaciones de la semántica de transporte de TCP:
+
+* TCP no satisface todas las necesidades de las aplicaciones modernas.
+* Algunas aplicaciones requieren preservar los límites de los mensajes, manejar múltiples conversaciones relacionadas o controlar mejor las rutas de red.
+* Esto ha llevado a la creación de nuevos protocolos como **SCTP (Stream Control Transmission Protocol)** y  **SST (Structured Stream Transport)** , que ofrecen mejoras en estos aspectos.
+* Sin embargo, cualquier cambio en TCP genera resistencia, ya que es un protocolo probado y ampliamente utilizado.
+
+
+### Redes Tolerantes al Retardo (DTN)
+
+Las **Redes Tolerantes al Retardo (DTN)** ()Delay-Tolerant Networking) surgen como una solución para entornos donde la conectividad es intermitente o los retardos en la comunicación son elevados, como en redes espaciales, submarinas, móviles y sistemas con infraestructura limitada. A diferencia de los protocolos tradicionales como  **TCP** , que requieren una conexión estable de extremo a extremo, las DTN usan  **conmutación de mensajes** , almacenando datos en nodos intermedios hasta que se establezca un enlace funcional para su reenvío.
+
+
+#### **Arquitectura DTN**
+
+* Introducida por la  **IETF en el RFC 4838** .
+* Se basa en el concepto de **almacenamiento-transporte-reenvío** en lugar de la conmutación de paquetes tradicional.
+* Los datos viajan en **bundles** (paquetes almacenados en nodos DTN hasta que haya conexión disponible) mas grandes que los tradicioanles paquetes pequennos.
+* Es útil en entornos donde los dispositivos solo se conectan ocasionalmente (por ejemplo, satélites, sensores, autobuses).
+* Permite transferencias eficientes de grandes volúmenes de datos en horarios de bajo tráfico.
+
+
+#### **Ejemplo de Aplicación en Redes Espaciales**
+
+* Un **satélite LEO** captura imágenes de la Tierra.
+* Como la conexión con estaciones terrestres es intermitente, los datos se almacenan hasta que haya un contacto disponible.
+* Luego, se transfieren en fragmentos a diferentes estaciones terrestres y, finalmente, al destino final.
+
+#### **Protocolo Bundle (RFC 5050)**
+
+* Es el protocolo clave en DTN, permitiendo la transmisión de datos como bundles.
+* Se sitúa sobre **TCP/IP u otras tecnologías** y puede operar con diversos protocolos de transporte.
+* Requiere una **capa de convergencia** para adaptarse a diferentes tipos de redes.
+* Se emplea en  **redes espaciales, sensores y sistemas con alta latencia** .
+
+Las **DTN** permiten la comunicación en escenarios donde las redes tradicionales fallan, facilitando el transporte de datos en entornos con conexiones intermitentes y retardos elevados.
+
+
+
+### Resumen
+
+La **capa de transporte** es fundamental para comprender los protocolos en capas, ya que ofrece servicios esenciales, siendo el más importante el flujo de bytes confiable y orientado a conexión entre el emisor y el receptor. Se accede a esta capa a través de **primitivas de servicio** que permiten establecer, usar y liberar conexiones, con los **sockets de Berkeley** como una interfaz común.
+
+Los protocolos de transporte deben manejar conexiones en redes no confiables, enfrentándose a desafíos como paquetes duplicados y retardados. Para establecer conexiones, se utiliza un  **acuerdo de tres vías** , y aunque liberar una conexión es más sencillo, aún presenta complicaciones. La capa de transporte debe administrar primitivas de servicio, conexiones, temporizadores, asignación de ancho de banda con control de congestión y ejecutar una **ventana deslizante** para el control de flujo.
+
+El control de congestión se encarga de asignar el ancho de banda de manera equitativa entre flujos competidores, utilizando la ley AIMD (Additive Increase/Multiplicative Decrease) para lograr una asignación justa. Los dos protocolos de transporte principales en Internet son **UDP** y  **TCP** . UDP es un protocolo sin conexión que actúa como envoltura para paquetes IP, permitiendo multiplexión y desmultiplexión de procesos. TCP, por otro lado, es el protocolo de transporte principal, que proporciona un flujo de bytes confiable, bidireccional y controlado por congestión, con un encabezado de 20 bytes.
+
+El rendimiento de TCP ha sido optimizado mediante varios algoritmos. Sin embargo, el rendimiento de las redes puede verse afectado por la sobrecarga de procesamiento de protocolos y segmentos, lo que se agrava a mayores velocidades. Por lo tanto, es esencial diseñar protocolos que minimicen la cantidad de segmentos y el procesamiento requerido.
+
+Finalmente, las **redes tolerantes al retardo (DTN)** ofrecen servicios de entrega en entornos con conectividad ocasional o retardos largos. En estas redes, los nodos intermedios almacenan, transportan y reenvían "bundles" de información, asegurando que se entregue en el momento adecuado, incluso sin una trayectoria funcional permanente entre el emisor y el receptor
