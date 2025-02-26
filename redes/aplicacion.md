@@ -303,3 +303,139 @@ El problema principal del almacenamiento en caché es determinar si una copia al
 Adicionalmente, el encabezado `Cache-Control` permite configurar políticas de caché, como `no-cache` para evitar el almacenamiento o `max-age` para definir el tiempo de vida de la caché.
 
 El almacenamiento en caché también puede realizarse en servidores intermedios (proxy caching), lo que beneficia a múltiples usuarios dentro de una red.
+
+### Audio y video de flujo continuo
+
+#### Audio digital
+
+* **Audio Digital** : El audio digital es la representación digital de una onda de audio. Se convierte a formato digital mediante un Convertidor Analógico-Digital (ADC), que toma muestras de la onda de sonido a intervalos regulares (ΔT) y produce números binarios.
+* **Convertidores** : El proceso inverso, convertir valores digitales a señales analógicas, se realiza mediante un Convertidor Digital-Analógico (DAC). Luego, un altavoz convierte la señal analógica en ondas acústicas que se pueden escuchar.
+
+### FTP (File Transfer Protocol)
+
+**FTP (File Transfer Protocol)** es un protocolo de red utilizado para transferir archivos entre un cliente y un servidor a través de una red TCP/IP. Se basa en un modelo cliente-servidor y puede operar en dos modos:  **activo y pasivo** .
+
+#### **1. Arquitectura de FTP**
+
+FTP usa **dos conexiones** entre el cliente y el servidor:
+
+* **Canal de control (Puerto 21):** Se usa para enviar comandos y recibir respuestas.
+* **Canal de datos (Puerto 20 o dinámico):** Se usa para la transferencia de archivos.
+
+
+#### **2. Modos de Funcionamiento**
+
+FTP tiene dos modos de operación:
+
+##### **Modo Activo:**
+
+1. El cliente inicia la conexión al servidor FTP en el **puerto 21** (canal de control).
+2. El cliente informa al servidor qué puerto usará para recibir datos.
+3. El servidor inicia la conexión de datos desde su puerto 20 al puerto indicado por el cliente.
+
+💡 *Problema:* Este modo puede ser bloqueado por firewalls, ya que el servidor inicia la conexión de datos hacia el cliente.
+
+##### **Modo Pasivo:**
+
+1. El cliente se conecta al servidor en el **puerto 21** (canal de control).
+2. El cliente solicita al servidor que abra un puerto dinámico para la transferencia de datos.
+3. El cliente se conecta a ese puerto y la transferencia ocurre.
+
+💡 *Ventaja:* Como el cliente inicia ambas conexiones, este modo es más compatible con firewalls y NAT.
+
+#### **3. Tipos de Transferencia**
+
+* **ASCII:** Para archivos de texto.
+* **Binario:** Para archivos como imágenes, vídeos y programas ejecutables.
+
+---
+
+#### **4. Modos de Autenticación**
+
+* **FTP Anónimo:** No requiere credenciales, común en sitios públicos de descarga.
+* **FTP con Autenticación:** Se necesita un usuario y contraseña para acceder.
+
+---
+
+#### **5. Alternativas Modernas**
+
+Dado que FTP no cifra los datos, existen protocolos más seguros:
+
+* **SFTP (Secure FTP):** Usa SSH para encriptar la transferencia.
+* **FTPS (FTP Secure):** Usa SSL/TLS para cifrar la comunicación.
+
+
+### IRC (Internet Relay Chat)
+
+**IRC (Internet Relay Chat)** es un protocolo de comunicación en tiempo real que permite a múltiples usuarios chatear en canales temáticos dentro de una red de servidores IRC. Puerto 6667 (TCP)
+
+
+#### **1. Arquitectura de IRC**
+
+IRC usa un modelo **cliente-servidor** en el que los usuarios se conectan a un **servidor IRC** y participan en **canales** (salas de chat).
+
+🔹 **Cliente IRC:** Software que permite a los usuarios conectarse a un servidor. Ejemplos: mIRC, HexChat, irssi.
+🔹 **Servidor IRC:** Mantiene la conexión de los clientes y distribuye los mensajes.
+🔹 **Red IRC:** Conjunto de servidores interconectados que forman una comunidad.
+
+---
+
+#### **2. Funcionamiento Básico**
+
+1. El usuario abre un cliente IRC y se conecta a un **servidor** usando un  **nickname** .
+2. Puede unirse a **canales de chat** (por ejemplo, `#tecnologia`).
+3. Puede enviar mensajes públicos o privados.
+4. Los servidores intercambian información para mantener la red sincronizada.
+
+💡 *Ejemplo de conexión en consola:*
+
+```bash
+/connect irc.servidor.com
+/join # canal
+/msg usuario Hola!
+/quit
+```
+
+---
+
+#### **3. Tipos de Comunicación**
+
+* **Mensajes públicos:** Se envían en un canal visible para todos los participantes.
+* **Mensajes privados (PMs):** Se envían directamente a un usuario.
+* **Acciones y comandos:** Se pueden usar comandos como `/me está escribiendo...` para indicar una acción.
+
+---
+
+#### **4. Seguridad en IRC**
+
+IRC no cifra los mensajes por defecto, pero se pueden usar extensiones como:
+
+* **SSL/TLS:** Cifra la conexión entre cliente y servidor.
+* **SASL:** Autenticación segura con credenciales encriptadas.
+
+⚠️ *Problemas comunes:*
+
+* **Flooding:** Envío masivo de mensajes para colapsar un canal.
+* **Bots maliciosos:** Usuarios automatizados que pueden generar spam o ataques DDoS.
+
+
+#### **5. Modos de Usuario y Canal**
+
+Los canales pueden tener restricciones y permisos:
+
+* `+o` (operador): Puede administrar usuarios y el canal.
+* `+v` (voz): Puede hablar en canales moderados.
+* `+b` (ban): Bloquea a un usuario.
+* `+k` (clave): El canal requiere contraseña.
+
+Ejemplo para asignar un operador:
+
+```bash
+/mode #canal +o usuario
+```
+
+---
+
+#### **6. Alternativas Modernas**
+
+IRC ha perdido popularidad en favor de plataformas como Discord, Slack o Telegram, pero sigue siendo usado en comunidades técnicas y de código abierto.
