@@ -439,3 +439,24 @@ Ejemplo para asignar un operador:
 #### **6. Alternativas Modernas**
 
 IRC ha perdido popularidad en favor de plataformas como Discord, Slack o Telegram, pero sigue siendo usado en comunidades técnicas y de código abierto.
+
+
+### 🔐 SSH (Secure Shell)
+
+SSH es un protocolo de red que permite acceder de forma segura a sistemas remotos a través de una conexión cifrada.
+
+🔹 **Características principales:**
+
+* Usa **cifrado** para proteger datos transmitidos.
+* Permite **acceso remoto** seguro a servidores.
+* Soporta **túneles cifrados** para otras conexiones.
+* Usa **claves públicas/privadas** para autenticación.
+
+🔹 **Protocolo y puertos:**
+
+* Funciona sobre  **TCP** .
+* **Puerto por defecto:**  **22** .
+
+```bash
+ssh usuario@servidor.com
+```
