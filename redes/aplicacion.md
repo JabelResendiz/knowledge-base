@@ -158,3 +158,94 @@ El protocolo SMTP (Simple Mail Transfer Protocol) se utiliza para enviar y trans
 5. El destinatario accede a su correo mediante IMAP o POP3.
 
 Este flujo completo asegura que los correos electrónicos se transmitan de manera efectiva y segura a través de la red
+
+### World Wide Web (WWW)
+
+La **World Wide Web (WWW)** es un sistema de acceso a información distribuida en millones de computadoras a través de Internet.La WWW es una plataforma que permite a los usuarios acceder a información a través de  **navegadores web** , utilizando el protocolo **HTTP** y el lenguaje  **HTML** . Su éxito se debe a su facilidad de uso y a la posibilidad de vincular documentos mediante  **hipervínculos** .
+
+La arquitectura de la web se basa en un modelo client-servidor donde los usuarios acceden a paginas web a traves de navegadores. Estas paginas pueden contener hipervinculos que permiten la navegacion entre distintos documentos en cualquer parte del mundo. El proceso funciona mediante  **HTTP (HyperText Transfer Protocol)** , un protocolo de solicitud-respuesta que permite al navegador obtener contenido desde servidores web.
+
+#### Sistema MIME
+
+MIME (Multipurpose Internet Mail Extensions) es un estándar que indica el tipo de contenido que se está transmitiendo en la web. Permite a los navegadores saber cómo interpretar y mostrar diferentes tipos de archivos (por ejemplo, HTML, PDF, JPEG, MP3).
+
+#### Servidores Webs
+
+##### Funcionamiento Básico del Servidor Web
+
+1. **Conexión Inicial** :
+
+* Cuando un usuario ingresa un URL o hace clic en un enlace, el navegador envía una solicitud al servidor correspondiente a la dirección IP obtenida mediante el DNS, estableciendo una conexión TCP en el puerto 80.
+
+1. **Proceso de Solicitud** :
+
+* El servidor recibe la solicitud y sigue estos pasos básicos:
+  1. Acepta la conexión TCP del cliente.
+  2. Obtiene la ruta del archivo solicitado.
+  3. Accede al archivo en el disco o ejecuta un programa si el contenido es dinámico.
+  4. Envía el contenido al cliente.
+  5. Libera la conexión TCP.
+
+##### Optimización del Servidor
+
+* **Caché** :
+* Para mejorar la eficiencia, los servidores modernos mantienen una caché en memoria con los archivos más solicitados, lo que reduce el acceso al disco y acelera la respuesta.
+* **Multihilos** :
+* En lugar de procesar una solicitud a la vez, los servidores utilizan un diseño multihilos, donde múltiples hilos pueden manejar solicitudes simultáneamente. Esto permite un procesamiento más rápido, ya que otros hilos pueden seguir trabajando mientras un hilo espera una operación de disco.
+
+##### Procesamiento de Solicitudes
+
+Cada solicitud puede implicar un proceso más complejo que simplemente devolver un archivo. Los pasos adicionales incluyen:
+
+1. **Resolución de Nombre** :
+
+* El servidor puede necesitar traducir nombres de archivo o directorios a nombres de archivos reales, como convertir un URL vacío en `index.html`.
+
+1. **Control de Acceso** :
+
+* Verifica si el cliente tiene permiso para acceder a la página solicitada, utilizando métodos como autenticación o restricciones geográficas.
+
+1. **Verificación de Caché** :
+
+* Determina si el archivo solicitado está en la caché para evitar accesos innecesarios al disco.
+
+1. **Obtención del Archivo** :
+
+* Si no está en la caché, el servidor debe cargar el archivo desde el disco o ejecutar un programa que genere contenido dinámico.
+
+1. **Determinación de Respuesta** :
+
+* Establece detalles adicionales de la respuesta, como el tipo MIME, que indica el formato del contenido.
+
+1. **Envío de Respuesta** :
+
+* Envía el contenido de la página al cliente a través de la red.
+
+1. **Registro de Actividades** :
+
+* Realiza una entrada en el registro para fines administrativos y estadísticas sobre el uso del sitio.
+
+##### Consideraciones Adicionales
+
+* La ejecución de programas y el manejo de archivos pueden requerir verificaciones adicionales, como si el contenido ha cambiado o si los resultados son dinámicos.
+* La reutilización de conexiones TCP para múltiples solicitudes mejora el rendimiento, pero requiere lógica adicional para gestionar las respuestas correctamente.
+
+#### Cookies
+
+Las cookies son pequeños archivos de texto (máximo 4 KB) que los servidores web envían a los navegadores para almacenar información sobre los usuarios. Se utilizan para recordar información entre sesiones de navegación, ya que el protocolo HTTP es **sin estado** (no recuerda interacciones previas).
+
+> Una cookie contiene:
+>
+> * **Dominio** : El sitio web que la creó.
+> * **Ruta** : Qué partes del sitio pueden usarla.
+> * **Contenido** : Datos guardados (por ejemplo, un identificador de usuario o carrito de compras).
+> * **Expiración** : Cuándo deja de ser válida.
+> * **Seguro** : Si solo puede enviarse por conexiones cifradas (SSL/TLS)
+
+##### Usos
+
+- **Autenticación y sesiones de usuario:** Permiten que los usuarios permanezcan autenticados sin tener que enviar credenciales en cada solicitud.
+- **Carritos de compra en e-commerce**: El sitio guarda el producto en una cookie.Si sales del sitio y vuelves más tarde, el producto sigue en el carrito. Sin cookies, cada vez que cambies de página, el carrito se vaciaría.
+- **Preferencias y personalización**: Modos oscuro de los sitios. Cuando vuelves al sitio, sigue en modo oscuro. Permiten que la experiencia del usuario sea más fluida y personalizada.
+- **Rastreo y analítica web:** Si visitas varias páginas, la cookie permite saber que eres la misma persona. El sitio analiza qué partes son más visitadas y por cuánto tiempo. Las empresas pueden optimizar sus sitios web basándose en el comportamiento de los usuarios.
+- **Publicidad y remarketing**
