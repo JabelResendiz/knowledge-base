@@ -1,5 +1,7 @@
 ## CAPA DE APLICACIÓN
 
+> La capa de aplicación en las redes de computadoras es la capa más cercana al usuario y es responsable de proporcionar servicios de red a las aplicaciones de software. Esta capa actúa como intermediario entre las aplicaciones y los protocolos de red, permitiendo que las aplicaciones utilicen los servicios de red sin tener que preocupar por los detalles de implementación de los protocolos de bajo nivel.
+
 ### 🌍DNS
 
 El Sistema de Nombres de Dominio (DNS) es fundamental para la navegación en Internet, ya que permite a los usuarios acceder a recursos en la red mediante nombres legibles en lugar de direcciones IP numéricas. Aunque es posible referirse a páginas web y otros recursos usando direcciones IP, recordar estos números es complicado para las personas. Por ejemplo, si un servidor web cambia su dirección IP, todos tendrían que ser informados sobre la nueva dirección. Corre por el puerto 53(UDP) de protocolo UDP.
@@ -440,6 +442,17 @@ Ejemplo para asignar un operador:
 
 IRC ha perdido popularidad en favor de plataformas como Discord, Slack o Telegram, pero sigue siendo usado en comunidades técnicas y de código abierto.
 
+#### Flujo de Conexion IRC
+
+1. **Inicio de la Conexión** : Un cliente IRC se conecta a un servidor IRC especificando la dirección IP o el nombre de dominio del servidor y el puerto (por defecto, el puerto 6667)
+2. **Establecimiento de la Conexión TCP** : El cliente y el servidor establecen una conexión TCP. Esto implica un proceso de "handshake" donde el cliente envía una solicitud de conexión al servidor, y el servidor acepta la conexión
+3. **Identificación del Cliente** : Una vez establecida la conexión TCP, el cliente envía información de identificación al servidor, que incluye el nombre de usuario, el nombre del host y el nombre de la red.
+4. **Registro en el Servidor** : El cliente debe registrarse en el servidor IRC enviando un comando `NICK` para establecer su apodo y un comando `USER` para proporcionar información adicional sobre sí mismo.
+
+   1. ```ruby
+      NICK mi_apodo
+      USER mi_usuario 0 * :Mi nombre
+      ```
 
 ### 🔐 SSH (Secure Shell)
 
@@ -461,6 +474,19 @@ SSH es un protocolo de red que permite acceder de forma segura a sistemas remoto
 ssh usuario@servidor.com
 ```
 
+#### Flujo de Conexion SSH
+
+* **Inicio de la Conexión** : El cliente SSH inicia la conexión al servidor SSH especificando la dirección IP o el nombre de dominio del servidor y el puerto (por defecto, el puerto 22).
+* **Establecimiento de la Conexión TCP** : El cliente y el servidor establecen una conexión TCP. Esto implica un proceso de "handshake" donde el cliente envía una solicitud de conexión al servidor, y el servidor acepta la conexión.
+* **Intercambio de Versiones** : Una vez que se establece la conexión TCP, el cliente y el servidor intercambian información sobre sus versiones de SSH. Esto asegura que ambas partes puedan comunicarse utilizando un conjunto compatible de protocolos.
+* **Autenticación del Servidor** : El servidor envía su clave pública al cliente. El cliente verifica la autenticidad del servidor mediante la comparación de la clave pública recibida con las claves almacenadas localmente. Si es la primera vez que se conecta, el cliente puede recibir un aviso de advertencia y deberá aceptar la clave.
+* **Establecimiento del Canal Seguro** : Después de la autenticación del servidor, el cliente y el servidor negocian un conjunto de algoritmos de cifrado y crean un canal seguro mediante el uso de técnicas de cifrado simétrico. Esto asegura que los datos transmitidos estén protegidos durante la sesión.
+* **Autenticación del Cliente** : El servidor solicita al cliente que se autentique. Esto puede hacerse mediante diferentes métodos, como:
+* * **Contraseña** : El cliente envía su nombre de usuario y contraseña.
+  * **Claves públicas/privadas** : El cliente presenta su clave pública, y el servidor verifica si la clave privada correspondiente está autorizada.
+* **Acceso Remoto** : Una vez que el cliente ha sido autenticado, se establece una sesión de shell interactiva o se pueden ejecutar comandos de forma remota. Todas las comunicaciones entre el cliente y el servidor están cifradas y son seguras.
+* **Túneles Cifrados (Opcional)** : SSH permite crear túneles cifrados para redirigir tráfico de otras aplicaciones (por ejemplo, tráfico HTTP) a través de la conexión SSH, lo que proporciona una capa adicional de seguridad.
+* **Cierre de la Conexión** : Cuando el usuario finaliza la sesión, el cliente envía una solicitud para cerrar la conexión. El servidor confirma el cierre, y la conexión TCP se finaliza.
 
 ### ⏰ **NTP (Network Time Protocol)**
 
@@ -480,3 +506,34 @@ NTP es un protocolo usado para **sincronizar el reloj** de dispositivos en una r
 ```bash
 ntpdate -q pool.ntp.org
 ```
+
+Respuesta en la terminal
+
+```bash
+server 198.46.254.130, stratum 2, offset -1.427396, delay 0.17189
+server 23.150.40.242, stratum 2, offset -1.424596, delay 0.18794
+server 108.181.220.94, stratum 4, offset -1.427943, delay 0.18810
+server 74.6.168.73, stratum 2, offset -1.429125, delay 0.25006
+26 Feb 13:24:44 ntpdate[226]: step time server 198.46.254.130 offset -1.427396 sec
+```
+
+#### Flujo de Conexion:
+
+- **Inicialización** : El cliente NTP se configura para comunicarse con uno o varios servidores NTP. Esto puede incluir la especificación de la dirección IP o el nombre de dominio del servidor.
+- **Solicitud de sincronización** : El cliente envía un paquete de solicitud de sincronización (NTP request) al servidor. Este paquete incluye un timestamp que marca el momento en que se envió la solicitud.
+- **Recepción de la solicitud** : El servidor NTP recibe la solicitud del cliente y registra el tiempo en que se recibió. Este timestamp es importante para calcular el tiempo de red.
+- **Cálculo del tiempo** : El servidor responde al cliente enviando un paquete que incluye varios timestamps:
+  - El tiempo en que recibió la solicitud.
+  - El tiempo en que se generó el paquete de respuesta.
+  - El tiempo en que el servidor considera que está (su hora actual).
+- **Recepción de la respuesta** : El cliente recibe el paquete de respuesta del servidor. En este punto, tiene cuatro timestamps:
+  - T1: el tiempo en que el cliente envió la solicitud.
+  - T2: el tiempo en que el servidor recibió la solicitud.
+  - T3: el tiempo en que el servidor envió la respuesta.
+  - T4: el tiempo en que el cliente recibió la respuesta.
+
+* **Cálculo del desplazamiento y latencia** :
+  * **Latencia** (delay) se calcula como: $D= (T4−T1)−(T3−T2)$
+  * **Desplazamiento** (offset) se calcula como: $O= \frac{(T2−T1)+(T3−T4)}{2}$
+* **Sincronización del tiempo** : Usando el desplazamiento calculado, el cliente ajusta su reloj local para sincronizarse con el tiempo del servidor.
+* **Ciclo de sincronización** : El cliente puede repetir este proceso periódicamente para mantener su hora actualizada, adaptándose a los cambios en la red o en el reloj del servidor.
