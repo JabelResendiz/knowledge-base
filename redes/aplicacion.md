@@ -1,6 +1,6 @@
 ## CAPA DE APLICACIÓN
 
-### DNS
+### 🌍DNS
 
 El Sistema de Nombres de Dominio (DNS) es fundamental para la navegación en Internet, ya que permite a los usuarios acceder a recursos en la red mediante nombres legibles en lugar de direcciones IP numéricas. Aunque es posible referirse a páginas web y otros recursos usando direcciones IP, recordar estos números es complicado para las personas. Por ejemplo, si un servidor web cambia su dirección IP, todos tendrían que ser informados sobre la nueva dirección. Corre por el puerto 53(UDP) de protocolo UDP.
 
@@ -77,7 +77,7 @@ Los servidores DNS suelen guardar la dirección IP en su caché durante un tiemp
 6. Los servidores autoritativos de GitHub devuelven la dirección IP de `github.com`.
 7. El navegador se conecta a GitHub usando la dirección IP y carga el contenido.
 
-### SMTP
+### 📧SMTP
 
 El  **protocolo SMTP (Simple Mail Transfer Protocol)** , el cual opera sobre  **TCP en el puerto 25** . Este protocolo es responsable de enviar mensajes entre agentes de usuario y servidores de correo, así como de transferirlos entre servidores de correo. En el RFC 4409.
 
@@ -250,7 +250,7 @@ Las cookies son pequeños archivos de texto (máximo 4 KB) que los servidores we
 - **Rastreo y analítica web:** Si visitas varias páginas, la cookie permite saber que eres la misma persona. El sitio analiza qué partes son más visitadas y por cuánto tiempo. Las empresas pueden optimizar sus sitios web basándose en el comportamiento de los usuarios.
 - **Publicidad y remarketing**
 
-#### HTTP
+#### 🌐 HTTP
 
 HTTP es el protocolo que permite la comunicación entre clientes (como navegadores web) y servidores. Funciona sobre TCP y sigue un modelo de solicitud-respuesta. Un cliente envía una solicitud HTTP y el servidor responde con el contenido solicitado.
 
@@ -311,7 +311,7 @@ El almacenamiento en caché también puede realizarse en servidores intermedios 
 * **Audio Digital** : El audio digital es la representación digital de una onda de audio. Se convierte a formato digital mediante un Convertidor Analógico-Digital (ADC), que toma muestras de la onda de sonido a intervalos regulares (ΔT) y produce números binarios.
 * **Convertidores** : El proceso inverso, convertir valores digitales a señales analógicas, se realiza mediante un Convertidor Digital-Analógico (DAC). Luego, un altavoz convierte la señal analógica en ondas acústicas que se pueden escuchar.
 
-### FTP (File Transfer Protocol)
+### 📂 FTP (File Transfer Protocol)
 
 **FTP (File Transfer Protocol)** es un protocolo de red utilizado para transferir archivos entre un cliente y un servidor a través de una red TCP/IP. Se basa en un modelo cliente-servidor y puede operar en dos modos:  **activo y pasivo** .
 
@@ -365,7 +365,7 @@ Dado que FTP no cifra los datos, existen protocolos más seguros:
 * **FTPS (FTP Secure):** Usa SSL/TLS para cifrar la comunicación.
 
 
-### IRC (Internet Relay Chat)
+### 💬 IRC (Internet Relay Chat)
 
 **IRC (Internet Relay Chat)** es un protocolo de comunicación en tiempo real que permite a múltiples usuarios chatear en canales temáticos dentro de una red de servidores IRC. Puerto 6667 (TCP)
 
@@ -459,4 +459,24 @@ SSH es un protocolo de red que permite acceder de forma segura a sistemas remoto
 
 ```bash
 ssh usuario@servidor.com
+```
+
+
+### ⏰ **NTP (Network Time Protocol)**
+
+NTP es un protocolo usado para **sincronizar el reloj** de dispositivos en una red con una fuente de tiempo precisa.
+
+🔹 **Características principales:**
+
+* Usa una jerarquía de servidores de tiempo (estratos).
+* Puede corregir retrasos en la red y ajustar la hora gradualmente.
+* Es crucial para sistemas donde la sincronización del tiempo es importante (servidores, telecomunicaciones, etc.).
+
+🔹 **Protocolo y puertos:**
+
+* Funciona sobre  **UDP** .
+* **Puerto por defecto:**  **123** .
+
+```bash
+ntpdate -q pool.ntp.org
 ```
