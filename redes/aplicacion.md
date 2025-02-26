@@ -249,3 +249,57 @@ Las cookies son pequeños archivos de texto (máximo 4 KB) que los servidores we
 - **Preferencias y personalización**: Modos oscuro de los sitios. Cuando vuelves al sitio, sigue en modo oscuro. Permiten que la experiencia del usuario sea más fluida y personalizada.
 - **Rastreo y analítica web:** Si visitas varias páginas, la cookie permite saber que eres la misma persona. El sitio analiza qué partes son más visitadas y por cuánto tiempo. Las empresas pueden optimizar sus sitios web basándose en el comportamiento de los usuarios.
 - **Publicidad y remarketing**
+
+#### HTTP
+
+HTTP es el protocolo que permite la comunicación entre clientes (como navegadores web) y servidores. Funciona sobre TCP y sigue un modelo de solicitud-respuesta. Un cliente envía una solicitud HTTP y el servidor responde con el contenido solicitado.
+
+Inicialmente, con  **HTTP 1.0** , cada solicitud requería abrir y cerrar una conexión TCP, lo que resultaba ineficiente cuando una página web tenía múltiples elementos, como imágenes y hojas de estilo.
+
+Con  **HTTP 1.1** , se introdujeron  **conexiones persistentes** , lo que permite reutilizar la misma conexión TCP para múltiples solicitudes, reduciendo el tiempo de espera y la sobrecarga en la red. Además, se introdujo la  **canalización de solicitudes** , lo que permite enviar varias solicitudes seguidas sin esperar la respuesta de la anterior, mejorando aún más la velocidad de carga
+
+##### **Encabezados HTTP**
+
+Los encabezados son líneas adicionales en las solicitudes y respuestas HTTP que proporcionan información adicional. Algunos importantes son:
+
+###### **Encabezados de solicitud (del cliente al servidor)**
+
+* **User-Agent** : Indica el navegador o cliente que realiza la solicitud.
+* **Accept** : Especifica los tipos MIME que el cliente puede procesar.
+* **Accept-Charset, Accept-Encoding, Accept-Language** : Indican qué codificación, compresión e idioma prefiere el cliente.
+* **Host** : Especifica el nombre del servidor (obligatorio en HTTP/1.1).
+* **Authorization** : Envía credenciales para acceder a recursos protegidos.
+* **Referer** : Indica la página desde la que se hizo la solicitud.
+* **Cookie** : Envía cookies previamente guardadas al servidor.
+
+###### **Encabezados de respuesta (del servidor al cliente)**
+
+* **Set-Cookie** : Envía una cookie al cliente.
+* **Server** : Indica la versión del servidor web.
+* **Content-Encoding, Content-Language, Content-Length, Content-Type** : Describen la codificación, idioma, tamaño y tipo de contenido de la respuesta.
+* **Last-Modified, Expires** : Indican la última modificación del recurso y su fecha de expiración.
+* **Location** : Redirige a una nueva URL.
+* **Accept-Ranges** : Indica si el servidor admite respuestas parciales.
+
+###### **Encabezados compartidos (usados en ambas direcciones)**
+
+* **Date** : Indica la fecha y hora de la solicitud o respuesta.
+* **Range** : Solicita solo una parte del contenido.
+* **Cache-Control** : Controla el almacenamiento en caché.
+* **ETag** : Proporciona una etiqueta única para identificar versiones de un recurso.
+* **Upgrade** : Sugiere cambiar a otro protocolo más avanzado.
+
+Estos encabezados son esenciales para optimizar la comunicación entre clientes y servidores, mejorar la seguridad y gestionar la caché de contenido.
+
+##### Almacenamiento en Cache
+
+El almacenamiento en caché es un mecanismo que permite a los navegadores y servidores almacenar copias de páginas web y otros recursos (como imágenes, hojas de estilo y scripts) para reutilizarlos en el futuro sin necesidad de descargarlos nuevamente. Esto mejora el rendimiento, reduce el tráfico en la red y disminuye la latencia.
+
+El problema principal del almacenamiento en caché es determinar si una copia almacenada sigue siendo válida. HTTP utiliza dos estrategias para resolver esto:
+
+1. **Validación de Caché** : Si el navegador tiene una copia válida de un recurso, puede usarla sin hacer una nueva solicitud al servidor. Se utilizan encabezados como `Expires` y `Last-Modified` para indicar cuándo expira la caché.
+2. **GET Condicional** : Si el cliente no está seguro de si la copia en caché sigue siendo válida, envía una solicitud condicional con los encabezados `If-Modified-Since` (basado en `Last-Modified`) o `If-None-Match` (basado en `ETag`). Si el servidor confirma que la copia sigue siendo válida, responde con un código `304 Not Modified`, evitando reenviar el recurso completo.
+
+Adicionalmente, el encabezado `Cache-Control` permite configurar políticas de caché, como `no-cache` para evitar el almacenamiento o `max-age` para definir el tiempo de vida de la caché.
+
+El almacenamiento en caché también puede realizarse en servidores intermedios (proxy caching), lo que beneficia a múltiples usuarios dentro de una red.
