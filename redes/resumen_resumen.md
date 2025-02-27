@@ -11,18 +11,19 @@
 
 ### Funciones de la capa de enlace
 
-* **Proveer de una interfaz bien definida de servicios para la capa de red**: Esta capa actúa como intermediario entre la capa de red y la capa física, facilitando la comunicación entre dispositivos en una red. Transforma los bits de datos de la capa de red en tramas que pueden ser transmitidas a través de la capa física 6.
-* **Delimitar la secuencias de bytes en frames bien definidos**: La capa de enlace de datos se encarga de encapsular los datos en tramas, que son bloques de datos con una estructura específica que incluye información como la dirección de origen y destino (dirección MAC), la longitud de los datos y un campo de verificación de errores (CRC). Esto permite que los datos sean transmitidos de manera organizada y eficiente 6.
-* **Detectar y corregir errores de transmisión**: Utiliza el campo de verificación de errores (CRC) para detectar si los datos han sido alterados durante la transmisión. Si se detecta un error, la trama puede ser retransmitida o descartada, dependiendo de la política de manejo de errores implementada 6.
-* **Regular en flujo de los datos de forma tal que remitentes rápidos no ahogen a receptores lentos**: La capa de enlace de datos implementa mecanismos de control de flujo para evitar que un transmisor muy rápido sature a un receptor lento. Esto se logra mediante el uso de señales de control que indican al receptor cuántos datos puede aceptar en un momento dado, permitiendo así una comunicación equilibrada y eficiente 6.
+* **Proveer de una interfaz bien definida de servicios para la capa de red**: Esta capa actúa como intermediario entre la capa de red y la capa física, facilitando la comunicación entre dispositivos en una red. Transforma los bits de datos de la capa de red en tramas que pueden ser transmitidas a través de la capa física .
+* **Delimitar la secuencias de bytes en frames bien definidos**: La capa de enlace de datos se encarga de encapsular los datos en tramas, que son bloques de datos con una estructura específica que incluye información como la dirección de origen y destino (dirección MAC), la longitud de los datos y un campo de verificación de errores (CRC). Esto permite que los datos sean transmitidos de manera organizada y eficiente .
+* **Detectar y corregir errores de transmisión**: Utiliza el campo de verificación de errores (CRC) para detectar si los datos han sido alterados durante la transmisión. Si se detecta un error, la trama puede ser retransmitida o descartada, dependiendo de la política de manejo de errores implementada .
+* **Regular en flujo de los datos de forma tal que remitentes rápidos no ahogen a receptores lentos**: La capa de enlace de datos implementa mecanismos de control de flujo para evitar que un transmisor muy rápido sature a un receptor lento. Esto se logra mediante el uso de señales de control que indican al receptor cuántos datos puede aceptar en un momento dado, permitiendo así una comunicación equilibrada y eficiente .
 
 ### Servicios proporcionados
 
-* Servicio sin conexion ni oriendato a conexiones
-  * Medio confiable con bajo índice de errores
+* Servicio sin conexion ni confirmación de recepción
+  * Se envian tramas independientes a la maquina de destino sin que esta confirme la recepcion
   * No se comunican los frames recibidos
   * No se establece algún tipo de comunicación lógica
   * Tráfico en tiempo real. Voz y video.
+  * Ejemplo: Ethernet
 * Servicio sin conexion con confirmacion de recepcion
   * Medio no confiable con alto índice de errores
   * Se comunican los frames recibidos
@@ -108,7 +109,7 @@
 - **ventana desplazante**:
   - Cada trama se identifica con un numero de secuencia unico
   - Se declaran una ventana de ambos lados para representar el conjunto de tramas que el emisor o receptor puede enviar o reciibir pero que no han sido confirmadas o que puede aceptar
-  - Las ventanas se deslizan y dinamicas
+  - Las ventanas se deslizan y dinamicas.
 - **Protocolos retroceso N**:
   - En vez de bloquear el canal por trama , se envian arias tramas de forma continua y desoues se bloquea
   - GoBackN se usa cunado la ventana es de tamanno 1. EL emisro puede enviar varias tramas pero el receptor solo recibe 1 sola a la vez. Cuando la trama recibida es correcta, se envia una confirmacion de recepcion para esa trama

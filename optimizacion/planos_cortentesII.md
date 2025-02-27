@@ -11,25 +11,22 @@ $$
 \sum_{j \in R} ([hy_{ij}]- [h]y_{ij})x_j \leq [hy_{i0}]- [h]y_{i0}
 $$
 
-
 $$
 
 
 $$
 
-por tanto cualquier valor de h<1 que satifaga 
+por tanto cualquier valor de h<1 que satifaga
 
 $$
 h \leq min_{j \in R_r} \frac{M_j}{y_{rj}} = h^*
 $$
-
 
 con $M_j = - [\frac{r_j}{r_k}]$ y $R_j$ los indices cuyas variables $y_{rj} < 0 $ y $r_k = min_{j \in R_r} r_j$. La expresion del corte finaliza siendo :
 
 $$
 \sum_{j \in R} [hy_{rj}]x_j  + x^h = [hy_{r0}]
 $$
-
 
 ### Corte Primal Todo Entero
 
@@ -53,9 +50,6 @@ s entera no negativa.
 
 ![a](corte.png)
 
-$$
 
-
-$$
 
 5. Se usa cuando trabjamos con el metodo de las dos fases de simplex (con variables auxiliares)

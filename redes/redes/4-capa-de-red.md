@@ -3,12 +3,9 @@
 La capa de red se encarga de:
 
 1. **Enrutamiento**: determinar la ruta más eficiente para que los paquetes de datos lleguen desde el origen hasta el destino. Esto implica la selección de la ruta más corta a través de la red, teniendo en cuenta factores como el número de saltos, la carga de la red y la disponibilidad de la ruta.
-
-1. **Direccionamiento**: asignar direcciones únicas a los dispositivos en la red. Estas direcciones, conocidas como direcciones IP (Protocolo de Internet), permiten que los paquetes de datos sean enviados a la ubicación correcta dentro de la red.
-
-1. **Segmentación y Reensamblaje de Paquetes**: La capa de red se encarga de dividir los datos en segmentos más pequeños que pueden ser transmitidos a través de la red y luego reensamblarlos en el destino. Esto es necesario porque los dispositivos en una red pueden tener diferentes capacidades de transmisión y tamaños de paquete, y la segmentación permite que los datos se transmitan de manera eficiente.
-
-1. **Gestión de Tráfico**: La capa de red también juega un papel en la gestión del tráfico de red, asegurando que los datos se transmitan de manera eficiente y equitativa. Esto incluye la implementación de políticas de control de flujo para evitar la sobrecarga de la red y la implementación de mecanismos de control de congestión para gestionar el tráfico de red en situaciones de alta demanda.
+2. **Direccionamiento**: asignar direcciones únicas a los dispositivos en la red. Estas direcciones, conocidas como direcciones IP (Protocolo de Internet), permiten que los paquetes de datos sean enviados a la ubicación correcta dentro de la red.
+3. **Segmentación y Reensamblaje de Paquetes**: La capa de red se encarga de dividir los datos en segmentos más pequeños que pueden ser transmitidos a través de la red y luego reensamblarlos en el destino. Esto es necesario porque los dispositivos en una red pueden tener diferentes capacidades de transmisión y tamaños de paquete, y la segmentación permite que los datos se transmitan de manera eficiente.
+4. **Gestión de Tráfico**: La capa de red también juega un papel en la gestión del tráfico de red, asegurando que los datos se transmitan de manera eficiente y equitativa. Esto incluye la implementación de políticas de control de flujo para evitar la sobrecarga de la red y la implementación de mecanismos de control de congestión para gestionar el tráfico de red en situaciones de alta demanda.
 
 ## Direcciones IPv4
 
@@ -27,14 +24,14 @@ Las direcciones `IPv4` tienen una mascara que consiste de un numero de 32 bits c
 ## Objetivos de la invencion de IPv6
 
 1. Soporte para miles de millones de direcciones
-1. Reducir el tamaño de las tablas de rutas
-1. Simplificar el protocolo para ganar en velocidad de procesamiento
-1. Proveer mejor seguridad
-1. Prestar mas atención al tipo de servicio. Datos en tiempo real
-1. Soporte para multicast
-1. Roaming sin cambiar direcciones ip
-1. Permitir que el protocolo evolucione con el futuro
-1. Coexistencia de ambas versiones del protocolo
+2. Reducir el tamaño de las tablas de rutas
+3. Simplificar el protocolo para ganar en velocidad de procesamiento
+4. Proveer mejor seguridad
+5. Prestar mas atención al tipo de servicio. Datos en tiempo real
+6. Soporte para multicast
+7. Roaming sin cambiar direcciones ip
+8. Permitir que el protocolo evolucione con el futuro
+9. Coexistencia de ambas versiones del protocolo
 
 ![Encabezado IPv6](img/encabezado_ipv6.jpg)
 
