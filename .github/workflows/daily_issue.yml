@@ -1,0 +1,18 @@
+name: Crear Issue Automático
+
+on:
+  workflow_dispatch: # Permite ejecutarlo manualmente desde GitHub Actions
+  push: # También se ejecutará en cada push a main
+    branches:
+      - main
+
+jobs:
+  create_issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Crear un nuevo issue
+        uses: JasonEtco/create-an-issue@v2
+        with:
+          filename: .github/ISSUE_TEMPLATE.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
