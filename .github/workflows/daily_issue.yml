@@ -1,7 +1,7 @@
 name: Crear Issue Automático
 
 on:
-  workflow_dispatch: 
+  workflow_dispatch: # Permite ejecutarlo manualmente
   push:
     branches:
       - main
@@ -10,12 +10,13 @@ jobs:
   create_issue:
     runs-on: ubuntu-latest
     steps:
-      - name: Clonar el repositorio
-        uses: actions/checkout@v4
-
       - name: Crear un nuevo issue
-        uses: JasonEtco/create-an-issue@v2
+        uses: peter-evans/create-issue-from-file@v5
         with:
-          filename: .github/ISSUE_TEMPLATE.md
+          title: "🚀 Nuevo issue automático"
+          content: |
+            ## 📌 Descripción
+            Este issue fue creado automáticamente por un GitHub Action.
+          labels: "auto-generated"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
