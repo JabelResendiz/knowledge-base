@@ -480,5 +480,39 @@ Es una matriz cuadrada y simetrica que cuenta cuantas veces coocurren dos termin
   <http://ejemplo.org/Persona/Juan> <http://ejemplo.org/tieneEdad> "30"
   ```
 
-
 Esto signifca " Juan tiene edad 30"
+
+
+#### SPARQL (SPARQL Protocol And RDF Query Language)
+
+- Lenguaje estandar del W3C disennado para consultar y manipular datos representados en RDF (Resource Description Framework) que es el modelo de datos base del Web Semantica
+- Es el equivalente de SQL para bases de datos relacionales pero aplicados a grafos RDF. En lugar de usar tablas , SPARQL trabaja con tripletas(sujeto, predicado y objeto) que forman grafos de conocimiento
+
+  ```sql
+  SELECT ?nombre
+  WHERE {
+    ?persona rdf:type ex:Profesor .
+    ?persona ex:nombre ?nombre .
+  }
+
+  ```
+
+(selecciona los nombres de todas las personas que son del tipo Profesor)
+
+```sql_more
+PREFIX ex: <http://example.org/>
+SELECT ?persona ?lugar
+WHERE {
+?persona ex:naci´oEn ?lugar.
+FILTER(?lugar = ex:Alemania)
+}
+
+```
+
+
+#### Que es un sistema de conocimiento semantico?
+
+- Es un sistema que representa y razona sobre informacion de manera estrcuturada y logica, usando ontologias (OWL), vocabularios (RDFS) , datos estrcuturados (RDF) y consultas inteligentes (SPARQL)
+- RDF es la base de datos semantica: Modela los datos en forma de tripletas `<sujeto> <predicado> <objeto>` permitiendo describir recursos y sus relaciones
+- RDFS vocabulario basico: Define clases, subcalses , propiedades y jerarquias
+- OWL , ontologias y logicas
