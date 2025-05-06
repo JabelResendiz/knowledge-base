@@ -515,4 +515,5 @@ FILTER(?lugar = ex:Alemania)
 - Es un sistema que representa y razona sobre informacion de manera estrcuturada y logica, usando ontologias (OWL), vocabularios (RDFS) , datos estrcuturados (RDF) y consultas inteligentes (SPARQL)
 - RDF es la base de datos semantica: Modela los datos en forma de tripletas `<sujeto> <predicado> <objeto>` permitiendo describir recursos y sus relaciones
 - RDFS vocabulario basico: Define clases, subcalses , propiedades y jerarquias
-- OWL , ontologias y logicas
+- OWL , ontologias y logicas : amlia RDFS con restricciones logicas e inferencias complejas como cardinalidad, propiedades , equivalencias y disyunciones
+- SPARQL es el lengauje de consultas: Se usa para consutlar grafos RDF , incluyendo lo que se infirio en OWL
