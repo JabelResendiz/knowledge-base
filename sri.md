@@ -129,7 +129,7 @@ cos(\theta) = sim (d_j,q) = \frac{d_j * q}{|d_j|*|q|}
 $$
 
 - $$
-  tf_{i,j} = \frac{freq_{i,j}}{max_i freq_{i,j}} = \alpha +(1-\alpha)*\frac{freq_{i,j}}{max_ifreq_{i,j}}
+  tf_{i,j} = \frac{freq_{i,j}}{max_l freq_{l,j}} = \alpha +(1-\alpha)*\frac{freq_{i,j}}{max_l freq_{l,j}}
   $$
 
 donde $freq_{i,j}$ es la frecuencia del termino $t_i$ en el documento $d_j$. $max_i freq_{i,j}$ mayor frecuencia de todos los terminos de $d_j$
@@ -289,7 +289,7 @@ Mecanismo en que cierta proporcion de la salida de un sistema se redirige a la e
 
 **Consideracion**: Los vectores relevantes a una consulta son similares y tienen una diferencia notable con respecto a los no relevantes.
 
-Si se tiene que :
+Si se tiene que:
 
 1. $C_r$ es el conjunto de informacion relevante
 2. $C_{nr}$ es el conjunto de informacion no relevante
@@ -409,6 +409,33 @@ Es una matriz cuadrada y simetrica que cuenta cuantas veces coocurren dos termin
   * Reiniciar el router suele arreglar fallos de conexión.
   * Usar colores contrastantes mejora la legibilidad
 
+
+### Modelos de representacion del conocimiento
+
+#### Basado en reglas:
+
+- Uso de reglas IF_THEN (ej: Prolog)
+- Aplicacion: Expansion de consultas en SRI (Ej: Si la consulta es "virus" en informatica, annadir "Malware")
+- Ventajas: Transparencia , Desventaja : Mantenimiento complejo
+
+#### Orientado a objetos (marcos):
+
+- Organiza conocimiento en "objetos" con propiedades (ej: herencia en taxonomia como Ave-> Pinguino)
+- Usado en reconocimiento en patrones y planificacion
+
+#### Redes semanticas (herencia):
+
+- Grafos con nodos (conceptos) y aristas (relaciones con pesos positivos/negativos)
+- Ejemplo:
+  - Arista positiva: "Pajaro - Vuela"
+  - Arista negativa: "Fumar -> Salud Pulmonar"
+- Tipos de razonamiento: credulo, esceptico, idealmente esceptico
+
+### Aplicaciones en SRI
+
+- Expnasion de consultas: usar regals o redes semanticas para agregar terminos relacionados (ej: ordenador -> computadora)
+- Razonamiento automatico: Inferir informacion nueva a aprtir de conocimineto almacenado
+
 ## Conferencia #5 :Fundamentos de la representacion semantica
 
 ### Formas de representar las palabras
@@ -482,7 +509,6 @@ Es una matriz cuadrada y simetrica que cuenta cuantas veces coocurren dos termin
 
 Esto signifca " Juan tiene edad 30"
 
-
 #### SPARQL (SPARQL Protocol And RDF Query Language)
 
 - Lenguaje estandar del W3C disennado para consultar y manipular datos representados en RDF (Resource Description Framework) que es el modelo de datos base del Web Semantica
@@ -508,7 +534,6 @@ FILTER(?lugar = ex:Alemania)
 }
 
 ```
-
 
 #### Que es un sistema de conocimiento semantico?
 
