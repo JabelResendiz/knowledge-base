@@ -1,10 +1,8 @@
 # Resumen de Compilacion
 
-
 > Un lenguaje formal L es un conjunto de cadenas sobre un alfabeto, por ejemplo: *L=a,ab,abc*
 >
 > Un alfabeto V es un conjunto de símbolos. Por ejemplo: *V=a,b,c*
-
 
 ## Automata Finito Determinista
 
@@ -18,7 +16,6 @@ Formalmente  es una tupla $A= <V,Q,q_0, F, f>$ donde:
 - F es un subconjunto de estados "finales"
 - f es una funcion de transicion $VxQ \rightarrow Q$
 
-
 ### Lenguaje regular
 
 > Llamaremos **Lenguaje Regular** a todo lenguaje formal L tal que existe un automata finito determinista A tal que $ L= L(A)$ , es decir el automata solo reconoce las palabras del lenguaje.
@@ -29,3 +26,90 @@ Para demostrar que un lenguaje es regular por via directa hay que encontrar un F
 
 - Para el primer caso , $L \sub L(A)$ cogemos una cadena arbitraria de L y demostramos que cualquiera sea la secuencia de ejecucion de dicha cadena, debe terminar en un estado final
 - Para el segundo caso, cogemos una secuencia de ejecucion arbitraria que termina en un estado final y demostramos que corresponde a una cadena de L
+
+> El FDA es finito porque tiene una cantidad finita de estados y es determinista porque la funcion de transicion permite moverse a un solo estado siguiente para cualquier combinacion estado-simbolo.
+
+## Automata Finito No-Determinista
+
+Es la misma tupla pero mi funcion de transficion: $f : V x Q \rightarrow 2^Q $ 
+
+> Los lenguajes finitos no deterministas definen exactamnete el mismo conjunto de lenguajes que los finitos deterministas, es decir , los **Lenguajes Regulares** 
+
+> $\epsilon -clausura$ de un estado es el conjunto de estados que se pueden alcanzar a partir de solo transiciones $\epsilon$
+
+> GOTO de un conjunto de estados con un simbolo es el conjunto de estados para los cuales existe alguna transicion con ese simbolo en alguno de los estados del conjunto original (no es recursiva)
+>
+> $GOTO(S, a) = \{ q' | ∃ q ∈ S \text{ tq } q --a--> q' \}$
+
+### Algoritmo para convertir un AFND a un AFD
+
+* **Estado inicial del AFD** :
+
+  * Es `ε-closure({q₀})`, o sea, todos los estados accesibles desde `q₀` sin consumir símbolos.
+  * Lo llamamos `S₀`.
+* **Estados del AFD** :
+
+  * Cada **estado del AFD** será  **un conjunto de estados del AFN** , es decir, un subconjunto de `Q`.
+  * Por eso se dice que el conjunto de estados del AFD está en `2^Q` (conjunto potencia de `Q`).
+* **Transiciones** :
+
+  * Para cada conjunto `S` (estado del AFD) y para cada símbolo `x`, haces:
+
+    * `GOTO(S, x)` → los estados a los que puedes ir desde `S` con `x`
+    * `ε-closure(GOTO(S, x))` → añades todos los estados alcanzables desde esos por ε
+    * Ese nuevo conjunto será el nuevo estado en el AFD al que vas desde `S` con la letra `x`.
+* **Estados finales del AFD** :
+
+  * Un subconjunto `S` del AFD es final si  **contiene algún estado final del AFN original** .
+
+## Operaciones de Lenguajes Regulares
+
+### Union de lenguajes regulares
+
+Sean $L_1$ y $L_2$ lenguajes regulares, que sean reconocidos por al union de dos AFND. Pasos para construir mi automata de la union de esos lenguajes:
+
+#### 🛠️ Construcción paso a paso
+
+Supongamos:
+
+* `A₁ = (Q₁, Σ, δ₁, q₀₁, F₁)`
+* `A₂ = (Q₂, Σ, δ₂, q₀₂, F₂)`
+
+Queremos construir un **nuevo autómata A = (Q, Σ, δ, q₀, F)** tal que:
+
+##### 1. **Nuevo estado inicial**
+
+* Crea un nuevo estado `q₀` que no está en `Q₁ ∪ Q₂`
+
+##### 2. **Estados del nuevo autómata**
+
+* `Q = Q₁ ∪ Q₂ ∪ {q₀}`
+
+##### 3. **Función de transición**
+
+* La función de transición `δ` es igual a `δ₁` y `δ₂`,  **más** :
+  * `δ(q₀, ε) = {q₀₁, q₀₂}`
+
+    (Desde el nuevo estado inicial, con una  **ε-transición** , puedes ir al estado inicial de A₁ o A₂)
+
+##### 4. **Estados finales**
+
+* `F = F₁ ∪ F₂`
+
+### Complemento de un Lenguaje
+
+- Se convierte de AFND a AFD
+- Se invierten los estados finales si el AFD es completo
+- Sino :
+
+Si no lo está, debes  **completarlo** :
+
+#### Paso 1: Agrega un estado "pozo" o "trampa", `q_sink`
+
+Este es un **estado no final** que absorbe todo:
+
+* Para cada estado `q ∈ Q`, para cada símbolo `a ∈ Σ`:
+  * Si `δ(q, a)`  **no está definido** , entonces pon `δ(q, a) = q_sink`.
+* Desde `q_sink`, para **todo** símbolo `a ∈ Σ`, también `δ(q_sink, a) = q_sink`.
+
+Ahora el autómata está completo.
