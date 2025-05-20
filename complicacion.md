@@ -113,3 +113,46 @@ Este es un **estado no final** que absorbe todo:
 * Desde `q_sink`, para **todo** símbolo `a ∈ Σ`, también `δ(q_sink, a) = q_sink`.
 
 Ahora el autómata está completo.
+
+### Interseccion de conjuntos 
+
+$$
+L_1 \cap L_2 = (L_{1}^C \cup L^C_{2})^C
+$$
+
+$$
+L_1 - L_2 = L_1 \cap L_{2}^C
+$$
+
+### Multiplicacion de automatas
+
+Ahora vamos a construir directamente un autómata que reconozca la intersección de dos lenguajes $L_1$ y $L_2$ a partir de sus autómatas:
+
+
+* Sea $A_1 = (Q_1,\sum, \delta_1, q_{0,1},F_1)$ un automata para $L_1$
+* Sea $A_1 = (Q_2,\sum, \delta_2, q_{0,2},F_2)$
+
+### Construcción intuitiva:
+
+* El autómata que reconoce $L_1 \cap L_2$ tendra como estado el procuto cartesiano $Q = Q_1 x Q_2$
+* Esto significa que cada estado del nuevo autómata es un par $(q_1,q_2)$ donde $q_1 \in Q_1$ y $q_2 \in Q_2$
+* El estado inicial será $(q_{0,1}, q_{0,2})$
+* Las transiciones se definen para cada símbolo $a\in \sum$ asi:
+
+$$
+\delta((q_1,q_2),a) = (\delta_1(q_1,a),\delta_2(q_2,a))
+$$
+
+* Los estados finales serán todos los pares donde ambos componentes son finales:
+
+$$
+F = \{(q_1,q_2) | q_1 \in F_1 \text{ y } q_2 \in F_2\}
+$$
+
+## Lema del Bombeo
+
+> Sea $L$ un lenguaje regular. Existe entonces una constante $n$ (que depende de $L$) tal que para toda cadena $w$ perteneciente a $L$ con $|w| \geq n$ , podemos descomponer $w$ en tres cadenas , $w=xyz$ , tales que :
+>
+> 1. $|y| \geq 1$
+> 2. $|xy| \leq n$
+> 3. Para todo $k \geq 0$ , la cadena $xy^kz$ tambien pertenecen a $L$
