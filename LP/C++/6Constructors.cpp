@@ -20,14 +20,15 @@ public:
         cout << "Copy Constructor Called!" << endl; 
     }
     Example(Example&& other) { 
-        value = other.value;
-        other.value = nullptr;
+        value = other.value; // transfiere la propiedad de la memoria 
+        other.value = nullptr; // anula el puntero original para evitar que lo libere
         cout << "Move Constructor Called!" << endl; 
     }
     ~Example() {
-        if (value) {
+        if (value) { // verifica si el ptr no es nulo
             cout << "Destructor: Memory deleted" << endl;
-            delete value;
+            delete value; // libera la memoria que value estaba apuntando en el heap
+            
         } else {
             cout << "Destructor: No memory to delete" << endl;
         }
