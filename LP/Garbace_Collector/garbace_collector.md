@@ -116,8 +116,8 @@ En C++, la gestión de memoria es  **responsabilidad del programador** :
   - ```rust
     let len = calcular_longitud(&s); // Presta 's' sin tranferir propiedad
     ```
-  - ```
-
+  - ```rust
+     fn longest<'a>(x: &'a str, y: &'a str) -> &'a str { ... }; //El compilador verifica que las referencias no sobrevivan a sus dueños.
     ```
   - Ventajas:
     - Sin GC: maximo rendimiento
