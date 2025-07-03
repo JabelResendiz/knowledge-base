@@ -1,0 +1,78 @@
+name: Compile & Run C++ Files
+
+on:
+  workflow_dispatch: # Esto permite la ejecución manual desde la interfaz de GitHub
+
+jobs:
+  build_and_run:
+    runs-on: ubuntu-latest # Usaremos una máquina virtual Linux para la ejecución
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4 # Clona tu repositorio en la máquina virtual
+
+    - name: Set up C++ Build Environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y g++ # Instala el compilador g++
+
+    - name: Navigate to C++ files directory
+      id: set_dir
+      run: |
+        echo "CPP_DIR=$(pwd)/privated/LP/c++/c++" >> $GITHUB_OUTPUT
+        cd privated/LP/c++/c++ # Cambia al directorio donde están tus archivos C++
+      
+    - name: Compile and Run C++ Files
+      id: compile_run
+      run: |
+        OUTPUT_FILE="cpp_results.txt"
+        CPP_DIR="${{ steps.set_dir.outputs.CPP_DIR }}" # Obtiene el path del output anterior
+
+        echo "--- C++ Compilation and Execution Results ---" > "$OUTPUT_FILE"
+        echo "Generated on: $(date)" >> "$OUTPUT_FILE"
+        echo "Repository: ${{ github.repository }}" >> "$OUTPUT_FILE"
+        echo "Commit: ${{ github.sha }}" >> "$OUTPUT_FILE"
+        echo "" >> "$OUTPUT_FILE"
+
+        # Bucle para encontrar y compilar cada archivo .cpp
+        for cpp_file in "$CPP_DIR"/*.cpp; do
+          if [ -f "$cpp_file" ]; then # Verifica que sea un archivo
+            filename=$(basename -- "$cpp_file") # Obtiene el nombre del archivo (ej. archivo1.cpp)
+            executable_name="${filename%.cpp}"   # Obtiene el nombre sin .cpp (ej. archivo1)
+
+            echo "--- Processing: $filename ---" | tee -a "$OUTPUT_FILE" # Muestra en consola y añade al TXT
+            echo "--- Processing: $filename ---" >> "$OUTPUT_FILE" # Solo al TXT para el formato final
+            
+            # Compilación
+            g++ "$cpp_file" -o "$executable_name" 2>&1
+            compile_status=$? # Captura el código de salida de la compilación
+
+            if [ $compile_status -eq 0 ]; then
+              echo "  Compilation: SUCCESS" | tee -a "$OUTPUT_FILE"
+              echo "  Compilation: SUCCESS" >> "$OUTPUT_FILE"
+              echo "  Executing: $executable_name" | tee -a "$OUTPUT_FILE"
+              echo "  Executing: $executable_name" >> "$OUTPUT_FILE"
+              
+              # Ejecución y captura de salida
+              ./"$executable_name" 2>&1 | sed 's/^/    /' | tee -a "$OUTPUT_FILE" # Redirecciona y añade indentación
+              echo "  Execution finished." | tee -a "$OUTPUT_FILE"
+              echo "  Execution finished." >> "$OUTPUT_FILE"
+            else
+              echo "  Compilation: FAILED" | tee -a "$OUTPUT_FILE"
+              echo "  Compilation: FAILED" >> "$OUTPUT_FILE"
+              echo "  Error details:" | tee -a "$OUTPUT_FILE"
+              # Añadir los errores de compilación directamente al archivo de salida
+              g++ "$cpp_file" -o /dev/null 2>&1 | sed 's/^/    /' | tee -a "$OUTPUT_FILE" 
+              echo "  Compilation errors finished." | tee -a "$OUTPUT_FILE"
+              echo "  Compilation errors finished." >> "$OUTPUT_FILE"
+            fi
+            echo "" >> "$OUTPUT_FILE" # Línea en blanco para separar
+          fi
+        done
+      working-directory: ${{ steps.set_dir.outputs.CPP_DIR }} # Asegúrate de que el script se ejecuta en el directorio correcto
+    
+    - name: Upload Results
+      uses: actions/upload-artifact@v4 # Sube el archivo de resultados como un artefacto
+      with:
+        name: cpp-execution-results
+        path: ${{ steps.set_dir.outputs.CPP_DIR }}/cpp_results.txt # Ruta del archivo de salida
