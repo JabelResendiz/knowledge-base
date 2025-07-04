@@ -16,22 +16,22 @@ public class Person
 	public string LastName {get;set;}
 
 	// para aceeso por diccionario
-private Dictionary<string,object> properties = new Dictionary,string,object>();
+	private Dictionary<string,object> properties = new Dictionary,string,object>();
 
-public object this[string key]
-{
+	public object this[string key]
+	{
 get => properties.ContainsKey(key) ? properties[key] : null;
 set => properties[key] = value ;
 }
 
 // Fluent interface
-public Person FirstName (string firstName)
+	public Person FirstName (string firstName)
 {
 FirstName = firstName;
 return this;
 }
 
-public Person LastName(string lastName)
+	public Person LastName(string lastName)
 {
 LastName = lastName;
 return this;
@@ -43,12 +43,12 @@ return this;
 
 public static class Factory
 {
-public static dynamic New = new DynamicFactory();
+	public static dynamic New = new DynamicFactory();
 }
 
 public class DynamicFactory: DynamicObject
 {
-public override bool TryGetMember(GetMemberBinder binder, out object result)
+	public override bool TryGetMember(GetMemberBinder binder, out object result)
     {
         if (binder.Name == "Person")
         {

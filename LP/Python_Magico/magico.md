@@ -86,3 +86,62 @@ print(m[0, 2])  # Llama a __getitem__ con indices=(0, 2) → 5
 | `__iter__(self)` | `for x in obj` | Objeto iterador                     |
 | `__next__(self)` | Iteración       | Siguiente valor o `StopIteration` |
 | `__len__(self)`  | `len(obj)`     | Longitud (entero)                   |
+
+```python
+class Rango:
+    def __iter__(self):
+        self.n = 0
+        return self
+  
+    def __next__(self):
+        if self.n >= 10:
+            raise StopIteration
+        self.n += 1
+        return self.n
+```
+
+
+| Método                   | Trigger   | Uso                               |
+| ------------------------- | --------- | --------------------------------- |
+| `__call__(self, *args)` | `obj()` | Hace que un objeto sea "llamable" |
+
+
+```python
+class Multiplicador:
+    def __call__(self, x, y):
+        return x * y
+
+mul = Multiplicador()
+mul(5, 3)  # → 15 (igual que mul.__call__(5, 3))
+```
+
+
+
+```python
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+  
+    def __add__(self, otro):
+        return Vector(self.x + otro.x, self.y + otro.y)
+  
+    def __mul__(self, escalar):
+        return Vector(self.x * escalar, self.y * escalar)
+  
+    def __repr__(self):
+        return f"Vector({self.x}, {self.y})"
+  
+    def __len__(self):
+        return 2  # Siempre 2D
+  
+    def __getitem__(self, i):
+        return [self.x, self.y][i]
+
+# Uso
+v1 = Vector(1, 2)
+v2 = Vector(3, 4)
+print(v1 + v2)  # Vector(4, 6)
+print(v1 * 3)   # Vector(3, 6)
+print(v1[1])    # 2
+```
