@@ -161,9 +161,6 @@ var textos = numeros.Select((num, index) => $"Número {num} en posición {index}
 // textos = ["Número 1 en posición 0", "Número 2 en posición 1", ...]
 ```
 
-
-
-
 ### Python y La Programacion Funcional
 
 ```python
@@ -188,7 +185,6 @@ cuadrados = [x**2 for x in numeros]  # [1, 4, 9, 16]
 
 ```
 
-
 - Importante tener en cuenta que trabajan bajo demanda( osea no crea un IEnumerable `<T>` )
 
 | **Característica**    | **C#**                                 | **Python**                                |
@@ -198,7 +194,6 @@ cuadrados = [x**2 for x in numeros]  # [1, 4, 9, 16]
 | **Expresiones Lambda** | Sintaxis más verbosa (`=>`).              | Sintaxis concisa (`lambda x: x + 1`).         |
 | **Herramientas FP**    | LINQ,`Func<>`, `Action<>`.               | `map`, `filter`, `reduce`, `itertools`. |
 | **Tipado**             | Estático (mejor soporte para FP genérica). | Dinámico (más flexible pero menos seguro).    |
-
 
 ## 9- Decoradores
 
@@ -294,4 +289,60 @@ Func<int,int> Doblar = x=> x*2;
 var DoblarDecorado = Decorador(Doblar);
 
 Console.WriteLine(DoblarDecorado(5)); // 10
+```
+
+## 10- Dynamic C#
+
+- `dynamic` es un tipo introducido en C# 4.0
+- Permite desactviar la verificacion estatica de tipos en tiempo de compilacion y resolver operaciones en timepo de ejecucion
+- Es decir, cuando usar una variable `dynamic`, el compilador no verifica que los metodos o propiedades existan. La comprobacion y la ejecucion se resuelven en tiempo de ejecucion
+- Permite trabajar con objetos que no conoces hasta que se ejecuta el programa (por ejemplo, objetos COM, objetos JSON dinamicos, etc)
+
+```csharp
+dynamic d = "Hola";
+Console.WriteLine(d.Length); // OK , Length existe en string
+
+d= 123;
+Console.WriteLine(d.Length); // No da error en compilacion, pero en ejecucion lanza RuntimeBinderExecption
+
+```
+
+### Cuando usar `dynamic` ?
+
+- Cuando trabajas con APIs dinamicos (COM,JSON,XML)
+- Para interoperar con lenguajes dinamicos (Python, JS)
+- Para simplificar reflexion y acceso a objetos desconocidos
+- Para facilitar la escritura de codigo flexible o prototipos rapidos
+
+| Ventajas                       | Desventajas                                     |
+| ------------------------------ | ----------------------------------------------- |
+| Código más simple y flexible | Sin verificación estática de tipos            |
+| Permite llamadas dinámicas    | Errores detectados solo en tiempo de ejecución |
+| Útil para objetos dinámicos  | Menor rendimiento (binding en tiempo real)      |
+
+### Clase DyanmicObject
+
+- Es una clase base en `System.Dynamic` que permite crear objetos personalizados con coportamiento dinamico
+- Al heredar de `DyanmicObject` , puedes controlar que pasa cuando se acceden a propiedades, metodos , indices
+- Muy util para crear objetos que simulan ser dinamicos (por ejemplo , wrappers, proxies, objetos que cambian sus estrcutra en runtime)
+
+### Metodo mas comunes de  `DyanmicObject`
+
+* `TryGetMember(GetMemberBinder binder, out object result)`: controla la lectura de propiedades.
+* `TrySetMember(SetMemberBinder binder, object value)`: controla la escritura de propiedades.
+* `TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)`: controla la llamada a métodos.
+* `TryGetIndex`, `TrySetIndex`: para acceso a índices (como arrays).
+* Otros para operaciones aritméticas, conversión, etc.
+
+
+```csharp
+using System;
+using System.Dynamic;
+using System.Collections.Generic;
+
+public class DynamicDictionary : DynamicObject
+{
+
+}
+
 ```
