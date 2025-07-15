@@ -1,10 +1,8 @@
-## Python Magico 
-
+## Python Magico
 
 ### metodos built-in (funciones integradas)
 
 Son funciones predefinidas en Python que estan disponibles sin necesidad de importar modulos
-
 
 | Función     | Descripción                      | Ejemplo                            |
 | ------------ | --------------------------------- | ---------------------------------- |
@@ -18,15 +16,12 @@ Son funciones predefinidas en Python que estan disponibles sin necesidad de impo
 | `sorted()` | Ordena un iterable                | `sorted([3, 1, 2]) → [1, 2, 3]` |
 | `eval()`   | Evalúa una expresión en string  | `eval("2 + 3 * 4") → 14`        |
 
-
-### metodos magicos(dunder methods)
+### Metodos magicos(dunder methods)
 
 Son métodos especiales que Python llama automáticamente en ciertas situaciones. Empiezan y terminan con doble guión bajo (`__metodo__`). Python los llam internamente. Permite definir como responden los objetos a operadores como +,-,*,...
 
 - Control acceso a atributos `(__getattr__)` llamadas a funciones `__call__`
 - Se usan implicitamente (aunque puedes llamarlos manualmente si es necesario)
-
-
 
 ### **1. Creación y Destrucción de Objetos**
 
@@ -36,13 +31,11 @@ Son métodos especiales que Python llama automáticamente en ciertas situaciones
 | `__init__(self)` | `Objeto()` | Constructor (inicialización)                  |
 | `__del__(self)`  | GC/del       | Destructor (poco usado)                        |
 
-
 | Método              | Trigger                      | Debe Retornar                                                  |
 | -------------------- | ---------------------------- | -------------------------------------------------------------- |
 | `__str__(self)`    | `print(obj)`, `str(obj)` | String legible                                                 |
 | `__repr__(self)`   | Consola,`repr(obj)`        | String técnico (idealmente código válido) es para los print |
 | `__format__(self)` | `format(obj)`              | Representación formateada                                     |
-
 
 | Método                     | Operador | Ejemplo      |
 | --------------------------- | -------- | ------------ |
@@ -52,16 +45,12 @@ Son métodos especiales que Python llama automáticamente en ciertas situaciones
 | `__truediv__(self, otro)` | `/`    | `v1 / 2`   |
 | `__eq__(self, otro)`      | `==`   | `v1 == v2` |
 
-
-
-
 | Método                          | Trigger                      | Uso                               |
 | -------------------------------- | ---------------------------- | --------------------------------- |
 | `__getitem__(self, key)`       | `obj[key]`                 | Acceso como secuencia/diccionario |
 | `__setitem__(self, key, val)`  | `obj[key] = val`           | Asignación                       |
 | `__getattr__(self, name)`      | `obj.atributo_inexistente` | Manejo de atributos faltantes     |
 | `__setattr__(self, name, val)` | `obj.atributo = val`       | Intercepta asignaciones           |
-
 
 ```python
 class Matriz:
@@ -79,7 +68,6 @@ m[0, 2] = 5  # Llama a __setitem__ con indices=(0, 2), valor=5
 print(m[0, 2])  # Llama a __getitem__ con indices=(0, 2) → 5
 
 ```
-
 
 | Método            | Trigger          | Debe Retornar                       |
 | ------------------ | ---------------- | ----------------------------------- |
@@ -100,11 +88,9 @@ class Rango:
         return self.n
 ```
 
-
 | Método                   | Trigger   | Uso                               |
 | ------------------------- | --------- | --------------------------------- |
 | `__call__(self, *args)` | `obj()` | Hace que un objeto sea "llamable" |
-
 
 ```python
 class Multiplicador:
@@ -114,8 +100,6 @@ class Multiplicador:
 mul = Multiplicador()
 mul(5, 3)  # → 15 (igual que mul.__call__(5, 3))
 ```
-
-
 
 ```python
 class Vector:

@@ -5,9 +5,8 @@
 Consiste en un mecanismo que **libera automáticamente la memoria** que ya no está en uso por el programa. El recolector de basura:
 
 * **Identifica objetos no accesibles** (que ya no tienen referencias).
-* **Libera su memoria** para evitar fugas ( *memory leaks* ) 
+* **Libera su memoria** para evitar fugas ( *memory leaks* )
 * **Reduce errores** como *dangling pointers* (punteros que apuntan a memoria ya liberada).
-
 
 #### **Manejo Manual en C++**
 
@@ -25,9 +24,9 @@ En C++, la gestión de memoria es  **responsabilidad del programador** :
 
 ### 1.Conteo de Referencias
 
-- Cada objeto posee un contador que registra las referencias que apuntan hacia el. Este conteador se incrementa al crear una referencia y disminuye al eliminarla. El objeto se liberea cuando el contador llega a cero.
-- Entre las ventajas esta: Liberacion inmediata de memoria sin esperas y la baja latencia en operaciones individuales
-- Entre las desventajas estas: no detecta ciclos de referencias y sobrecarga por actaulizar contadores cstemente
+- Cada objeto posee un contador que registra las referencias que apuntan hacia el. Este conteador se incrementa al crear una referencia y disminuye al eliminarla. El objeto se libera cuando el contador llega a cero.
+- Entre las ventajas esta: Liberacion inmediata de memoria sin esperas y la baja latencia en operaciones individuales.
+- Entre las desventajas estas: No detecta ciclos de referencias y sobrecarga por actaulizar contadores cstemente.
 
 ### 2.Marcar y Barrer (Mark and Sweep)
 
@@ -105,7 +104,6 @@ En C++, la gestión de memoria es  **responsabilidad del programador** :
   - Identifica a basura rastreando objetos vivos desde la raiz (ej Mark and sweep , geenrational GC).  Su ventajas es que manjea ciclos y heaps complejos, pero su desventajas son las pausas largas
 - Non-Tracing:
   - Utiliza metadatos externos, como conteo de referneicas. Su ventaja es que no genera pausas largas, pero su desventajaj es que no maneja cilos sin ayuda adicional.
-
 
 ## Manejo de Memoria en Diferentes Lenguajes
 
