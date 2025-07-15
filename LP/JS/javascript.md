@@ -40,7 +40,6 @@ function Person(nombre,edad)
 let persona1 = new Persona('Mario',25);
 ```
 
-
 ### Prototipos y Herencia
 
 - Cada objetos en JS tiene una referencia interna a otro objeto llamado su prototipo. Asi como JS logra la herencia: si un objeto no tiene una propiedad o metodo determinado, busca en su prototipo y luego en el prototipo de su prototipo y asi sucesivmente hasta que lo encuentre o llega al final de la cadena (donde el prototipo es null) . Esto permite que los objetos compartan y reutilicen codigo.
@@ -179,3 +178,6 @@ Michi maúlla
 Desconocido hace un sonido genérico
 */
 ```
+
+
+### JavaScript: Herencia Multiple

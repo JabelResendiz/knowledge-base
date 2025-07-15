@@ -1,84 +1,149 @@
 ﻿
-Animal[] patos = new Pato[3];
-Animal[] leones = new Leon[3];
-
-//patos[2] = new Leon(); 
-// error en tiempo de ejecucion , porque cuando en tiempo de ejecucion se realiza el chequeo en realidad patos[0] es de tipo Pato , no acepta Animal
-// pero el compilador lo deja pasar porque se tipo que era de tipo Animal , primero
-
-Animal pato = new Pato();
-
-pato.Accion();
+// using Genericidad;
 
 
-static (int min, int max) MinMax(int[] a)
+// Animal[] patos = new Pato[3];
+// Animal[] leones = new Leon[3];
+
+// //patos[2] = new Leon(); 
+// // error en tiempo de ejecucion , porque cuando en tiempo de ejecucion se realiza el chequeo en realidad patos[0] es de tipo Pato , no acepta Animal
+// // pero el compilador lo deja pasar porque se tipo que era de tipo Animal , primero
+
+// // Animal pato = new Pato();
+
+// // pato.Accion();
+
+
+
+
+
+
+
+
+// public class Animal
+// {
+
+//     public void Accion()
+//     {
+//         Console.WriteLine("no hace nada");
+//     }
+
+// }
+
+
+// public class Pato : Animal
+// {
+
+//     public void Accion()
+//     {
+//         Console.WriteLine("Cuac, cuac");
+//     }
+
+
+//     public void Graznar()
+//     {
+//         Console.WriteLine("graznar graznar");
+//     }
+// }
+
+
+// public class Leon : Animal
+// {
+//     public void Accion()
+//     {
+//         Console.WriteLine("Roar,roar");
+//     }
+
+
+// }
+
+
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace Genericidad
 {
-    if (a == null) throw new ArgumentNullException("Parametro null");
-    else if (a.Length == 0) throw new ArgumentException("Array vacío");
-    else
+    class Program
     {
-        (int min, int max) result = (a[0], a[0]);
-        for (int i = 1; i < a.Length; i++)
+        static void Main(string[] args)
         {
-            if (a[i] <= result.min) result.min = a[i];
-            else if (a[i] >= result.max) result.max = a[i];
+            try
+            {
+                string rutaArchivo = "C:\\Users\\HP\\Documents\\Github\\REST_API_CLIENT\\privated\\lp_c#\\MK_Films.json";
+                string jsonString = File.ReadAllText(rutaArchivo);
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                List<Film> films = JsonSerializer.Deserialize<List<Film>>(jsonString, options);
+
+                // Console.WriteLine("FILMS");
+                // foreach (var f in films)
+                // {
+                //     Console.WriteLine(f);
+                //     Console.WriteLine(new string('-', 40));
+                // }
+
+                Agrupar<string, Film> filmsAgrupados = new Agrupar<string, Film>(films);
+                var filmsByDirector = filmsAgrupados.GroupBy((f) => f.director);
+
+                foreach (var g in filmsByDirector)
+                {
+                    Console.WriteLine($"\nDirector: {g.Key}");
+                    foreach (var f in g)
+                    {
+                        Console.WriteLine($"- {f.titulo}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
         }
-        return result;
-    }
-}
-
-var elems = new int[] { 100, 50, 120, 70, 200 };
-var r = MinMax(elems);
-Console.WriteLine($"Minimo {r.min} Maximo {r.max}");
-var r_original = r; // se coppia no apunta a la misma ubicacion
-Console.WriteLine($"r {r} y r_original {r_original}");
-r.max = 1000;
-//Se puede "cambiar" una componente del tuplo, lo que hace es crear otro tuplo
-Console.WriteLine($"r cambiado {r}");
-Console.WriteLine($"el r original {r_original}");
-//Console.WriteLine(r[1]); //No se puede indizar una componente de un tuplo
-r.Item1 = -1000;
-//Me puedo referir a las componentes de forma directa por su posición
-//Pero empiezan en Item1
-Console.WriteLine($"({r.Item1},{r.Item2})");
-
-
-
-
-
-public class Animal
-{
-
-    public void Accion()
-    {
-        Console.WriteLine("no hace nada");
     }
 
-}
-
-
-public class Pato : Animal
-{
-
-    public void Accion()
+    public class Film
     {
-        Console.WriteLine("Cuac, cuac");
+        public string titulo { get; set; }
+        public List<string> pais { get; set; }
+        public string fecha { get; set; }
+        public string director { get; set; }
+        public List<string> genero { get; set; }
+
+        [JsonPropertyName("actores_principales")]
+        public List<string> Actores { get; set; }
+        public double imdb { get; set; }
+
+        public override string ToString()
+        {
+            return $"Título: {titulo}\nFecha: {fecha}\nPais(es): {string.Join(", ", pais)}\nDirector: {director}\n" +
+                   $"Género(s): {string.Join(", ", genero)}\nActores principales: {string.Join(", ", Actores)}\nIMDb: {imdb}";
+        }
     }
 
-
-    public void Graznar()
+    public interface IAgruparPor<T, R>
     {
-        Console.WriteLine("graznar graznar");
+        T Key { get; }
+        IEnumerable<R> Values { get; }
+    }
+
+    public class Agrupar<T, R> 
+    {
+        public List<R> List { get; }
+        
+        public Agrupar(List<R> list)
+        {
+            List = list ?? throw new ArgumentNullException(nameof(list));
+        }
+
+        public IEnumerable<IAgruparPor<T, R>> GroupBy(Func<R, T> keySelector)
+        {
+            return List.GroupBy(keySelector).Select(g=> new AgruparPor<T,R>(g.Key,g));
+        }
     }
 }
 
 
-public class Leon : Animal
-{
-    public void Accion()
-    {
-        Console.WriteLine("Roar,roar");
-    }
-
-
-}

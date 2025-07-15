@@ -1,0 +1,137 @@
+[
+  {
+    "titulo": "El padrino",
+    "pais": ["Estados Unidos"],
+    "fecha": "1972",
+    "director": "Francis Ford Coppola",
+    "genero": ["Crimen", "Drama"],
+    "actores_principales": ["Marlon Brando", "Al Pacino", "James Caan"],
+    "imdb": 9.2
+  },
+  {
+    "titulo": "Cadena perpetua",
+    "pais": ["Estados Unidos"],
+    "fecha": "1994",
+    "director": "Frank Darabont",
+    "genero": ["Drama"],
+    "actores_principales": ["Tim Robbins", "Morgan Freeman", "Bob Gunton"],
+    "imdb": 9.3
+  },
+  {
+    "titulo": "La lista de Schindler",
+    "pais": ["Estados Unidos"],
+    "fecha": "1993",
+    "director": "Steven Spielberg",
+    "genero": ["Biografía", "Drama", "Historia"],
+    "actores_principales": ["Liam Neeson", "Ralph Fiennes", "Ben Kingsley"],
+    "imdb": 9.0
+  },
+  {
+    "titulo": "Pulp Fiction",
+    "pais": ["Estados Unidos"],
+    "fecha": "1994",
+    "director": "Quentin Tarantino",
+    "genero": ["Crimen", "Drama"],
+    "actores_principales": ["John Travolta", "Uma Thurman", "Samuel L. Jackson"],
+    "imdb": 8.9
+  },
+  {
+    "titulo": "El bueno, el feo y el malo",
+    "pais": ["Italia", "España"],
+    "fecha": "1966",
+    "director": "Sergio Leone",
+    "genero": ["Western"],
+    "actores_principales": ["Clint Eastwood", "Eli Wallach", "Lee Van Cleef"],
+    "imdb": 8.8
+  },
+  {
+    "titulo": "Forrest Gump",
+    "pais": ["Estados Unidos"],
+    "fecha": "1994",
+    "director": "Robert Zemeckis",
+    "genero": ["Drama", "Romance"],
+    "actores_principales": ["Tom Hanks", "Robin Wright", "Gary Sinise"],
+    "imdb": 8.8
+  },
+  {
+    "titulo": "Origen",
+    "pais": ["Estados Unidos", "Reino Unido"],
+    "fecha": "2010",
+    "director": "Christopher Nolan",
+    "genero": ["Acción", "Aventura", "Ciencia ficción"],
+    "actores_principales": ["Leonardo DiCaprio", "Joseph Gordon-Levitt", "Elliot Page"],
+    "imdb": 8.8
+  },
+  {
+    "titulo": "El club de la lucha",
+    "pais": ["Estados Unidos"],
+    "fecha": "1999",
+    "director": "David Fincher",
+    "genero": ["Drama"],
+    "actores_principales": ["Brad Pitt", "Edward Norton", "Helena Bonham Carter"],
+    "imdb": 8.8
+  },
+  {
+    "titulo": "El señor de los anillos: El retorno del rey",
+    "pais": ["Nueva Zelanda", "Estados Unidos"],
+    "fecha": "2003",
+    "director": "Peter Jackson",
+    "genero": ["Aventura", "Drama", "Fantasía"],
+    "actores_principales": ["Elijah Wood", "Viggo Mortensen", "Ian McKellen"],
+    "imdb": 9.0
+  },
+  {
+    "titulo": "La vida es bella",
+    "pais": ["Italia"],
+    "fecha": "1997",
+    "director": "Roberto Benigni",
+    "genero": ["Comedia", "Drama", "Romance"],
+    "actores_principales": ["Roberto Benigni", "Nicoletta Braschi", "Giorgio Cantarini"],
+    "imdb": 8.6
+  },
+  {
+    "titulo": "Ciudad de Dios",
+    "pais": ["Brasil", "Francia"],
+    "fecha": "2002",
+    "director": "Fernando Meirelles",
+    "genero": ["Crimen", "Drama"],
+    "actores_principales": ["Alexandre Rodrigues", "Leandro Firmino", "Matheus Nachtergaele"],
+    "imdb": 8.6
+  },
+  {
+    "titulo": "Parásitos",
+    "pais": ["Corea del Sur"],
+    "fecha": "2019",
+    "director": "Bong Joon-ho",
+    "genero": ["Comedia", "Drama", "Thriller"],
+    "actores_principales": ["Kang-ho Song", "Sun-kyun Lee", "Yeo-jeong Jo"],
+    "imdb": 8.5
+  },
+  {
+    "titulo": "El viaje de Chihiro",
+    "pais": ["Japón"],
+    "fecha": "2001",
+    "director": "Hayao Miyazaki",
+    "genero": ["Animación", "Aventura", "Familia"],
+    "actores_principales": ["Rumi Hiiragi", "Miyu Irino", "Mari Natsuki"],
+    "imdb": 8.6
+  },
+  {
+    "titulo": "Casablanca",
+    "pais": ["Estados Unidos"],
+    "fecha": "1942",
+    "director": "Michael Curtiz",
+    "genero": ["Drama", "Romance", "Guerra"],
+    "actores_principales": ["Humphrey Bogart", "Ingrid Bergman", "Paul Henreid"],
+    "imdb": 8.5
+  },
+  {
+    "titulo": "Psicosis",
+    "pais": ["Estados Unidos"],
+    "fecha": "1960",
+    "director": "Alfred Hitchcock",
+    "genero": ["Terror", "Misterio", "Thriller"],
+    "actores_principales": ["Anthony Perkins", "Janet Leigh", "Vera Miles"],
+    "imdb": 8.5
+  }
+]
