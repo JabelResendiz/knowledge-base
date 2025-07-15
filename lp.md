@@ -211,7 +211,28 @@ print(a)  # Output: [99, 2, 3] (¡Se modificó 'a' también!)
 ## conferencia 6: interfaces y genericidad
 
 - range(n) en python se ejecuta primer en el ciclo, y no se comprueba de nuevo en cada iteracion
-- covarianze: Si `A` es subtipo de `B`, entonces Container `<A> es sutipo de Container<B>`
+- covarianza: Permitir usar un tipo mas derivado donde se espera uno meno derivado(padre)
+
+```csharp
+object[] objetos = new string[3]; // Covarianza: string[] -> object []
+objetos[0]= "Hola";
+objetos[1] = 123; // ❌ Error en runtime (ArrayTypeMismatchException)
+```
+
+- contravarianza: Permite usar un tipo **menos derivado** (padre) donde se espera uno **más derivado** (hijo).
+
+```csharp
+Action<object> actObject = obj => Console.WriteLine(obj);
+Action<string> actString = actObject; // Contravarianza: Action<object> → Action<string>
+actString("Hola"); // Válido
+```
+
+- Invarianza: Cuando **no** se permite ni covarianza ni contravarianza. El tipo debe ser exacto.
+
+```csharp
+List<string> strings = new List<string>();
+List<object> objetos = strings; // ❌ Error de compilación (List<T> es invariante)
+```
 
 ## conferencia 7: herencia, interfaces y bindings
 
@@ -365,8 +386,8 @@ cuadrados = [x**2 for x in numeros]  # [1, 4, 9, 16]
 ### **. Decoradores en Python**
 
 ```python
-def decorador(func):
-    def wrapper(*args, ** kwargs):
+def decorador(func): #-> recibe la funcion principal
+    def wrapper(*args, ** kwargs):   #-> parametros de la funcion principal
 	print("Antes de llamar ala funcion")
 	result = func(*args, **kwargs)
 	print("Despues de llamar a al funcion")
@@ -411,6 +432,8 @@ def sumar(int a ,int b):
 sumar (2,3)
 
 ```
+
+Si mi decorador recibiese paramtros entonces es necesario crear una funcion mas externa aun, que reciba esos dos parametros.
 
 ### Decoradores en C#
 
