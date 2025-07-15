@@ -1,4 +1,162 @@
-## conferenci #5 : Arrays
+## conferencia #2: Memoria
+
+```python
+class Animal:
+    def Accion(self):
+        print("No hace nada")
+
+class Leon(Animal):
+    def Accion(self):
+        print("Goar, Goar")
+
+class Pato(Animal):
+    def Accion(self):
+        print("Cuac,cuac")
+
+
+Patos = [Pato(), Pato(), Pato(),Pato()] #lista con 4 patos
+Leons = [Leon(),Leon(),Leon(),Leon()]  #lista con 4 leones
+animales = Patos        # comparten el mismo espacio de memoria
+Patos[3] = Leon()      # modificamos el valor del 4to pato
+animales[3].Accion()   #llamamos al metodo compartido
+
+#Output : Goar,Goar
+```
+
+es por referencia
+
+### C#
+
+```csharp
+Telefono t1 = new Telefono(200);
+Telefono t2 = new Telefono(300);
+```
+
+1. Se guarda en la pila las referencias ( `t1`  y ` t2`) que generalmente ocupan unos 4 bytes u 8 bytes . Solo contiene la direccion de memoria donde esta cada objeto real en el heap
+2. Se gaurda en el heap  el objeto real (con sus datos). Cada objeto contiene una cabecera (que contiene un puntero a su tipo y ese tipo contiene la vtable compartida )
+3. La vtalbe se guarda en un espacio aparte llamado el Loader Heap (area especial del CLR)
+
+![1752533951552](image/lp/1752533951552.png)
+
+### Python
+
+```python
+telf1 = Telefono(200)
+telf2 = Telefono(300)
+```
+
+1. Solo almacena las referencias `telf1` y `telf2` que son punteros a objetos
+2. En el heap se almacena cada objeto con cabecera del objeto, atributso de instancia
+3. Los metodos se almancena en el diccionario de la clase , donde cada clase tiene un `__dict__` que contiene todos los metodos ( como una vtable)
+4. Cuando llamas a `telf1.Llamar()`, se busca en el objeto `telf1.__dict__` , si no lo encuentra busca en la clase `telefono.__dict__` , si no esta sigue el curso de la herencia
+
+![1752533695096](image/lp/1752533695096.png)
+
+## Conferencia 3: Formas de procesamiento
+
+### Compilado a Codigo Nativo (Varias pasadas)
+
+1. EL compilador traduce todo el codigo fuente a lengauje maquina `especifio para una arquitectura`
+2. Suele tener mutiples fases (lexico, sintactico, optimizaciones)
+3. Genera un ejecutable binario independiente
+4. Maximo rendimiento
+5. No necesita runtime adicional
+6. `C/C++, Rust, Fortran, Go`
+
+### Interpretado-Ejecutado Directamente del Codigo Fuente
+
+1. EL interprete lee y ejecuta linea por linea
+2. No hay fase de compilacion previa
+3. EL codigo fuente puede ejecutarse en cualquier plataforma con el interprete
+4. Mayor portabilidad
+5. Mas lento que los compilados
+6. Permite caracterisitcas dinamicas(eval, modificar codigo en ejecucion)
+7. `Python, JavaScript, Ruby, Bash/Shell Scripting`
+
+### Compilado a Codigo Intermedio + Maquina Virtual
+
+1. Compilador traduce a bytecode intermedio
+2. maquina virtual (JWM, CLR) ejecuta el bytecode
+3. Suele incluir JIT (compilacion Just-In-Time)
+4. Balance entre rendimiento y portabilidad
+5. Recoleccion de basura automatica
+6. Verficiacion de tipos en tiempo de ejecucion
+7. `Java(compilado a bytecode ejecutado por JWM) y C# (compilado a CIL, ejecutado por CRL), Kotlin (compila a JWM como Java)`
+
+### Compilado a Lenguaje Intermedio - Generacion de Codigo Nativo
+
+1. Primera Fase: Compilacion a IR
+2. Segunda Fase: Generacion de codgio nativo especfico
+3. Pemite optimizaciones avanzadas
+4. Alto rendimiento cercano a nativo
+5. soporte mutipltaforma (el IR es el mismo para todos)
+6. Fase de compilacion mas compleja
+7. `HULK, Swift , Rust (usa LLVM como backend), Haskell (ghc compila a c)`
+
+## Conferencia 4: tipado estatico y dinamico
+
+> El `Duck Typing` se basa en la idea de : Si camino como un pato y suena como un pato, etonces es un pato.
+>
+> En lugar de verificar tipos estaticamente, se comprueba en tiempo de ejecucion si u objeto puede hacer lo que se le pide
+
+```python
+class Pato:
+    def graznar(self):
+        print("¡Cuac!")
+
+class Persona:
+    def graznar(self):
+        print("¡Imito un pato!")
+
+def hacer_sonar(objeto):
+    objeto.graznar()  # No importa el tipo, solo que tenga .graznar()
+
+p = Pato()
+h = Persona()
+
+hacer_sonar(p)  # ¡Cuac!
+hacer_sonar(h)  # ¡Imito un pato!
+```
+
+### Static Typing
+
+> **Tú dices qué eres, y solo te puedo usar según lo que declaras**
+>
+> * **Declaras el tipo de una variable/clase/método explícitamente** (ej: `int x = 10;` en C#).
+> * El compilador **verifica los tipos antes de ejecutar** (si no coinciden,  **error de compilación** ).
+> * **Solo puedes usar** el objeto según lo que declaraste.
+
+```csharp
+// Declaras que "perro" es de tipo "Animal" (y solo tendrá métodos de Animal)
+Animal perro = new Perro(); 
+perro.Ladrar(); // ✅ Si "Animal" tiene el método .Ladrar()  
+perro.Volar();   // ❌ Error en COMPILACIÓN si "Animal" no tiene .Volar()  
+```
+
+### Dynamic Typing
+
+> **Tú eres lo que implementas, más libertad pero más riesgos**
+>
+> * El intérprete **solo verifica los tipos al ejecutar** (si no existe un método,  **error en runtime** ).
+> * **Puedes usar cualquier método/propiedad** mientras exista en el objeto.
+
+```python
+def hacer_sonar(animal):
+    animal.ladrar()  # No importa el tipo, solo que tenga .ladrar()
+
+class Perro:
+    def ladrar(self):
+        print("¡Guau!")
+
+class Pato:
+    def graznar(self):
+        print("¡Cuack!")
+
+hacer_sonar(Perro())  # ✅ Funciona (tiene .ladrar())  
+hacer_sonar(Pato())   # ❌ ERROR en RUNTIME (no tiene .ladrar())  
+```
+
+## Conferencia #5 : Arrays
 
 Arrays: Expresan una secuencia "enumerada" (por lo general a partide 0) de valores de un mismo tipo que son accedidos no a traves de un nombre como en la composicion sino por su posicion numerica(indice) en la secuencia
 
@@ -333,7 +491,6 @@ Console.WriteLine(d.Length); // No da error en compilacion, pero en ejecucion la
 * `TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)`: controla la llamada a métodos.
 * `TryGetIndex`, `TrySetIndex`: para acceso a índices (como arrays).
 * Otros para operaciones aritméticas, conversión, etc.
-
 
 ```csharp
 using System;
