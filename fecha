@@ -1,3 +1,7 @@
 GIT_AUTHOR_DATE="2024-11-22T10:30:00" GIT_COMMITTER_DATE="2024-11-22T10:30:00" git commit -m "Mi commit con fecha modificada"
 
 sads
+
+
+git add . && GIT_AUTHOR_DATE="2024-11-22T10:30:00 -0500" GIT_COMMITTER_DATE="2024-11-22T10:30:00 -0500" git commit -m "Mi commit con fecha modificada"
+
