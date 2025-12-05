@@ -1,0 +1,7 @@
+# borrar todos los contenedores
+
+docker rm -f $(docker ps -aq)
+
+# Borrar todas las imageens
+
+docker rmi -f $(docker images -q)
