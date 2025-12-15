@@ -1,0 +1,11 @@
+
+# borrar credenciales
+git config --global --unset credential.helper
+rm -f ~/.git-credentials
+
+#verfiicar qu no salga nada
+git config --global --list | grep credential
+
+
+git push
+
