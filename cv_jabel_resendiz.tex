@@ -1,0 +1,137 @@
+\documentclass[11pt,a4paper]{article}
+
+% ----------------------- Packages -----------------------
+\usepackage[margin=1.6cm]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{fontawesome5}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{setspace}
+
+% ----------------------- Formatting -----------------------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+% Section title style
+\titleformat{\section}%
+{\Large\bfseries}%    Format
+{}%                    Label
+{0pt}%                 Sep
+{#1}%  Before-code
+[\vspace{2pt}\titlerule]%
+
+
+
+% Bullet style
+\newcommand{\redbullet}{\textcolor{red}{\large\textbullet}}
+
+% Itemize style
+\setlist[itemize]{nosep, left=12pt, label=\redbullet}
+
+% ----------------------- Header -----------------------
+\newcommand{\headerline}{
+	\vspace{-8pt}
+	\hrule height 0.8pt
+	\vspace{8pt}
+}
+
+% ----------------------- Document -----------------------
+\begin{document}
+	
+	% ----------------------- Name -----------------------
+	\headerline
+	\begin{center}
+		{\Huge\bfseries Sohan Sethi}
+		
+		\vspace{4pt}
+		\faEnvelope\ \, Chicago, IL \hspace{1cm}
+		\faLinkedin\ \href{https://linkedin.com/in/sohansethi}{linkedin.com/in/sohansethi}
+	\end{center}
+	\headerline
+	
+	% ----------------------- EDUCATION -----------------------
+	\section{EDUCATION}
+	
+	\textbf{University of Illinois at Chicago} \hfill \textit{Jan 2022 -- May 2023}\\
+	\textit{Master of Science in Business Analytics, GPA: 3.91/4.0} \hfill \textit{Chicago, IL}\\
+	Coursework: Data Mining, Statistics, Data Visualization, Healthcare Analytics, Strategy Consulting, Project Management
+	
+	\textbf{Mumbai University} \hfill \textit{Aug 2016 -- Oct 2020}\\
+	\textit{Bachelor of Engineering in Computer Science} \hfill \textit{Mumbai, India}\\
+	Coursework: Advanced Database Management, Software Development, Machine Learning, Management Information Systems
+	
+	
+	% ----------------------- SKILLS -----------------------
+	\section{SKILLS}
+	
+	\textbf{Analysis \& Visualization Tools:} Power BI, Tableau, Microsoft Excel, Looker, Visio, Alteryx, Hadoop, Google Analytics\\
+	\textbf{Programming Languages:} SQL, Python, R, SPSS, Java, SAS, SAP\\
+	\textbf{Database Management Systems:} SQL Server, MySQL, Oracle, PostgreSQL, NoSQL, SSRS, SSIS, MongoDB
+	
+	
+	% ----------------------- EXPERIENCE -----------------------
+	\section{EXPERIENCE}
+	
+	\textbf{Health Care Service Corporation} \hfill \textit{Aug 2023 -- Present}\\
+	\textit{Business Analyst II} \hfill \textit{Chicago, IL}
+	\begin{itemize}
+		\item Performed data analysis on group insurance accounts to provide data-driven insights for BCBS leadership.
+		\item Developed and integrated a performance reporting KPI metrics dashboard using Power BI.
+		\item Designed automated reporting to calculate end-to-end cycle time using advanced DAX formulas.
+		\item Spearheaded multiple new data collection processes using SharePoint and Power Automate.
+		\item Designed and curated cross-platform web-app for interdepartmental usability using PowerApps.
+	\end{itemize}
+	
+	\textbf{Discovery Partners Institute (UIC)} \hfill \textit{May 2022 -- May 2023}\\
+	\textit{Research Assistant – Data Science} \hfill \textit{Chicago, IL}
+	\begin{itemize}
+		\item Conducted market research and industry analysis using Python for the applied R\&D department.
+		\item Assessed the impact and effectiveness of inter-department processes, increasing KPIs by 30\%.
+		\item Curated business plans that helped secure \$20M in funding.
+	\end{itemize}
+	
+	\textbf{Net Square Solutions} \hfill \textit{Oct 2020 -- Dec 2021}\\
+	\textit{Business Analyst} \hfill \textit{Mumbai, India}
+	\begin{itemize}
+		\item Performed descriptive, predictive, and prescriptive analysis on cybersecurity datasets.
+		\item Prepared and analyzed sales reports tracking KPIs using Tableau, increasing product sales by 30\%.
+		\item Improved communication between clients and development teams, exceeding quarterly goals by 67\%.
+		\item Built an automated ETL pipeline in SQL increasing data processing efficiency by 45\%.
+	\end{itemize}
+	
+	
+	% ----------------------- PROJECTS -----------------------
+	\section{PROJECTS}
+	
+	\textbf{Bank Loan Default Prediction} \hfill \textit{Aug 2022 -- Dec 2022}\\
+	\textit{RStudio, Data Mining}
+	\begin{itemize}
+		\item Analyzed financial data for 100,000 borrowers using RStudio to conduct loan default analysis.
+		\item Achieved 96\% accuracy using Random Forest and XGBoost models.
+	\end{itemize}
+	
+	\textbf{Heart Disease Prediction Modeling} \hfill \textit{Aug 2022 -- Dec 2022}\\
+	\textit{Python, SQL, Tableau, Spark}
+	\begin{itemize}
+		\item Examined heart disease data of 1.3M patients to determine future risk.
+		\item Developed ML models (Random Forest, SVM) predicting with 92\% accuracy.
+	\end{itemize}
+	
+	\textbf{Airline Comparison Analysis} \hfill \textit{Mar 2022 -- May 2022}\\
+	\textit{Tableau and MS Excel}
+	\begin{itemize}
+		\item Investigated airline performance using Tableau, analyzing 3.9M American Airlines flights.
+		\item Developed 27 dashboards identifying delays and comparing performance with Delta.
+	\end{itemize}
+	
+	
+	% ----------------------- LEADERSHIP -----------------------
+	\section{LEADERSHIP \& AWARDS}
+	
+	\begin{itemize}
+		\item Nominated for the Chancellor’s Award at UIC for academic excellence and contributions.
+		\item Co-led construction of a primary school in Tanzania through the United Nations.
+	\end{itemize}
+	
+\end{document}
