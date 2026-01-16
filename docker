@@ -9,3 +9,12 @@ docker rmi -f $(docker images -q)
 docker logs -f 
 
 docker compose logs -f
+
+
+# exportar una imagen
+
+docker image save -o <nombre_del_tar>.tar <imagenes>
+
+# cargar una imagen
+
+docker image load -i <nombre_del_tar>.tar
