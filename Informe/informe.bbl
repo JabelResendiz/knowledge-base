@@ -1,0 +1,29 @@
+\begin{thebibliography}{1}
+
+\bibitem{backus1953}
+John~W. Backus.
+\newblock The ibm 701 speedcoding system.
+\newblock Presented at the Association Meeting, Sept. 9--11, 1953, 1953.
+
+\bibitem{sebesta}
+Robert Sebesta.
+\newblock {\em Concepts of Programming Languages}.
+\newblock Pearson, 12th edition, 2015.
+
+\bibitem{stallings}
+William Stallings.
+\newblock {\em Computer Organization and Architecture}.
+\newblock Pearson, 10th edition, 2016.
+
+\bibitem{tanenbaum}
+Andrew~S. Tanenbaum and Todd Austin.
+\newblock {\em Structured Computer Organization}.
+\newblock Pearson, 6th edition, 2013.
+
+\bibitem{zuse_replica}
+Konrad Zuse.
+\newblock Réplica de la z1.
+\newblock \url{https://en.wikipedia.org/wiki/Z1_(computer)}, 2020.
+\newblock Imagen de réplica de la Z1 en exposición histórica.
+
+\end{thebibliography}
